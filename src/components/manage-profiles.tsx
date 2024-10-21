@@ -8,6 +8,7 @@ import { api } from "@/lib/api/api"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { profile } from "console"
 
 interface ManageProfilesProps {
   profiles: PickedProfile[]
@@ -18,7 +19,8 @@ const ManageProfiles = ({ profiles }: ManageProfilesProps) => {
 
   // profiles query
   const profilesQuery = api.profile.getAll.useQuery()
-
+  console.log(profiles);
+  
   return (
     <div className="container flex min-h-screen w-full max-w-5xl flex-col items-center justify-center space-y-8">
       <h1 className="text-center text-3xl font-medium sm:text-4xl">

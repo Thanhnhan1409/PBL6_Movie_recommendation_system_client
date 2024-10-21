@@ -4,7 +4,6 @@ import { authOptions } from "@/server/auth"
 import { prisma } from "@/server/db"
 
 import { getCurrentUser } from "@/lib/session"
-import { stripe } from "@/lib/stripe"
 import { getPlanDetails, getUserSubscriptionPlan } from "@/lib/subscription"
 import AccountForm from "@/components/forms/account-form"
 
@@ -24,16 +23,8 @@ export default async function AccountPage() {
   const subscriptionPlan = await getUserSubscriptionPlan(user.id)
 
   // if user has a subscription plan, check if it's active
-  let subStartDate: number | null = null
-  let isCanceled = false
-  if (subscriptionPlan && subscriptionPlan.stripeSubscriptionId) {
-    const stripePlan = await stripe.subscriptions.retrieve(
-      subscriptionPlan.stripeSubscriptionId
-    )
-
-    subStartDate = stripePlan.start_date * 1000
-    isCanceled = stripePlan.cancel_at_period_end
-  }
+  const subStartDate: number | null = null
+  const isCanceled = false
 
   const subPlanDetails = getPlanDetails(subscriptionPlan?.name ?? "")
 

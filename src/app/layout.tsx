@@ -1,4 +1,4 @@
-import { Inter as FontSans } from "next/font/google"
+// import { Inter as FontSans } from "next/font/google"
 import TRPCProvider from "@/context/trpc-provider"
 
 import { siteConfig } from "@/config/site"
@@ -8,10 +8,10 @@ import ToastWrapper from "@/components/ui/toast-wrapper"
 import "@/styles/globals.css"
 import { Analytics } from "@vercel/analytics/react"
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-inter",
-})
+// const fontSans = FontSans({
+//   subsets: ["latin"],
+//   variable: "--font-inter",
+// })
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -81,12 +81,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <html
         lang="en"
         className={cn(
-          "scroll-smooth bg-neutral-900 font-sans text-slate-50 antialiased",
-          fontSans.variable
+          "scroll-smooth bg-neutral-900 font-sans text-slate-50 antialiased"
         )}
       >
         <head />
-        <body className="min-h-screen">
+        <body className="min-h-screen main">
           {children}
           <ToastWrapper />
           <TailwindIndicator />

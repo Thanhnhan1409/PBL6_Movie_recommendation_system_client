@@ -20,13 +20,7 @@ const server = z.object({
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-  STRIPE_API_KEY: z.string(),
-  STRIPE_WEBHOOK_SECRET: z.string(),
-  STRIPE_MOBILE_PRICE_ID: z.string(),
-  STRIPE_BASIC_PRICE_ID: z.string(),
-  STRIPE_STANDARD_PRICE_ID: z.string(),
-  STRIPE_PREMIUM_PRICE_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string()
 })
 
 /**
@@ -52,13 +46,7 @@ const processEnv = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-  NEXT_PUBLIC_TMDB_API_KEY: process.env.NEXT_PUBLIC_TMDB_API_KEY,
-  STRIPE_API_KEY: process.env.STRIPE_API_KEY,
-  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-  STRIPE_MOBILE_PRICE_ID: process.env.STRIPE_MOBILE_PRICE_ID,
-  STRIPE_BASIC_PRICE_ID: process.env.STRIPE_BASIC_PRICE_ID,
-  STRIPE_STANDARD_PRICE_ID: process.env.STRIPE_STANDARD_PRICE_ID,
-  STRIPE_PREMIUM_PRICE_ID: process.env.STRIPE_PREMIUM_PRICE_ID,
+  NEXT_PUBLIC_TMDB_API_KEY: process.env.NEXT_PUBLIC_TMDB_API_KEY
 }
 
 // Don't touch the part below

@@ -4,7 +4,6 @@ import { authOptions } from "@/server/auth"
 
 import { plansConfig } from "@/config/plans"
 import { getCurrentUser } from "@/lib/session"
-import { stripe } from "@/lib/stripe"
 import { getUserSubscriptionPlan } from "@/lib/subscription"
 import BillingForm from "@/components/forms/billing-form"
 import { Icons } from "@/components/icons"
@@ -25,13 +24,7 @@ export default async function PlansPage() {
   const subscriptionPlan = await getUserSubscriptionPlan(user.id)
 
   // if user has a subscription plan, check if it's active
-  let isCanceled = false
-  if (subscriptionPlan && subscriptionPlan.stripeSubscriptionId) {
-    const stripePlan = await stripe.subscriptions.retrieve(
-      subscriptionPlan.stripeSubscriptionId
-    )
-    isCanceled = stripePlan.cancel_at_period_end
-  }
+  const isCanceled = false;
 
   return (
     <section className="container flex w-full max-w-6xl flex-col gap-5 pb-16 pt-10">

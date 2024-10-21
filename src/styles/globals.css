@@ -12,3 +12,7 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+.main {
+  font-family: 'Helvetica Neue', 'Segoe UI', Verdana, sans-serif;
+}

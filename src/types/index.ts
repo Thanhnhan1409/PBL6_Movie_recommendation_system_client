@@ -119,7 +119,7 @@ export type CategorizedShows = {
 export type SubscriptionPlan = {
   name: string
   description: string
-  stripePriceId: string
+  stripePriceId?: string
   monthlyPrice?: number
   videoQuality?: string
   resolution?: string

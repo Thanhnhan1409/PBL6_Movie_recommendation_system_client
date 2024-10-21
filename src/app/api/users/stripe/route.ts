@@ -4,11 +4,10 @@ import { getServerSession } from "next-auth/next"
 import { z } from "zod"
 
 import { subscriptionPlans } from "@/config/subscriptions"
-import { stripe } from "@/lib/stripe"
 import { getUserSubscriptionPlan } from "@/lib/subscription"
 import { absoluteUrl } from "@/lib/utils"
 
-const successUrl = absoluteUrl("/")
+// const successUrl = absoluteUrl("/")
 const billingUrl = absoluteUrl("/login/plans")
 
 export async function POST(req: Request) {
@@ -36,34 +35,12 @@ export async function POST(req: Request) {
       subscriptionPlan?.stripeSubscriptionId &&
       subscriptionPlan?.stripePriceId === stripePriceId
     ) {
-      const stripeSession = await stripe.billingPortal.sessions.create({
-        customer: subscriptionPlan.stripeCustomerId ?? "",
-        return_url: billingUrl,
-      })
-
-      return new Response(JSON.stringify({ url: stripeSession.url }))
+      return new Response(JSON.stringify({ url: billingUrl }))
     }
 
     // The user is not subscribed.
     // Create a checkout session to upgrade.
     console.log("creating stripe checkout session")
-    const stripeSession = await stripe.checkout.sessions.create({
-      success_url: successUrl,
-      cancel_url: billingUrl,
-      payment_method_types: ["card"],
-      mode: "subscription",
-      billing_address_collection: "auto",
-      customer_email: session.user.email,
-      line_items: [
-        {
-          price: stripePriceId,
-          quantity: 1,
-        },
-      ],
-      metadata: {
-        userId: session.user.id,
-      },
-    })
 
     // If the checkout session is successful, then create a profile for the user.
     // Check if profile exists first.
@@ -104,7 +81,7 @@ export async function POST(req: Request) {
       })
     }
 
-    return new Response(JSON.stringify({ url: stripeSession.url }))
+    return new Response(JSON.stringify({ url: billingUrl }))
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
