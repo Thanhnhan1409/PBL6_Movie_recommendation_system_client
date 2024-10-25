@@ -32,7 +32,7 @@ const ShowsGrid = ({ shows }: SearchedShowsProps) => {
             }`}
             alt={show.title ?? show.name ?? "poster"}
             width={240}
-            height={135}
+            height={335}
             priority
             className="aspect-video cursor-pointer object-cover transition-all hover:z-20 hover:scale-110"
             onClick={() => {
