@@ -1,13 +1,12 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
-import { useModalStore } from "@/stores/modal"
 import type { Show } from "@/types"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
+import ShowCard from "./show-card"
 
 interface ShowsCarouselProps {
   title: string
@@ -50,7 +49,7 @@ const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
                   aria-label="Scroll to right"
                   variant="ghost"
                   className={cn(
-                    "absolute left-0 top-0 z-30 h-[8.5rem] rounded-none rounded-r bg-slate-950/50 px-2 py-0 opacity-0 hover:bg-slate-950/50 active:scale-100 group-hover:opacity-100 dark:hover:bg-slate-950/50",
+                    "absolute left-0 top-0 z-30 h-[18.5rem] rounded-none rounded-r bg-slate-950/50 px-2 py-0 opacity-0 hover:bg-slate-950/50 active:scale-100 group-hover:opacity-100 dark:hover:bg-slate-950/50",
                     isScrollable ? "block" : "hidden"
                   )}
                   onClick={() => scrollToDirection("left")}
@@ -75,7 +74,7 @@ const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
             ) : null}
             <div
               ref={showsRef}
-              className="no-scrollbar flex h-full w-full items-center gap-1.5 overflow-x-auto overflow-y-hidden"
+              className="no-scrollbar flex h-full w-full items-center gap-5 overflow-x-auto overflow-y-hidden"
             >
               {shows.map((show) => (
                 <ShowCard key={show.id} show={show} />
@@ -88,26 +87,4 @@ const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
   )
 }
 
-export default ShowsCarousel
-
-const ShowCard = ({ show }: { show: Show }) => {
-  return (
-    <Image
-      src={`https://image.tmdb.org/t/p/w500/${
-        show.backdrop_path ?? show.poster_path ?? ""
-      }`}
-      alt={show.title ?? show.name ?? "poster"}
-      width={240}
-      height={135}
-      loading="lazy"
-      className="aspect-video cursor-pointer object-cover transition-all hover:z-20 hover:scale-110"
-      onClick={() => {
-        useModalStore.setState({
-          show: show,
-          open: true,
-          play: false,
-        })
-      }}
-    />
-  )
-}
+export default ShowsCarousel;
