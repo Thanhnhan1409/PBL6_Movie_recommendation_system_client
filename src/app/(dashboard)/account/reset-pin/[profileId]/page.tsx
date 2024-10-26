@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound, redirect } from "next/navigation"
 import { authOptions } from "@/server/auth"
-import { prisma } from "@/server/db"
 
 import { getCurrentUser } from "@/lib/session"
 import ResetPinForm from "@/components/forms/reset-pin-form"
@@ -21,35 +20,13 @@ interface ResetPinPageProps {
 export default async function ResetPinPage({ params }: ResetPinPageProps) {
   const { profileId } = params
 
-  const user = await getCurrentUser()
+  const user = await getCurrentUser({
+    username: "anh@gmail.com",
+    password: "123456Aa"
+  })
 
   if (!user) {
     redirect(authOptions?.pages?.signIn ?? "/login")
-  }
-
-  const profile = await prisma.profile.findUnique({
-    where: {
-      id: profileId,
-    },
-    select: {
-      id: true,
-      name: true,
-      language: true,
-      gameHandle: true,
-      email: true,
-      pin: true,
-      icon: {
-        select: {
-          id: true,
-          title: true,
-          href: true,
-        },
-      },
-    },
-  })
-
-  if (!profile) {
-    notFound()
   }
 
   return (
@@ -59,8 +36,8 @@ export default async function ResetPinPage({ params }: ResetPinPageProps) {
           Profile Lock
         </h1>
         <Image
-          src={profile.icon.href}
-          alt={profile.icon.title}
+          src={''}
+          alt={'title'}
           width={48}
           height={48}
           className="rounded object-cover"
@@ -70,7 +47,7 @@ export default async function ResetPinPage({ params }: ResetPinPageProps) {
         <h2 className="text-xl font-medium sm:text-2xl">
           Lock this profile by creating a 4-digit pin.
         </h2>
-        <ResetPinForm profile={profile} />
+        {/* <ResetPinForm profile={profile} /> */}
       </div>
     </section>
   )

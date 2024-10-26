@@ -1,4 +1,4 @@
-import type { Icon, MEDIA_TYPE, Profile, User } from "@prisma/client"
+// import type { Icon, MEDIA_TYPE, Profile, User } from "@prisma/client"
 
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
@@ -69,7 +69,7 @@ export type VideoResult = {
 export type Show = {
   adult: boolean
   backdrop_path: string | null
-  media_type: MEDIA_TYPE
+  // media_type: MEDIA_TYPE
   budget: number | null
   homepage: string | null
   showId: string
@@ -126,20 +126,25 @@ export type SubscriptionPlan = {
   devices?: string
 }
 
-export type UserSubscriptionPlan = SubscriptionPlan &
-  Pick<User, "stripeCustomerId" | "stripeSubscriptionId" | "stripePriceId"> & {
-    stripeCurrentPeriodEnd: number
-  }
+// export type UserSubscriptionPlan = SubscriptionPlan &
+//   Pick<User, "stripeCustomerId" | "stripeSubscriptionId" | "stripePriceId"> & {
+//     stripeCurrentPeriodEnd: number
+//   }
 
-export type ProfileWithIcon = Profile & {
-  icon: Icon
-}
+// export type ProfileWithIcon = Profile & {
+//   icon: Icon
+// }
 
-export type PickedIcon = Pick<Icon, "id" | "title" | "href">
+// export type PickedIcon = Pick<Icon, "id" | "title" | "href">
 
-export type PickedProfile = Pick<
-  Profile,
-  "id" | "name" | "language" | "gameHandle" | "email" | "pin"
-> & {
-  icon: PickedIcon
+// export type PickedProfile = Pick<
+//   Profile,
+//   "id" | "name" | "language" | "gameHandle" | "email" | "pin"
+// > & {
+//   icon: PickedIcon
+// }
+
+export type UserLogin = {
+  username: string
+  password: string
 }

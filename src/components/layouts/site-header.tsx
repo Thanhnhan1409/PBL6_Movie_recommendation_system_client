@@ -12,7 +12,6 @@ import { signOut } from "next-auth/react"
 import { toast } from "react-hot-toast"
 
 import { siteConfig } from "@/config/site"
-import { api } from "@/lib/api/api"
 import { searchShows } from "@/lib/fetchers"
 import { cn } from "@/lib/utils"
 import { DebouncedInput } from "@/components/debounced-input"
@@ -59,11 +58,11 @@ const SiteHeader = ({ session }: SiteHeaderProps) => {
   const profileStore = useProfileStore()
 
   // other profiles query
-  const otherProfilesQuery = profileStore.profile
-    ? api.profile.getOthers.useQuery(profileStore.profile.id, {
-        enabled: !!session?.user && !!profileStore.profile,
-      })
-    : null
+  // const otherProfilesQuery = profileStore.profile
+  //   ? api.profile.getOthers.useQuery(profileStore.profile.id, {
+  //       enabled: !!session?.user && !!profileStore.profile,
+  //     })
+  //   : null
 
   return (
     <header
@@ -137,7 +136,7 @@ const SiteHeader = ({ session }: SiteHeaderProps) => {
                   sideOffset={20}
                   className="w-52 overflow-y-auto overflow-x-hidden rounded-sm bg-neutral-800/90 text-slate-200 dark:bg-neutral-800/90 dark:text-slate-200"
                 >
-                  {otherProfilesQuery?.data?.map((profile) => (
+                  {/* {otherProfilesQuery?.data?.map((profile) => (
                     <DropdownMenuItem
                       key={profile.id}
                       asChild
@@ -178,7 +177,7 @@ const SiteHeader = ({ session }: SiteHeaderProps) => {
                         )}
                       </Button>
                     </DropdownMenuItem>
-                  ))}
+                  ))} */}
                   {siteConfig.profileDropdownItems.map(
                     (item, index) =>
                       item.title !== "Sign Out of Netflix" &&

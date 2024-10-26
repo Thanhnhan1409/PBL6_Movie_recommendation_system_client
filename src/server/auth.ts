@@ -1,7 +1,5 @@
 import { type GetServerSidePropsContext } from "next"
 import { env } from "@/env.mjs"
-import { prisma } from "@/server/db"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import {
   getServerSession,
   type DefaultSession,
@@ -45,7 +43,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,

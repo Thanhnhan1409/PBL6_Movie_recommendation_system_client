@@ -10,8 +10,13 @@ export const metadata: Metadata = {
 }
 
 export default async function MyListPage() {
-  const user = await getCurrentUser()
 
+  const user = await getCurrentUser({
+    username: "anh@gmail.com",
+    password: "123456Aa"
+  })
+  console.log('user', user)
+  
   if (!user) {
     redirect("/login")
   }

@@ -1,18 +1,14 @@
 "use client"
-
+// need edit
 import * as React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import type { PickedProfile } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { LANGUAGE } from "@prisma/client"
 import { useIsMutating } from "@tanstack/react-query"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { z } from "zod"
-
-import { api } from "@/lib/api/client"
+// import { api } from "@/lib/api/client"
 import { cn } from "@/lib/utils"
 import IconPicker from "@/components/icon-picker"
 import { Icons } from "@/components/icons"
@@ -20,79 +16,69 @@ import SelectInput from "@/components/select-input"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+// interface EditProfileFormProps {
+//   profile: PickedProfile
+// }
 
-const schema = z.object({
-  name: z.string().min(1, {
-    message: "Must be at least 1 character",
-  }),
-  language: z.nativeEnum(LANGUAGE),
-  gameHandle: z.string().optional().nullable(),
-})
-type Inputs = z.infer<typeof schema>
+const EditProfileForm = () => {
+  // const router = useRouter()
+  // const apiUtils = api.useContext()
 
-interface EditProfileFormProps {
-  profile: PickedProfile
-}
+  // const [iconPicker, setIconPicker] = React.useState(false)
+  // const [icon, setIcon] = React.useState(profile.icon)
 
-const EditProfileForm = ({ profile }: EditProfileFormProps) => {
-  const router = useRouter()
-  const apiUtils = api.useContext()
+  // // update profile mutation
+  // const updateProfileMutation = api.profile.update.useMutation({
+  //   onSuccess: () => {
+  //     router.push("/profiles")
+  //     toast.success("Profile updated")
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  // })
 
-  const [iconPicker, setIconPicker] = React.useState(false)
-  const [icon, setIcon] = React.useState(profile.icon)
+  // // react-hook-form
+  // const { register, handleSubmit, formState, control, watch } = useForm<Inputs>(
+  //   {
+  //     resolver: zodResolver(schema),
+  //   }
+  // )
 
-  // update profile mutation
-  const updateProfileMutation = api.profile.update.useMutation({
-    onSuccess: () => {
-      router.push("/profiles")
-      toast.success("Profile updated")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  // const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  //   console.log(data)
 
-  // react-hook-form
-  const { register, handleSubmit, formState, control, watch } = useForm<Inputs>(
-    {
-      resolver: zodResolver(schema),
-    }
-  )
+  //   await updateProfileMutation.mutateAsync({
+  //     id: profile?.id,
+  //     name: data.name,
+  //     iconId: icon.id,
+  //     language: data.language,
+  //     gameHandle: data.gameHandle,
+  //     email: profile?.email ?? null,
+  //   })
+  // }
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
+  // // delete profile mutation
+  // const deleteProfileMutation = api.profile.delete.useMutation({
+  //   onSuccess: () => {
+  //     router.push("/profiles")
+  //     toast.success("Profile deleted")
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  // })
 
-    await updateProfileMutation.mutateAsync({
-      id: profile?.id,
-      name: data.name,
-      iconId: icon.id,
-      language: data.language,
-      gameHandle: data.gameHandle,
-      email: profile?.email ?? null,
-    })
-  }
-
-  // delete profile mutation
-  const deleteProfileMutation = api.profile.delete.useMutation({
-    onSuccess: () => {
-      router.push("/profiles")
-      toast.success("Profile deleted")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
-
-  // refetch queries
-  const mutationCount = useIsMutating()
-  React.useEffect(() => {
-    void apiUtils.profile.getAll.invalidate()
-    void apiUtils.profile.getOthers.invalidate()
-  }, [apiUtils, mutationCount])
+  // // refetch queries
+  // const mutationCount = useIsMutating()
+  // React.useEffect(() => {
+  //   void apiUtils.profile.getAll.invalidate()
+  //   void apiUtils.profile.getOthers.invalidate()
+  // }, [apiUtils, mutationCount])
 
   return (
     <AnimatePresence>
-      {iconPicker ? (
+      {/* {iconPicker ? (
         <IconPicker
           icon={icon}
           setIconPicker={setIconPicker}
@@ -242,7 +228,7 @@ const EditProfileForm = ({ profile }: EditProfileFormProps) => {
             </div>
           </form>
         </motion.div>
-      )}
+      )} */}
     </AnimatePresence>
   )
 }

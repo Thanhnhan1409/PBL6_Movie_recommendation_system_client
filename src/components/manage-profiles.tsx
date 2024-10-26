@@ -2,23 +2,62 @@
 
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import type { PickedProfile } from "@/types"
-
-import { api } from "@/lib/api/api"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { profile } from "console"
 
-interface ManageProfilesProps {
-  profiles: PickedProfile[]
+// interface ManageProfilesProps {
+//   profiles: PickedProfile[]
+// }
+interface IProfile {
+  id: string;
+  name: string;
+  language: string;
+  gameHandle: string;
+  email: string;
+  pin: string;
+  icon: {
+    url: string;
+    altText: string;
+  };
 }
 
-const ManageProfiles = ({ profiles }: ManageProfilesProps) => {
+interface IManageProfiles {
+  profiles: IProfile[];
+}
+const ManageProfiles = ({ profiles } :IManageProfiles) =>{
   const router = useRouter()
 
   // profiles query
-  const profilesQuery = api.profile.getAll.useQuery()
+  
+
+  const fakeProfiles: IProfile[] = [
+    {
+      id: '123123123', // Tạo ID ngẫu nhiên
+      name: "Nguyễn Văn A",
+      language: "Vietnamese",
+      gameHandle: "GameMaster123",
+      email: "nguyenvana@example.com",
+      pin: "123456",
+      icon: {
+        url: "https://example.com/icon.png",
+        altText: "Icon of Nguyễn Văn A",
+      },
+    },
+    {
+      id: '123123123e', // Tạo ID ngẫu nhiên
+      name: "Nguyễn Văn A",
+      language: "Vietnamese",
+      gameHandle: "GameMaster123",
+      email: "nguyenvana@example.com",
+      pin: "123456",
+      icon: {
+        url: "https://example.com/icon.png",
+        altText: "Icon of Nguyễn Văn A",
+      },
+    }
+  ];
   console.log(profiles);
   
   return (
@@ -27,7 +66,7 @@ const ManageProfiles = ({ profiles }: ManageProfilesProps) => {
         Manage Profiles:
       </h1>
       <div className="flex flex-wrap items-start justify-center gap-2 pb-8 sm:gap-4 md:gap-8">
-        {profilesQuery.data?.map((profile) => (
+        {fakeProfiles?.map((profile) => (
           <Button
             aria-label="Navigate to edit profile page"
             key={profile.id}
@@ -38,8 +77,8 @@ const ManageProfiles = ({ profiles }: ManageProfilesProps) => {
             <div className="relative aspect-square h-24 w-fit overflow-hidden rounded shadow-sm group-hover:ring-2 group-hover:ring-slate-500 sm:h-28 md:h-32">
               {profile.icon ? (
                 <Image
-                  src={profile.icon.href}
-                  alt={profile.icon.title}
+                  src={profile.icon.url}
+                  alt={profile.icon.altText}
                   fill
                   sizes="(max-width: 768px) 100vw, 
                     (max-width: 1200px) 50vw, 33vw"
@@ -70,7 +109,7 @@ const ManageProfiles = ({ profiles }: ManageProfilesProps) => {
             </div>
           </Button>
         ))}
-        {profilesQuery.isSuccess && profilesQuery.data.length < 5 && (
+        {/* {profilesQuery.isSuccess && profilesQuery.data.length < 5 && (
           <Button
             aria-label="Navigate to add profile page"
             variant="ghost"
@@ -89,7 +128,7 @@ const ManageProfiles = ({ profiles }: ManageProfilesProps) => {
               Add Profile
             </h2>
           </Button>
-        )}
+        )} */}
       </div>
       <Button
         aria-label="Navigate to home page"

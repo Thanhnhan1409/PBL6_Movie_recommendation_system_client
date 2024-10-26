@@ -2,7 +2,6 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { authOptions } from "@/server/auth"
-import { prisma } from "@/server/db"
 
 import { getCurrentUser } from "@/lib/session"
 import EditUserForm from "@/components/forms/edit-user-form"
@@ -24,25 +23,13 @@ export default async function EditAccountPage({
 }: EditAccountPageProps) {
   const { userId } = params
 
-  const user = await getCurrentUser()
+  const user = await getCurrentUser({
+    username: "anh@gmail.com",
+    password: "123456Aa"
+  })
 
   if (!user) {
     redirect(authOptions?.pages?.signIn ?? "/login")
-  }
-
-  const dbUser = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      id: true,
-      email: true,
-      phoneNumber: true,
-    },
-  })
-
-  if (!dbUser) {
-    notFound()
   }
 
   return (
@@ -60,7 +47,7 @@ export default async function EditAccountPage({
           </div>
         }
       >
-        <EditUserForm user={dbUser} />
+        {/* <EditUserForm user={dbUser} /> */}
       </Suspense>
     </section>
   )

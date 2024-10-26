@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/server/auth"
-import { prisma } from "@/server/db"
 
 import { getCurrentUser } from "@/lib/session"
 import EditProfileForm from "@/components/forms/edit-profile-form"
@@ -22,40 +21,31 @@ export default async function EditProfilePage({
 }: EditProfilePageProps) {
   const { profileId } = params
 
-  const user = await getCurrentUser()
+  const user = await getCurrentUser({
+    username: "anh@gmail.com",
+    password: "123456Aa"
+  })
 
   if (!user) {
     redirect(authOptions?.pages?.signIn ?? "/login")
   }
 
-  const profile = await prisma.profile.findUnique({
-    where: {
-      id: profileId,
+  const fakeProfile = {
+    id: '123123123', // Tạo ID ngẫu nhiên
+    name: "Nguyễn Văn A",
+    language: "Vietnamese",
+    gameHandle: "GameMaster123",
+    email: "nguyenvana@example.com",
+    pin: "123456",
+    icon: {
+      url: "https://example.com/icon.png",
+      altText: "Icon of Nguyễn Văn A",
     },
-    select: {
-      id: true,
-      name: true,
-      language: true,
-      gameHandle: true,
-      email: true,
-      pin: true,
-      icon: {
-        select: {
-          id: true,
-          title: true,
-          href: true,
-        },
-      },
-    },
-  })
-
-  if (!profile) {
-    redirect("/profiles")
-  }
-
+  };
   return (
     <section>
-      <EditProfileForm profile={profile} />
+      {/* <EditProfileForm profile={fakeProfile} /> */}
+      <EditProfileForm />
     </section>
   )
 }

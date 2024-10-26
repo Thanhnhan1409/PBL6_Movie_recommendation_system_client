@@ -1,9 +1,9 @@
 import * as React from "react"
 import Image from "next/image"
-import type { PickedIcon, SetState } from "@/types"
+import type { SetState } from "@/types"
 import { motion } from "framer-motion"
 
-import { api } from "@/lib/api/api"
+// import { api } from "@/lib/api/api"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -11,11 +11,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface IconPickerProps {
   setIconPicker: SetState<boolean>
-  icon: PickedIcon
-  setIcon: SetState<PickedIcon>
 }
 
-const IconPicker = ({ setIconPicker, icon, setIcon }: IconPickerProps) => {
+const IconPicker = ({ setIconPicker }: IconPickerProps) => {
   const [isScrolled, setIsScrolled] = React.useState(false)
 
   // change background color on scroll
@@ -28,12 +26,12 @@ const IconPicker = ({ setIconPicker, icon, setIcon }: IconPickerProps) => {
   }, [isScrolled])
 
   //  user query
-  const userQuery = api.user.getCurrent.useQuery()
+  // const userQuery = api.user.getCurrent.useQuery()
 
-  // icons query
-  const iconsQuery = api.icon.getAllUnused.useQuery(icon.id, {
-    enabled: !!icon.id,
-  })
+  // // icons query
+  // const iconsQuery = api.icon.getAllUnused.useQuery(icon.id, {
+  //   enabled: !!icon.id,
+  // })
 
   return (
     <motion.div
@@ -68,7 +66,7 @@ const IconPicker = ({ setIconPicker, icon, setIcon }: IconPickerProps) => {
               </h2>
             </div>
           </div>
-          {userQuery.data && (
+          {/* {userQuery.data && (
             // eslint-disable-next-line tailwindcss/classnames-order
             <div className="flex flex-col-reverse items-center gap-1 xs:flex-row xs:gap-4">
               <div className="text-xl font-medium sm:text-2xl">
@@ -89,12 +87,12 @@ const IconPicker = ({ setIconPicker, icon, setIcon }: IconPickerProps) => {
                 )}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       <div className="container flex w-full max-w-screen-2xl flex-col gap-2.5">
         <div className="text-xl font-medium sm:text-2xl">The Classics</div>
-        {iconsQuery.isError ? (
+        {/* {iconsQuery.isError ? (
           <div className="space-y-2.5">
             <div className="text-xl font-medium text-red-500 sm:text-2xl">
               Failed to load profiles
@@ -140,7 +138,7 @@ const IconPicker = ({ setIconPicker, icon, setIcon }: IconPickerProps) => {
                   </Button>
                 ))}
           </div>
-        )}
+        )} */}
       </div>
     </motion.div>
   )

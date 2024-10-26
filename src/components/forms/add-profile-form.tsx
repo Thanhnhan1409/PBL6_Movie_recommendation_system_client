@@ -3,14 +3,12 @@
 import * as React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import type { PickedIcon, PickedProfile } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { z } from "zod"
 
-import { api } from "@/lib/api/client"
+// import { api } from "@/lib/api/client"
 import { cn } from "@/lib/utils"
 import ProfilePicker from "@/components/icon-picker"
 import { Icons } from "@/components/icons"
@@ -18,56 +16,50 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 
-const schema = z.object({
-  name: z.string().min(1, {
-    message: "Must be at least 1 character",
-  }),
-})
-type Inputs = z.infer<typeof schema>
 
-interface AddProfileFormProps {
-  profiles: PickedProfile[]
-  profileIcon: PickedIcon
-}
+// interface AddProfileFormProps {
+//   profiles: PickedProfile[]
+//   profileIcon: PickedIcon
+// }
 
-const AddProfileForm = ({ profiles, profileIcon }: AddProfileFormProps) => {
-  const router = useRouter()
-  const apiUtils = api.useContext()
+const AddProfileForm = () => {
+  // const router = useRouter()
+  // const apiUtils = api.useContext()
 
-  const [iconPicker, setIconPicker] = React.useState(false)
-  const [icon, setIcon] = React.useState(profileIcon)
+  // const [iconPicker, setIconPicker] = React.useState(false)
+  // const [icon, setIcon] = React.useState(profileIcon)
 
-  // create profile mutation
-  const createProfileMutation = api.profile.create.useMutation({
-    onSuccess: async () => {
-      await apiUtils.profile.getAll.invalidate()
-      await apiUtils.profile.getOthers.invalidate()
-      router.push("/profiles")
-      toast.success("Profile created")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  // // create profile mutation
+  // const createProfileMutation = api.profile.create.useMutation({
+  //   onSuccess: async () => {
+  //     await apiUtils.profile.getAll.invalidate()
+  //     await apiUtils.profile.getOthers.invalidate()
+  //     router.push("/profiles")
+  //     toast.success("Profile created")
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  // })
 
-  // react-hook-form
-  const { register, handleSubmit, formState, watch, reset } = useForm<Inputs>({
-    resolver: zodResolver(schema),
-  })
+  // // react-hook-form
+  // const { register, handleSubmit, formState, watch, reset } = useForm<Inputs>({
+  //   resolver: zodResolver(schema),
+  // })
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
+  // const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  //   console.log(data)
 
-    await createProfileMutation.mutateAsync({
-      name: data.name,
-      iconId: icon.id,
-    })
-    reset()
-  }
+  //   await createProfileMutation.mutateAsync({
+  //     name: data.name,
+  //     iconId: icon.id,
+  //   })
+  //   reset()
+  // }
 
   return (
     <AnimatePresence>
-      {iconPicker ? (
+      {/* {iconPicker ? (
         <ProfilePicker
           icon={icon}
           setIconPicker={setIconPicker}
@@ -162,7 +154,7 @@ const AddProfileForm = ({ profiles, profileIcon }: AddProfileFormProps) => {
             </div>
           </form>
         </motion.div>
-      )}
+      )} */}
     </AnimatePresence>
   )
 }

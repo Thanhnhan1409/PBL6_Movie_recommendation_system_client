@@ -8,7 +8,6 @@ import { useProfileStore } from "@/stores/profile"
 import { AnimatePresence, motion } from "framer-motion"
 import type { Session } from "next-auth"
 
-import { api } from "@/lib/api/api"
 import PinForm from "@/components/forms/pin-form"
 import { Icons } from "@/components/icons"
 import SiteFooter from "@/components/layouts/site-footer"
@@ -26,9 +25,9 @@ const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
   const mounted = useMounted()
 
   // profiles query
-  const profilesQuery = api.profile.getAll.useQuery(undefined, {
-    enabled: !!session?.user,
-  })
+  // const profilesQuery = api.profile.getAll.useQuery(undefined, {
+  //   enabled: !!session?.user,
+  // })
 
   // profile store
   const profileStore = useProfileStore()
@@ -68,7 +67,7 @@ const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
         <h1 className="text-center text-3xl font-medium sm:text-4xl">
           {`Who's`} watching?
         </h1>
-        <div className="flex flex-wrap items-start justify-center gap-2 pb-8 sm:gap-4 md:gap-8">
+        {/* <div className="flex flex-wrap items-start justify-center gap-2 pb-8 sm:gap-4 md:gap-8">
           {profilesQuery.isLoading
             ? Array.from({ length: 4 }, (_, i) => (
                 <Skeleton
@@ -118,7 +117,7 @@ const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
                   </div>
                 </Button>
               ))}
-        </div>
+        </div> */}
         <Button
           aria-label="Navigate to manage profiles page"
           type="button"
@@ -126,7 +125,7 @@ const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
           size="auto"
           className="rounded-none"
           onClick={() => router.push("/profiles")}
-          disabled={profilesQuery.isLoading || profilesQuery.isError}
+          disabled={false}
         >
           Manage Profiles
         </Button>

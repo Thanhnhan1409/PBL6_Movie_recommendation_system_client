@@ -6,7 +6,10 @@ import Hero from "@/components/hero"
 import ShowsContainer from "@/components/shows-container"
 
 export default async function Home() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser({
+    username: "anh@gmail.com",
+    password: "123456Aa"
+  })
 
   const allShows = await getShows("movie")
 

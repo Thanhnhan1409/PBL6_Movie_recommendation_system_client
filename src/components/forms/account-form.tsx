@@ -4,17 +4,10 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import type {
-  ProfileWithIcon,
-  SubscriptionPlan,
-  UserSubscriptionPlan,
+  SubscriptionPlan
 } from "@/types"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { LANGUAGE } from "@prisma/client"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { z } from "zod"
-
-import { api } from "@/lib/api/api"
 import { formatDate } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import SelectInput from "@/components/select-input"
@@ -30,90 +23,88 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 
 interface AccountFormProps {
-  subscriptionPlan: UserSubscriptionPlan | null
   subPlanDetails?: SubscriptionPlan
   subStartDate: number | null
   isCanceled: boolean
 }
 
 const AccountForm = ({
-  subscriptionPlan,
   subPlanDetails,
   subStartDate,
   isCanceled,
 }: AccountFormProps) => {
-  const [isLoading, setIsLoading] = React.useState(false)
+  // const [isLoading, setIsLoading] = React.useState(false)
 
-  async function handleSubscription() {
-    console.log("handleSubscription")
+  // async function handleSubscription() {
+  //   console.log("handleSubscription")
 
-    setIsLoading(true)
+  //   setIsLoading(true)
 
-    // Get a Stripe session URL.
-    const response = await fetch("/api/users/stripe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        planName: subscriptionPlan?.name,
-      }),
-    })
+  //   // Get a Stripe session URL.
+  //   const response = await fetch("/api/users/stripe", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       planName: subscriptionPlan?.name,
+  //     }),
+  //   })
 
-    if (!response?.ok) {
-      return toast.error(
-        "Something went wrong. Please refresh the page and try again."
-      )
-    }
+  //   if (!response?.ok) {
+  //     return toast.error(
+  //       "Something went wrong. Please refresh the page and try again."
+  //     )
+  //   }
 
-    // Redirect to the Stripe session.
-    // This could be a checkout page for initial upgrade.
-    // Or portal to manage existing subscription.
-    const session = (await response.json()) as { url: string }
-    if (session) {
-      window.location.href = session.url
-    }
+  //   // Redirect to the Stripe session.
+  //   // This could be a checkout page for initial upgrade.
+  //   // Or portal to manage existing subscription.
+  //   const session = (await response.json()) as { url: string }
+  //   if (session) {
+  //     window.location.href = session.url
+  //   }
 
-    setIsLoading(false)
-  }
+  //   setIsLoading(false)
+  // }
 
-  // user query
-  const userQuery = api.user.getCurrentWithProfile.useQuery()
+  // // user query
+  // const userQuery = api.user.getCurrentWithProfile.useQuery()
 
-  if (userQuery.isLoading) {
-    return (
-      <div className="flex flex-col gap-5">
-        <Skeleton className="h-8 w-32 bg-neutral-600" />
-        <Skeleton className="h-8 w-40 bg-neutral-600" />
-        <Separator className="bg-neutral-600" />
-        <div className="flex flex-col gap-5">
-          <div className="space-y-6">
-            <Skeleton className="h-8 w-48 bg-neutral-600" />
-            <Skeleton className="h-8 w-32 bg-neutral-600" />
-          </div>
-          <Separator className="bg-neutral-700" />
-          <div className="flex items-center justify-between gap-4">
-            <Skeleton className="h-8 w-32 bg-neutral-600" />
-            <Skeleton className="h-8 w-32 bg-neutral-600" />
-          </div>
-        </div>
-        <Separator className="bg-neutral-700" />
-        <Skeleton className="h-8 bg-neutral-600" />
-      </div>
-    )
-  }
+  // if (userQuery.isLoading) {
+  //   return (
+  //     <div className="flex flex-col gap-5">
+  //       <Skeleton className="h-8 w-32 bg-neutral-600" />
+  //       <Skeleton className="h-8 w-40 bg-neutral-600" />
+  //       <Separator className="bg-neutral-600" />
+  //       <div className="flex flex-col gap-5">
+  //         <div className="space-y-6">
+  //           <Skeleton className="h-8 w-48 bg-neutral-600" />
+  //           <Skeleton className="h-8 w-32 bg-neutral-600" />
+  //         </div>
+  //         <Separator className="bg-neutral-700" />
+  //         <div className="flex items-center justify-between gap-4">
+  //           <Skeleton className="h-8 w-32 bg-neutral-600" />
+  //           <Skeleton className="h-8 w-32 bg-neutral-600" />
+  //         </div>
+  //       </div>
+  //       <Separator className="bg-neutral-700" />
+  //       <Skeleton className="h-8 bg-neutral-600" />
+  //     </div>
+  //   )
+  // }
 
-  if (userQuery.isError) {
-    return (
-      <div className="text-lg text-red-500 sm:text-xl">
-        Error: {userQuery.error.message}
-      </div>
-    )
-  }
+  // if (userQuery.isError) {
+  //   return (
+  //     <div className="text-lg text-red-500 sm:text-xl">
+  //       Error: {userQuery.error.message}
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="space-y-2.5">
+      {/* <div className="space-y-2.5">
         <h1 className="text-3xl sm:text-4xl">Account</h1>
         <div className="flex items-center gap-2.5">
           <Icons.billing className="h-6 w-6 text-neutral-500" />
@@ -218,64 +209,39 @@ const AccountForm = ({
             </Accordion>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
 
 export default AccountForm
 
-const schema = z.object({
-  email: z.string().optional(),
-  language: z.nativeEnum(LANGUAGE),
-  pin: z
-    .number()
-    .refine((v) => v >= 1000 && v <= 9999, {
-      message: "Your PIN must be 4 numbers.",
-    })
-    .optional()
-    .nullable(),
-})
-type Inputs = z.infer<typeof schema>
+const ProfileCard = () => {
+  // const apiUtils = api.useContext()
 
-const ProfileCard = ({ profile }: { profile: ProfileWithIcon }) => {
-  const apiUtils = api.useContext()
+  // // update profile mutation
+  // // react-hook-form
+  // const { register, handleSubmit, formState, control } = useForm<Inputs>({
+  //   resolver: zodResolver(schema),
+  // })
 
-  // update profile mutation
-  const updateProfileMutation = api.profile.update.useMutation({
-    onSuccess: async () => {
-      await apiUtils.user.getCurrentWithProfile.invalidate()
-      await apiUtils.profile.getAll.invalidate()
-      await apiUtils.profile.getOthers.invalidate()
-      toast.success("Profile updated successfully")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  // const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  //   console.log(data)
 
-  // react-hook-form
-  const { register, handleSubmit, formState, control } = useForm<Inputs>({
-    resolver: zodResolver(schema),
-  })
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
-
-    await updateProfileMutation.mutateAsync({
-      id: profile?.id,
-      name: profile?.name,
-      iconId: profile?.icon?.id,
-      language: data.language,
-      email: data.email,
-      gameHandle: profile?.gameHandle ?? null,
-      pin: data.pin ?? null,
-    })
-  }
+  //   await updateProfileMutation.mutateAsync({
+  //     id: profile?.id,
+  //     name: profile?.name,
+  //     iconId: profile?.icon?.id,
+  //     language: data.language,
+  //     email: data.email,
+  //     gameHandle: profile?.gameHandle ?? null,
+  //     pin: data.pin ?? null,
+  //   })
+  // }
 
   return (
     <>
-      <AccordionItem value={profile.id} className="border-neutral-700">
+      {/* <AccordionItem value={profile.id} className="border-neutral-700">
         <AccordionTrigger>
           <div className="flex items-center gap-4">
             <Image
@@ -366,7 +332,7 @@ const ProfileCard = ({ profile }: { profile: ProfileWithIcon }) => {
             </Button>
           </form>
         </AccordionContent>
-      </AccordionItem>
+      </AccordionItem> */}
     </>
   )
 }
