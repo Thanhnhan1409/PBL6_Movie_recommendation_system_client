@@ -7,7 +7,6 @@ import { useProfileStore } from "@/stores/profile"
 import { useSearchStore } from "@/stores/search"
 import type { CategorizedShows, SessionUser } from "@/types"
 
-import { api } from "@/lib/api/api"
 import { cn } from "@/lib/utils"
 import ShowModal from "@/components/show-modal"
 import ShowsCarousel from "@/components/shows-carousel"
@@ -29,11 +28,12 @@ const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
   const profileStore = useProfileStore()
 
   // my shows query
-  const myShowsQuery = profileStore.profile
-    ? api.myList.getAll.useQuery(profileStore.profile.id, {
-        enabled: !!user,
-      })
-    : null
+  const myShowsQuery = null
+  // = profileStore.profile
+  //   ? api.myList.getAll.useQuery(profileStore.profile.id, {
+  //       enabled: !!user,
+  //     })
+  //   : null
 
   if (!mounted) return <ShowsSkeleton />
 
@@ -48,11 +48,11 @@ const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
       {modalStore.open ? (
         <ShowModal open={modalStore.open} setOpen={modalStore.setOpen} />
       ) : null}
-      {path === "/" &&
+      {/* {path === "/" &&
       myShowsQuery?.isSuccess &&
       myShowsQuery.data.length > 0 ? (
         <ShowsCarousel title="My List" shows={user ? myShowsQuery?.data : []} />
-      ) : null}
+      ) : null} */}
       {shows.map((item) => (
         <ShowsCarousel
           key={item.title}

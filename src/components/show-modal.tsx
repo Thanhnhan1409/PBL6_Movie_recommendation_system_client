@@ -10,7 +10,7 @@ import { useIsMutating } from "@tanstack/react-query"
 import { toast } from "react-hot-toast"
 import ReactPlayer from "react-player/lazy"
 
-import { api } from "@/lib/api/api"
+// import { api } from "@/lib/api/api"
 import { cn, getYear } from "@/lib/utils"
 import DynamicTooltip from "@/components/dynamic-tooltip"
 import { Icons } from "@/components/icons"
@@ -29,7 +29,7 @@ interface ShowModalProps {
 
 const ShowModal = ({ open, setOpen }: ShowModalProps) => {
   const router = useRouter()
-  const apiUtils = api.useContext()
+  // const apiUtils = api.useContext()
 
   // stores
   const modalStore = useModalStore()
@@ -37,9 +37,10 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
 
   const [trailer, setTrailer] = React.useState("")
   const [genres, setGenres] = React.useState<Genre[]>([])
-  const [isMuted, setIsMuted] = React.useState(false)
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [isAdded, setIsAdded] = React.useState(false)
+  const [isMuted, setIsMuted] = React.useState<boolean>(false)
+  const [isPlaying, setIsPlaying] = React.useState<boolean>(false)
+  const [isAdded, setIsAdded] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   // get trailer and genres of show
   React.useEffect(() => {
@@ -48,9 +49,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
 
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/${
-            modalStore.show?.media_type === "tv" ? "tv" : "movie"
-          }/${modalStore.show?.id}?api_key=${
+          `https://api.themoviedb.org/3/movie/${modalStore.show?.id}?api_key=${
             env.NEXT_PUBLIC_TMDB_API_KEY
           }&language=en-US&append_to_response=videos`
         )
@@ -89,45 +88,87 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
     }
   }, [isPlaying])
 
-  // user query
-  const userQuery = api.user.getCurrent.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  })
+  // // user query
+  // const userQuery = api.user.getCurrent.useQuery(undefined, {
+  //   refetchOnWindowFocus: false,
+  // })
 
-  // my shows query
-  const myShowsQuery = profileStore.profile
-    ? api.myList.getAll.useQuery(profileStore.profile.id, {
-        enabled: !!userQuery.data,
-      })
-    : null
+  // // my shows query
+  // const myShowsQuery = profileStore.profile
+  //   ? api.myList.getAll.useQuery(profileStore.profile.id, {
+  //       enabled: !!userQuery.data,
+  //     })
+  //   : null
 
-  // add show mutation
-  const addShowMutation = api.myList.create.useMutation({
-    onSuccess: () => {
-      setIsAdded(true)
-      toast.success("Added to My List")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  // // add show mutation
+  // const addShowMutation = api.myList.create.useMutation({
+  //   onSuccess: () => {
+  //     setIsAdded(true)
+  //     toast.success("Added to My List")
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  // })
 
-  // remove show mutation
-  const removeShowMuation = api.myList.delete.useMutation({
-    onSuccess: () => {
-      setIsAdded(false)
-      toast.success("Removed from My List")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
-
+  // // remove show mutation
+  // const removeShowMuation = api.myList.delete.useMutation({
+  //   onSuccess: () => {
+  //     setIsAdded(false)
+  //     toast.success("Removed from My List")
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  // })
+  
   // refetch my shows query
   const mutationCount = useIsMutating()
-  React.useEffect(() => {
-    void apiUtils.myList.getAll.invalidate()
-  }, [apiUtils, mutationCount])
+
+  const onWatchMovie = () => {
+    setIsLoading(true)
+    router.push(`/movies/${modalStore.show?.id}`)
+  }
+
+  // const onInteracMylist = () => {
+  //   !userQuery.data && router.push("/login")
+
+  //   if (!modalStore.show || !profileStore.profile) return
+
+  //   isAdded ||
+  //   myShowsQuery?.data?.find(
+  //     (item) => item.id === modalStore.show?.id
+  //   )
+  //     ? removeShowMuation.mutate({
+  //         id: modalStore.show.id,
+  //         profileId: profileStore.profile.id,
+  //       })
+  //     : addShowMutation.mutate({
+  //         profileId: profileStore.profile.id,
+  //         id: modalStore.show.id,
+  //         name: modalStore.show.name ?? "",
+  //         title: modalStore.show.title ?? "",
+  //         original_title: modalStore.show.original_title ?? "",
+  //         poster_path: modalStore.show.poster_path ?? "",
+  //         backdrop_path: modalStore.show.backdrop_path ?? "",
+  //         overview: modalStore.show.overview ?? "",
+  //         original_language: modalStore.show.original_language,
+  //         media_type:
+  //           modalStore.show.media_type === "tv"
+  //             ? "tv"
+  //             : "movie",
+  //         popularity: modalStore.show.popularity,
+  //         vote_average: modalStore.show.vote_average,
+  //         vote_count: modalStore.show.vote_count,
+  //         release_date: modalStore.show.release_date ?? "",
+  //         first_air_date: modalStore.show.first_air_date ?? "",
+  //         adult: modalStore.show.adult,
+  //         video: modalStore.show.video,
+  //       })
+  // }
+  // React.useEffect(() => {
+  //   void apiUtils.myList.getAll.invalidate()
+  // }, [apiUtils, mutationCount])
 
   return (
     <Dialog
@@ -187,48 +228,13 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
               <DynamicTooltip
                 text={isAdded ? "Remove from My List" : "Add to My List"}
               >
-                <Button
+                {/* <Button
                   aria-label={
                     isAdded ? "Remove from My List" : "Add to My List"
                   }
                   variant="ghost"
                   className="h-auto rounded-full bg-neutral-800 p-1.5 ring-1 ring-slate-400 hover:bg-neutral-800 hover:ring-white focus:ring-offset-0 dark:bg-neutral-800 dark:hover:bg-neutral-800"
-                  onClick={() => {
-                    !userQuery.data && router.push("/login")
-
-                    if (!modalStore.show || !profileStore.profile) return
-
-                    isAdded ||
-                    myShowsQuery?.data?.find(
-                      (item) => item.id === modalStore.show?.id
-                    )
-                      ? removeShowMuation.mutate({
-                          id: modalStore.show.id,
-                          profileId: profileStore.profile.id,
-                        })
-                      : addShowMutation.mutate({
-                          profileId: profileStore.profile.id,
-                          id: modalStore.show.id,
-                          name: modalStore.show.name ?? "",
-                          title: modalStore.show.title ?? "",
-                          original_title: modalStore.show.original_title ?? "",
-                          poster_path: modalStore.show.poster_path ?? "",
-                          backdrop_path: modalStore.show.backdrop_path ?? "",
-                          overview: modalStore.show.overview ?? "",
-                          original_language: modalStore.show.original_language,
-                          media_type:
-                            modalStore.show.media_type === "tv"
-                              ? "tv"
-                              : "movie",
-                          popularity: modalStore.show.popularity,
-                          vote_average: modalStore.show.vote_average,
-                          vote_count: modalStore.show.vote_count,
-                          release_date: modalStore.show.release_date ?? "",
-                          first_air_date: modalStore.show.first_air_date ?? "",
-                          adult: modalStore.show.adult,
-                          video: modalStore.show.video,
-                        })
-                  }}
+                  onClick={onInteracMylist}
                   disabled={
                     !userQuery.data ||
                     !modalStore.show ||
@@ -244,7 +250,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
                   ) : (
                     <Icons.add className="h-5 w-5" aria-hidden="true" />
                   )}
-                </Button>
+                </Button> */}
               </DynamicTooltip>
             </div>
             <Button
@@ -262,9 +268,14 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
           </div>
         </div>
         <div className="grid gap-2.5 px-10 pb-10">
-          <DialogTitle className="text-lg font-medium leading-6 text-slate-50 sm:text-xl">
-            {modalStore.show?.title ?? modalStore.show?.name}
-          </DialogTitle>
+          <div className="flex justify-between items-center">
+            <DialogTitle className="text-lg font-medium leading-6 text-slate-50 sm:text-xl">
+              {modalStore.show?.title ?? modalStore.show?.name}
+            </DialogTitle>
+            <Button onClick={onWatchMovie}>
+              Watch movie now
+            </Button>
+          </div>
           <div className="flex items-center space-x-2 text-sm sm:text-base">
             <p className="font-semibold text-green-400">
               {Math.round((Number(modalStore.show?.vote_average) / 10) * 100) ??
@@ -290,6 +301,16 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
             {genres.map((genre) => genre.name).join(", ")}
           </div>
         </div>
+        {
+          isLoading && 
+          <div className="fixed inset-0 z-[100] bg-white opacity-40">
+            <Icons.spinner
+              color="black"
+              className="mr-2 h-4 w-4 animate-spin absolute top-1/2 right-1/2"
+              aria-hidden="true"
+            />
+          </div>
+        }
       </DialogContent>
     </Dialog>
   )

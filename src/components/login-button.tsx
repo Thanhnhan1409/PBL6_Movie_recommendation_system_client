@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast"
 
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
+import { getCurrentUser } from "@/lib/session"
 
 const LoginButton = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -22,6 +23,23 @@ const LoginButton = () => {
       setTimeout(() => setIsLoading(false), 2500)
     }
   }
+  
+  // const user = await getCurrentUser({
+  //   username: "anh@gmail.com",
+  //   password: "123456Aa"
+  // })
+
+  // console.log('user', user);
+
+  // if (!user) {
+  //   redirect("/login")
+  // } else {
+  //   redirect("/")
+  // }
+  // React.useEffect(() => {
+  //   console.log('user', user);
+
+  // },[])
 
   return (
     <Button

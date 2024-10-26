@@ -1,8 +1,7 @@
 import { env } from "@/env.mjs"
 import type { Show } from "@/types"
-import type { MEDIA_TYPE } from "@prisma/client"
 
-export async function getShows(mediaType: MEDIA_TYPE) {
+export async function getShows(mediaType: string) {
   const [
     trendingRes,
     topRatedRes,

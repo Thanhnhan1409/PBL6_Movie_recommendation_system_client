@@ -16,7 +16,6 @@
  */
 
 import { getServerAuthSession } from "@/server/auth"
-import { prisma } from "@/server/db"
 /**
  * 2. INITIALIZATION
  *
@@ -46,8 +45,7 @@ type CreateContextOptions = {
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    session: opts.session,
-    prisma,
+    session: opts.session
   }
 }
 

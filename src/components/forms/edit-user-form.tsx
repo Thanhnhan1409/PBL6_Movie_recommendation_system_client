@@ -1,69 +1,51 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { User } from "@prisma/client"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { z } from "zod"
 
-import { api } from "@/lib/api/api"
+// import { api } from "@/lib/api/api"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import { User } from "next-auth"
 
 interface EditUserFormProps {
-  user: Pick<User, "id" | "email" | "phoneNumber">
+  user: Pick<User, keyof User>
 }
 
-const schema = z.object({
-  email: z.string().email(),
-  phoneNumber: z
-    .string()
-    .refine((value) => {
-      const regex =
-        value === ""
-          ? /^$/
-          : /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
-      return regex.test(value)
-    }, "Invalid phone number")
-
-    .optional()
-    .nullable(),
-})
-type Inputs = z.infer<typeof schema>
-
 const EditUserForm = ({ user }: EditUserFormProps) => {
-  const apiUtils = api.useContext()
+  // const apiUtils = api.useContext()
 
-  // update profile mutation
-  const updateUserMutation = api.user.update.useMutation({
-    onSuccess: async () => {
-      await apiUtils.user.getCurrent.invalidate()
-      toast.success("Account updated successfully")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  // // update profile mutation
+  // const updateUserMutation = api.user.update.useMutation({
+  //   onSuccess: async () => {
+  //     await apiUtils.user.getCurrent.invalidate()
+  //     toast.success("Account updated successfully")
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  // })
 
   // react-hook-form
-  const { register, handleSubmit, formState } = useForm<Inputs>({
-    resolver: zodResolver(schema),
-  })
+  // const { register, handleSubmit, formState } = useForm<Inputs>({
+  //   resolver: zodResolver(schema),
+  // })
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
+  // const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  //   console.log(data)
 
-    await updateUserMutation.mutateAsync({
-      id: user.id,
-      email: data.email,
-      phoneNumber:
-        data.phoneNumber && data.phoneNumber.length > 0
-          ? data.phoneNumber
-          : null,
-    })
-  }
+  //   await updateUserMutation.mutateAsync({
+  //     id: user.id,
+  //     email: data.email,
+  //     phoneNumber:
+  //       data.phoneNumber && data.phoneNumber.length > 0
+  //         ? data.phoneNumber
+  //         : null,
+  //   })
+  // }
 
   return (
     <div className="flex flex-col gap-5">
@@ -79,7 +61,7 @@ const EditUserForm = ({ user }: EditUserFormProps) => {
       <Separator className="bg-neutral-600" />
       <form
         className="mt-2 grid w-full gap-5"
-        onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
+        // onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       >
         <fieldset className="grid w-full items-start gap-2">
           <label htmlFor="accountEmail" className="text-sm sm:text-base">
@@ -90,14 +72,14 @@ const EditUserForm = ({ user }: EditUserFormProps) => {
             type="text"
             placeholder="Account Email"
             className="rounded-none"
-            {...register("email", { required: true })}
+            // {...register("email", { required: true })}
             defaultValue={user.email as string}
           />
-          {formState.errors.email && (
+          {/* {formState.errors.email && (
             <p className="text-sm text-red-500 dark:text-red-500">
               {formState.errors.email.message}
             </p>
-          )}
+          )} */}
         </fieldset>
         <fieldset className="grid w-full items-start gap-3.5">
           <label htmlFor="accountPhoneNumber" className="text-sm sm:text-base">
@@ -108,16 +90,16 @@ const EditUserForm = ({ user }: EditUserFormProps) => {
             type="text"
             placeholder="Account Phone Number"
             className="rounded-none"
-            {...register("phoneNumber")}
-            defaultValue={user.phoneNumber as string}
+            // {...register("phoneNumber")}
+            // defaultValue={user.phoneNumber as string}
           />
-          {formState.errors.phoneNumber && (
+          {/* {formState.errors.phoneNumber && (
             <p className="-mt-1.5 text-sm text-red-500 dark:text-red-500">
               {formState.errors.phoneNumber.message}
             </p>
-          )}
+          )} */}
         </fieldset>
-        <Button
+        {/* <Button
           aria-label="Save profile"
           variant="flat"
           size="auto"
@@ -131,7 +113,7 @@ const EditUserForm = ({ user }: EditUserFormProps) => {
             />
           )}
           Save
-        </Button>
+        </Button> */}
       </form>
     </div>
   )

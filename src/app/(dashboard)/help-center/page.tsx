@@ -12,7 +12,10 @@ export const metadata: Metadata = {
 }
 
 export default async function HelpCenterPage() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser({
+    username: "anh@gmail.com",
+    password: "123456Aa"
+  })
 
   if (!user) {
     redirect(authOptions?.pages?.signIn ?? "/login")

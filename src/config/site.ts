@@ -6,7 +6,7 @@ import { Icons } from "@/components/icons"
 export const siteConfig: SiteConfig = {
   name: "Netflix Web",
   description:
-    "An open source Netflix clone built using the new app router, server components, trpc, and everything new in Next.js 13.",
+    "Movie recommendation system",
   url: "https://netflx-web.vercel.app",
   ogImage: "https://netflx-web.vercel.app/opengraph-image.png",
   links: {
