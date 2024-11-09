@@ -1,4 +1,4 @@
-import { UserLogin } from '@/types';
+import { UserLogin, UserSignup } from '@/types';
 import axiosInstance from '../axiosInstance';
 
 export const login = async (data: UserLogin ) => {
@@ -12,3 +12,12 @@ export const login = async (data: UserLogin ) => {
     throw error;
   }
 };
+
+export const signup = async (data: UserSignup) => {
+  try {
+    const response = await axiosInstance.post('/users', data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

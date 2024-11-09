@@ -2,10 +2,8 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { getCurrentUser } from "@/lib/session"
-import LoginButton from "@/components/login-button"
+import SignUpButton from "@/components/signup-button"
 import * as React from "react"
-import { Button } from "@/components/ui/button"
-import { login } from "@/lib/api/auth"
 
 export const metadata: Metadata = {
   title: "Login",
@@ -13,22 +11,6 @@ export const metadata: Metadata = {
 }
 
 export default async function LoginPage() {
-  // const user = await getCurrentUser({
-  //   username: "anh@gmail.com",
-  //   password: "123456Aa"
-  // })
-
-  // console.log('user', user);
-
-  // // if (!user) {
-  // //   redirect("/login")
-  // // } else {
-  // //   redirect("/")
-  // // }
-  // React.useEffect(() => {
-  //   console.log('user', user);
-
-  // },[])
   return (
     <section className="relative">
       <img 
@@ -38,7 +20,7 @@ export default async function LoginPage() {
       />
       <div className="w-full h-full absolute top-0 left-0 right-0 bottom-0 -z-10 bg-[grey] opacity-50"></div>
       <div  className="container relative flex min-h-screen w-full max-w-xl flex-col items-center justify-center">
-        <LoginButton />
+        <SignUpButton />
       </div>
     </section>
   )

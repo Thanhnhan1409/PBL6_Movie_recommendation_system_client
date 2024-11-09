@@ -1,6 +1,4 @@
-import { authOptions } from "@/server/auth"
 import { UserLogin } from "@/types"
-import { getServerSession } from "next-auth/next"
 
 
 export async function getCurrentUser(data: UserLogin) {
@@ -18,6 +16,7 @@ export async function getCurrentUser(data: UserLogin) {
   }
 }
 
-export async function getSession() {
-  return await getServerSession(authOptions)
-}
+// export async function getSession() {
+//   const token = localStorage.getItem("authToken");
+//   return !!token;
+// }

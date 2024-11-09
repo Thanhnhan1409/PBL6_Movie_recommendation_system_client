@@ -148,3 +148,12 @@ export type UserLogin = {
   username: string
   password: string
 }
+
+export type UserSignup = {
+  fullname: string
+  email: string
+  password: string
+  user_id?: number
+  confirmPassword?: string
+}
+  

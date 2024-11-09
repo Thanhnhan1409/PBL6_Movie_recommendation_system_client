@@ -7,14 +7,17 @@ import { toast } from "react-hot-toast"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { login, signup } from "@/lib/api/auth"
-import { UserLogin } from "@/types"
+import { signup } from "@/lib/api/auth"
+import { UserSignup } from "@/types"
 
-const LoginButton = () => {
+const SignUpButton = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [data, setData] = useState<UserLogin>({
-    username: "",
-    password: ""
+  const [data, setData] = useState<UserSignup>({
+    fullname: "",
+    password: "",
+    email: "",
+    confirmPassword: "",
+    user_id: 123
   })
 
   const loginWithGoogle = async () => {
@@ -39,39 +42,40 @@ const LoginButton = () => {
   };
   
   const router = useRouter()
-  const onLogin = async () => {
-    const res = await login(data);
+
+  const onSignup = async () => {
+    data.user_id = Math.floor(Math.random() * 10000)
+    const res = await signup(data);
     if(res) {
-      router.push("/")
+      router.push("/login")
     } else {
       toast.error("Login failed")
     }
   }
 
-  // const onSignup = async () => {
-  //   const res = await signup(data);
-  //   if(res) {
-  //     router.push("/login")
-  //   } else {
-  //     toast.error("Login failed")
-  //   }
-  // }
-
-  const goToSignup = () : void => {
+  const goToLogin = () : void => {
     setIsLoading(true);
-    router.push("/signup")
+    router.push("/login")
   }
   
 
   return (
     <div className="w-full rounded-md bg-[#000000b3] p-14 backdrop-blur-lg">
-      <h1 className="mb-4 text-center text-3xl font-bold">Sign in</h1>
+      <h1 className="mb-4 text-center text-3xl font-bold">Sign up</h1>
       <input
         type="text"
-        name="username"
-        value={data.username}
+        name="email"
+        value={data.email}
         onChange={handleChange}
         placeholder="Email"
+        className="w-full p-4 mb-4 rounded-md bg-[black] placeholder:text-[#8696A5]"
+      />
+      <input
+        type="text"
+        name="fullname"
+        value={data.fullname}
+        onChange={handleChange}
+        placeholder="Full Name"
         className="w-full p-4 mb-4 rounded-md bg-[black] placeholder:text-[#8696A5]"
       />
       <input
@@ -82,7 +86,15 @@ const LoginButton = () => {
         placeholder="Your password"
         className="w-full p-4 mb-4 rounded-md bg-[#000] placeholder:text-[#8696A5]"
       />
-      <Button onClick={onLogin} className="w-full p-2 mb-4 rounded-md bg-[red] text-white">Login</Button>
+      <input
+        type="password"
+        name="confirmPassword"
+        value={data.confirmPassword}
+        onChange={handleChange}
+        placeholder="Confirm your password"
+        className="w-full p-4 mb-4 rounded-md bg-[#000] placeholder:text-[#8696A5]"
+      />
+      <Button onClick={onSignup} className="w-full p-2 mb-4 rounded-md bg-[red] text-white">Sign up</Button>
       <div className="relative h-[25px]">
         <span className="absolute top-[-13px] left-[48%] bg-[#1B1B1C]">or</span>
         <div className="w-full h-[1px] bg-white"></div>
@@ -98,8 +110,8 @@ const LoginButton = () => {
         Login with Google
       </Button>
       <div className="flex justify-center items-center gap-2 py-2 text-sm tracking-normal">
-        <span>Don't have an account?</span>
-        <span onClick={goToSignup} className="hover:underline hover:text-[red] cursor-pointer">Create an account</span>
+        <span>Already have an account?</span>
+        <span onClick={goToLogin} className="hover:underline hover:text-[red] cursor-pointer">Log in</span>
       </div>
       { isLoading ?? 
           <Icons.spinner
@@ -111,4 +123,4 @@ const LoginButton = () => {
   )
 }
 
-export default LoginButton
+export default SignUpButton
