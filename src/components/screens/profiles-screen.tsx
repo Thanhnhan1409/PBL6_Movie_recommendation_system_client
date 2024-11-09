@@ -16,14 +16,13 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
 interface ProfilesScreenProps {
-  session: Session | null
   children: React.ReactNode
 }
 
-const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
+const ProfilesScreen = ({ children }: ProfilesScreenProps) => {
   const router = useRouter()
   const mounted = useMounted()
-
+  const session = localStorage.getItem("authToken")
   // profiles query
   // const profilesQuery = api.profile.getAll.useQuery(undefined, {
   //   enabled: !!session?.user,
@@ -34,10 +33,10 @@ const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
 
   // reset profile store on sign out
   React.useEffect(() => {
-    if (!session?.user) {
+    if (!session) {
       useProfileStore.persist.clearStorage()
     }
-  }, [session?.user])
+  }, [session])
 
   if (profileStore.pinForm && mounted) {
     return (
@@ -135,8 +134,8 @@ const ProfilesScreen = ({ session, children }: ProfilesScreenProps) => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <SiteHeader session={session} />
-      <main className="flex-1">{children}</main>
+      <SiteHeader/>
+        <main className="flex-1">{children}</main>
       <SiteFooter />
     </div>
   )

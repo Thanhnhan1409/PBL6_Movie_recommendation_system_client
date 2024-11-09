@@ -27,16 +27,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 
-interface SiteHeaderProps {
-  session: Session | null
-}
+// interface SiteHeaderProps {
+//   session: boolean | null | undefined;
+// }
 
-const SiteHeader = ({ session }: SiteHeaderProps) => {
+const SiteHeader = () => {
   const router = useRouter()
   const path = usePathname()
   const mounted = useMounted()
   const [isScrolled, setIsScrolled] = React.useState(false)
-
+  const session = localStorage.getItem('authToken');
   // change background color on scroll
   React.useEffect(() => {
     const changeBgColor = () => {
