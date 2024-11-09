@@ -14,11 +14,11 @@ import ShowsGrid from "@/components/shows-grid"
 import ShowsSkeleton from "@/components/shows-skeleton"
 
 interface ShowsContainerProps {
-  user?: SessionUser
+  // user?: SessionUser
   shows: CategorizedShows[]
 }
 
-const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
+const ShowsContainer = ({ shows }: ShowsContainerProps) => {
   const path = usePathname()
   const mounted = useMounted()
 
