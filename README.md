@@ -8,7 +8,6 @@ This is a Netflix clone project built with the [T3 Stack](https://create.t3.gg/)
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 - [Stripe](https://stripe.com)
@@ -17,7 +16,7 @@ This is a Netflix clone project built with the [T3 Stack](https://create.t3.gg/)
 
 - Authentication with NextAuth.js
 - Subscription with Stripe
-- Profile creation for individual users with rsc, tRPC, and Prisma
+- Profile creation for individual users with rsc, tRPC
 - Pin verfication for profies
 
 ## Installation
