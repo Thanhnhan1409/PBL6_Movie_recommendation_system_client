@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
 import { useProfileStore } from "@/stores/profile"
 import { useSearchStore } from "@/stores/search"
-import type { Session } from "next-auth"
 import { signOut } from "next-auth/react"
 import { toast } from "react-hot-toast"
 
@@ -26,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
+import { router } from "@trpc/server"
 
 // interface SiteHeaderProps {
 //   session: boolean | null | undefined;
@@ -36,7 +36,14 @@ const SiteHeader = () => {
   const path = usePathname()
   const mounted = useMounted()
   const [isScrolled, setIsScrolled] = React.useState(false)
-  const session = localStorage.getItem('authToken');
+  const [session, setSession] = React.useState<string>()
+  React.useEffect(() => {
+    const session = localStorage.getItem("authToken")
+    
+    if (session) {
+      setSession(session)
+    }
+  }, [session])
   // change background color on scroll
   React.useEffect(() => {
     const changeBgColor = () => {
@@ -63,6 +70,13 @@ const SiteHeader = () => {
   //       enabled: !!session?.user && !!profileStore.profile,
   //     })
   //   : null
+
+  const logOut = () => {
+    localStorage.removeItem("authToken");
+    setSession('')
+    router.push("/login")
+    signOut()
+  }
 
   return (
     <header
@@ -136,48 +150,6 @@ const SiteHeader = () => {
                   sideOffset={20}
                   className="w-52 overflow-y-auto overflow-x-hidden rounded-sm bg-neutral-800/90 text-slate-200 dark:bg-neutral-800/90 dark:text-slate-200"
                 >
-                  {/* {otherProfilesQuery?.data?.map((profile) => (
-                    <DropdownMenuItem
-                      key={profile.id}
-                      asChild
-                      className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                    >
-                      <Button
-                        aria-label={profile.name}
-                        variant="ghost"
-                        className="h-auto w-full justify-between space-x-2 px-2 hover:bg-transparent focus:ring-0 focus:ring-offset-0 active:scale-100 dark:hover:bg-transparent"
-                        onClick={() => {
-                          router.push("/")
-                          useProfileStore.setState({
-                            profile,
-                            pinForm: profile.pin ? true : false,
-                          })
-                        }}
-                      >
-                        <div className="flex items-center gap-2">
-                          {profile.icon ? (
-                            <Image
-                              src={profile.icon.href}
-                              alt={profile.icon.title}
-                              width={28}
-                              height={28}
-                              className="rounded object-cover"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <Skeleton className="aspect-square h-7 bg-neutral-700" />
-                          )}
-                          <p>{profile.name}</p>
-                        </div>
-                        {profile.pin && (
-                          <Icons.lock
-                            className="h-3.5 w-3.5 text-slate-400"
-                            aria-label="Private profile"
-                          />
-                        )}
-                      </Button>
-                    </DropdownMenuItem>
-                  ))} */}
                   {siteConfig.profileDropdownItems.map(
                     (item, index) =>
                       item.title !== "Sign Out of Netflix" &&
@@ -185,7 +157,7 @@ const SiteHeader = () => {
                         <DropdownMenuItem
                           key={index}
                           asChild
-                          className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                          className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 cursor-pointer"
                         >
                           <Link href={item.href}>
                             {item.icon && (
@@ -201,7 +173,7 @@ const SiteHeader = () => {
                         <DropdownMenuItem
                           key={index}
                           asChild
-                          className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                          className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 cursor-pointer"
                         >
                           <span onClick={item.onClick}>
                             {item.icon && (
@@ -222,11 +194,11 @@ const SiteHeader = () => {
                         <DropdownMenuItem
                           key={index}
                           asChild
-                          className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                          className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 cursor-pointer"
                         >
                           <span
                             className="line-clamp-1 grid place-items-center"
-                            onClick={() => void signOut()}
+                            onClick={logOut}
                           >
                             {item.title}
                           </span>

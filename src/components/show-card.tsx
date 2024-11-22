@@ -1,9 +1,9 @@
 import { useModalStore } from "@/stores/modal"
 import * as React from "react"
 import Image from "next/image"
-import type { Show } from "@/types"
+import type { MovieItem, Show } from "@/types"
 
-const ShowCard = ({ show }: { show: Show }) => {
+const ShowCard = ({ show }: { show: MovieItem }) => {
   return (
     <div className="relative rounded-xl w-[240px] h-[420px] flex-none">
       <Image
@@ -12,12 +12,12 @@ const ShowCard = ({ show }: { show: Show }) => {
         }`}
         width={300}
         height={420}
-        alt={show.title ?? show.name ?? "poster"}
+        alt={show.title ?? "poster"}
         loading="lazy"
         className="aspect-video cursor-pointer object-cover transition-all hover:z-20 hover:scale-110 rounded-lg hover:rounded-xl h-[420px] w-[300px] duration-300"
         onClick={() => {
           useModalStore.setState({
-            show: show,
+            show,
             open: true,
             play: false,
           })

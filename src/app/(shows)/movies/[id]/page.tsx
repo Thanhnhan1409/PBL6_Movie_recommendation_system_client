@@ -89,6 +89,7 @@ const MovieDetail = ({ open, setOpen }: ShowModalProps) => {
   const onWatchMovie = () => {
     setIsLoading(true)
     router.push(`/movies/${modalStore.show?.id}`)
+    setOpen(false);
   }
 
   return (
@@ -141,29 +142,6 @@ const MovieDetail = ({ open, setOpen }: ShowModalProps) => {
               <DynamicTooltip
                 text={isAdded ? "Remove from My List" : "Add to My List"}
               >
-                {/* <Button
-                  aria-label={
-                    isAdded ? "Remove from My List" : "Add to My List"
-                  }
-                  variant="ghost"
-                  className="h-auto rounded-full bg-neutral-800 p-1.5 ring-1 ring-slate-400 hover:bg-neutral-800 hover:ring-white focus:ring-offset-0 dark:bg-neutral-800 dark:hover:bg-neutral-800"
-                  onClick={onInteracMylist}
-                  disabled={
-                    !userQuery.data ||
-                    !modalStore.show ||
-                    !profileStore.profile ||
-                    mutationCount > 0
-                  }
-                >
-                  {isAdded ||
-                  myShowsQuery?.data?.find(
-                    (item) => item.id === modalStore.show?.id
-                  ) ? (
-                    <Icons.check className="h-5 w-5" aria-hidden="true" />
-                  ) : (
-                    <Icons.add className="h-5 w-5" aria-hidden="true" />
-                  )}
-                </Button> */}
               </DynamicTooltip>
             </div>
             <Button
@@ -183,7 +161,7 @@ const MovieDetail = ({ open, setOpen }: ShowModalProps) => {
         <div className="grid gap-2.5 px-10 pb-10">
           <div className="flex justify-between items-center">
             <div className="text-lg font-medium leading-6 text-slate-50 sm:text-xl">
-              {modalStore.show?.title ?? modalStore.show?.name}
+              {modalStore.show?.title ?? 'title show'}
             </div>
             <Button onClick={onWatchMovie}>
               Watch movie now
@@ -195,11 +173,11 @@ const MovieDetail = ({ open, setOpen }: ShowModalProps) => {
                 "-"}
               % Match
             </p>
-            {modalStore.show?.release_date ? (
+            {/* {modalStore.show?.release_date ? (
               <p>{getYear(modalStore.show?.release_date)}</p>
             ) : modalStore.show?.first_air_date ? (
               <p>{getYear(modalStore.show?.first_air_date)}</p>
-            ) : null}
+            ) : null} */}
             {modalStore.show?.original_language && (
               <span className="grid h-4 w-7 place-items-center text-xs font-bold text-neutral-400 ring-1 ring-neutral-400">
                 {modalStore.show.original_language.toUpperCase()}

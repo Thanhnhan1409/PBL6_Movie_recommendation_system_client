@@ -13,22 +13,6 @@ export const metadata: Metadata = {
 }
 
 export default async function LoginPage() {
-  // const user = await getCurrentUser({
-  //   username: "anh@gmail.com",
-  //   password: "123456Aa"
-  // })
-
-  // console.log('user', user);
-
-  // // if (!user) {
-  // //   redirect("/login")
-  // // } else {
-  // //   redirect("/")
-  // // }
-  // React.useEffect(() => {
-  //   console.log('user', user);
-
-  // },[])
   return (
     <section className="relative">
       <img 

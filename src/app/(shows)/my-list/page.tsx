@@ -15,7 +15,7 @@ export default async function MyListPage() {
     username: "anh@gmail.com",
     password: "123456Aa"
   })
-  console.log('user', user)
+  console.log('user 1', user)
   
   if (!user) {
     redirect("/login")

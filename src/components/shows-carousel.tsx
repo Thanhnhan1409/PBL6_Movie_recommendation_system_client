@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import type { Show } from "@/types"
+import type { MovieItem, Show } from "@/types"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
@@ -10,7 +10,7 @@ import ShowCard from "./show-card"
 
 interface ShowsCarouselProps {
   title: string
-  shows: Show[]
+  shows: MovieItem[]
 }
 
 const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
@@ -76,7 +76,7 @@ const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
               ref={showsRef}
               className="no-scrollbar flex h-full w-full items-center gap-5 overflow-x-auto overflow-y-hidden"
             >
-              {shows.map((show) => (
+              {shows?.map((show) => (
                 <ShowCard key={show.id} show={show} />
               ))}
             </div>

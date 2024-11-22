@@ -14,7 +14,6 @@ import ShowsGrid from "@/components/shows-grid"
 import ShowsSkeleton from "@/components/shows-skeleton"
 
 interface ShowsContainerProps {
-  // user?: SessionUser
   shows: CategorizedShows[]
 }
 
@@ -25,15 +24,6 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
   // stores
   const modalStore = useModalStore()
   const searchStore = useSearchStore()
-  const profileStore = useProfileStore()
-
-  // my shows query
-  const myShowsQuery = null
-  // = profileStore.profile
-  //   ? api.myList.getAll.useQuery(profileStore.profile.id, {
-  //       enabled: !!user,
-  //     })
-  //   : null
 
   if (!mounted) return <ShowsSkeleton />
 
@@ -48,12 +38,7 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
       {modalStore.open ? (
         <ShowModal open={modalStore.open} setOpen={modalStore.setOpen} />
       ) : null}
-      {/* {path === "/" &&
-      myShowsQuery?.isSuccess &&
-      myShowsQuery.data.length > 0 ? (
-        <ShowsCarousel title="My List" shows={user ? myShowsQuery?.data : []} />
-      ) : null} */}
-      {shows.map((item) => (
+      {shows?.map((item) => (
         <ShowsCarousel
           key={item.title}
           title={item.title}

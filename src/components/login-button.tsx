@@ -42,27 +42,18 @@ const LoginButton = () => {
   const onLogin = async () => {
     const res = await login(data);
     if(res) {
+      setIsLoading(true);
       router.push("/")
     } else {
       toast.error("Login failed")
     }
   }
 
-  // const onSignup = async () => {
-  //   const res = await signup(data);
-  //   if(res) {
-  //     router.push("/login")
-  //   } else {
-  //     toast.error("Login failed")
-  //   }
-  // }
-
   const goToSignup = () : void => {
     setIsLoading(true);
     router.push("/signup")
   }
   
-
   return (
     <div className="w-full rounded-md bg-[#000000b3] p-14 backdrop-blur-lg">
       <h1 className="mb-4 text-center text-3xl font-bold">Sign in</h1>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { env } from "@/env.mjs"
 import { useModalStore } from "@/stores/modal"
 import { useProfileStore } from "@/stores/profile"
-import type { Genre, ShowWithGenreAndVideo } from "@/types"
+import type { Genre, MovieVideo, ShowWithGenreAndVideo } from "@/types"
 import { useIsMutating } from "@tanstack/react-query"
 import { toast } from "react-hot-toast"
 import ReactPlayer from "react-player/lazy"
@@ -21,6 +21,8 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
+import LoadingSpinner from "./show-loading"
+import { detailMovieApi } from "@/lib/api/movies"
 
 interface ShowModalProps {
   open: boolean
@@ -30,10 +32,7 @@ interface ShowModalProps {
 const ShowModal = ({ open, setOpen }: ShowModalProps) => {
   const router = useRouter()
   // const apiUtils = api.useContext()
-
-  // stores
   const modalStore = useModalStore()
-  const profileStore = useProfileStore()
 
   const [trailer, setTrailer] = React.useState("")
   const [genres, setGenres] = React.useState<Genre[]>([])
@@ -48,20 +47,21 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
       if (!modalStore.show) return
 
       try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${modalStore.show?.id}?api_key=${
-            env.NEXT_PUBLIC_TMDB_API_KEY
-          }&language=en-US&append_to_response=videos`
-        )
-        const data = (await response.json()) as ShowWithGenreAndVideo
-        if (data?.videos) {
-          const trailerIndex = data.videos.results.findIndex(
-            (item) => item.type === "Trailer"
+        const response = await detailMovieApi(modalStore.show?.id) 
+        // fetch(
+        //   `https://api.themoviedb.org/3/movie/${modalStore.show?.id}?api_key=${
+        //     env.NEXT_PUBLIC_TMDB_API_KEY
+        //   }&language=en-US&append_to_response=videos`
+        // )
+        // const data = (await response.json()) as ShowWithGenreAndVideo
+        if (response?.data) {
+          const trailerIndex = response?.data?.videos?.findIndex(
+            (item: MovieVideo) => item.type === "Trailer"
           )
-          setTrailer(data.videos?.results[trailerIndex]?.key ?? "")
+          setTrailer(response?.data?.videos?.results[trailerIndex]?.key ?? "")
         }
-        if (data?.genres) {
-          setGenres(data.genres)
+        if (response?.data?.genres) {
+          setGenres(response?.data?.genres)
         }
       } catch (error) {
         toast.error(
@@ -88,87 +88,10 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
     }
   }, [isPlaying])
 
-  // // user query
-  // const userQuery = api.user.getCurrent.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  // })
-
-  // // my shows query
-  // const myShowsQuery = profileStore.profile
-  //   ? api.myList.getAll.useQuery(profileStore.profile.id, {
-  //       enabled: !!userQuery.data,
-  //     })
-  //   : null
-
-  // // add show mutation
-  // const addShowMutation = api.myList.create.useMutation({
-  //   onSuccess: () => {
-  //     setIsAdded(true)
-  //     toast.success("Added to My List")
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error.message)
-  //   },
-  // })
-
-  // // remove show mutation
-  // const removeShowMuation = api.myList.delete.useMutation({
-  //   onSuccess: () => {
-  //     setIsAdded(false)
-  //     toast.success("Removed from My List")
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error.message)
-  //   },
-  // })
-  
-  // refetch my shows query
-  const mutationCount = useIsMutating()
-
   const onWatchMovie = () => {
     setIsLoading(true)
     router.push(`/movies/${modalStore.show?.id}`)
   }
-
-  // const onInteracMylist = () => {
-  //   !userQuery.data && router.push("/login")
-
-  //   if (!modalStore.show || !profileStore.profile) return
-
-  //   isAdded ||
-  //   myShowsQuery?.data?.find(
-  //     (item) => item.id === modalStore.show?.id
-  //   )
-  //     ? removeShowMuation.mutate({
-  //         id: modalStore.show.id,
-  //         profileId: profileStore.profile.id,
-  //       })
-  //     : addShowMutation.mutate({
-  //         profileId: profileStore.profile.id,
-  //         id: modalStore.show.id,
-  //         name: modalStore.show.name ?? "",
-  //         title: modalStore.show.title ?? "",
-  //         original_title: modalStore.show.original_title ?? "",
-  //         poster_path: modalStore.show.poster_path ?? "",
-  //         backdrop_path: modalStore.show.backdrop_path ?? "",
-  //         overview: modalStore.show.overview ?? "",
-  //         original_language: modalStore.show.original_language,
-  //         media_type:
-  //           modalStore.show.media_type === "tv"
-  //             ? "tv"
-  //             : "movie",
-  //         popularity: modalStore.show.popularity,
-  //         vote_average: modalStore.show.vote_average,
-  //         vote_count: modalStore.show.vote_count,
-  //         release_date: modalStore.show.release_date ?? "",
-  //         first_air_date: modalStore.show.first_air_date ?? "",
-  //         adult: modalStore.show.adult,
-  //         video: modalStore.show.video,
-  //       })
-  // }
-  // React.useEffect(() => {
-  //   void apiUtils.myList.getAll.invalidate()
-  // }, [apiUtils, mutationCount])
 
   return (
     <Dialog
@@ -270,7 +193,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
         <div className="grid gap-2.5 px-10 pb-10">
           <div className="flex justify-between items-center">
             <DialogTitle className="text-lg font-medium leading-6 text-slate-50 sm:text-xl">
-              {modalStore.show?.title ?? modalStore.show?.name}
+              {modalStore.show?.title ?? modalStore.show?.original_title}
             </DialogTitle>
             <Button onClick={onWatchMovie}>
               Watch movie now
@@ -282,11 +205,11 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
                 "-"}
               % Match
             </p>
-            {modalStore.show?.release_date ? (
+            {/* {modalStore.show?.release_date ? (
               <p>{getYear(modalStore.show?.release_date)}</p>
             ) : modalStore.show?.first_air_date ? (
               <p>{getYear(modalStore.show?.first_air_date)}</p>
-            ) : null}
+            ) : null} */}
             {modalStore.show?.original_language && (
               <span className="grid h-4 w-7 place-items-center text-xs font-bold text-neutral-400 ring-1 ring-neutral-400">
                 {modalStore.show.original_language.toUpperCase()}
@@ -302,14 +225,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
           </div>
         </div>
         {
-          isLoading && 
-          <div className="fixed inset-0 z-[100] bg-white opacity-40">
-            <Icons.spinner
-              color="black"
-              className="mr-2 h-4 w-4 animate-spin absolute top-1/2 right-1/2"
-              aria-hidden="true"
-            />
-          </div>
+          isLoading && <LoadingSpinner />
         }
       </DialogContent>
     </Dialog>

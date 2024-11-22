@@ -4,19 +4,19 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useModalStore } from "@/stores/modal"
 import { useSearchStore } from "@/stores/search"
-import type { Show } from "@/types"
+import type { MovieItem, Show } from "@/types"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 
 interface HeroProps {
-  shows: Show[]
+  shows: MovieItem[]
 }
 
 const Hero = ({ shows }: HeroProps) => {
   // randomize show on page render
-  const [randomShow, setRandomShow] = useState<Show | null>(null)
+  const [randomShow, setRandomShow] = useState<MovieItem | null>(null)
   useEffect(() => {
     const randomNumber = Math.floor(Math.random() * shows.length)
     setRandomShow(shows[randomNumber] ?? null)
@@ -53,11 +53,11 @@ const Hero = ({ shows }: HeroProps) => {
           </div>
           <div className="grid max-w-lg space-y-2 pt-24 ">
             <h1 className="text-3xl font-bold md:text-4xl">
-              {randomShow?.title ?? randomShow?.name}
+              {randomShow?.title ?? randomShow?.original_title}
             </h1>
             <div className="flex space-x-2 text-xs font-semibold md:text-sm">
               <p className="text-green-600">
-                {randomShow?.vote_average * 10 ?? "-"}% Match
+                {(randomShow?.vote_average * 10).toFixed(2) ?? "-"}% Match
               </p>
               <p className="text-gray-300">{randomShow?.release_date ?? "-"}</p>
             </div>
