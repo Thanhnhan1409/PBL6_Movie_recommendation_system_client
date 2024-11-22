@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
 import { useProfileStore } from "@/stores/profile"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, useScroll } from "framer-motion"
 import type { Session } from "next-auth"
 
 import PinForm from "@/components/forms/pin-form"
@@ -22,7 +22,13 @@ interface ProfilesScreenProps {
 const ProfilesScreen = ({ children }: ProfilesScreenProps) => {
   const router = useRouter()
   const mounted = useMounted()
-  const session = localStorage.getItem("authToken")
+  const [session, setSession] = React.useState<string>()
+  React.useEffect(() => {
+    const session = localStorage.getItem("session")
+    if (session) {
+      setSession(session)
+    }
+  }, [session])
   // profiles query
   // const profilesQuery = api.profile.getAll.useQuery(undefined, {
   //   enabled: !!session?.user,
