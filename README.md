@@ -9,14 +9,10 @@ This is a Netflix clone project built with the [T3 Stack](https://create.t3.gg/)
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-- [Stripe](https://stripe.com)
 
 ## Features
 
 - Authentication with NextAuth.js
-- Subscription with Stripe
-- Profile creation for individual users with rsc, tRPC
 - Pin verfication for profies
 
 ## Installation
