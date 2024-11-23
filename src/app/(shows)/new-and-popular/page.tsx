@@ -3,6 +3,7 @@ import type { CategorizedShows } from "@/types"
 
 import { getNewAndPopularShows } from "@/lib/fetchers"
 import ShowsContainer from "@/components/shows-container"
+import { popularMoviesApi, tvPopularMoviesApi } from "@/lib/api/movies"
 
 export const metadata: Metadata = {
   title: "New & Popular",
@@ -10,24 +11,17 @@ export const metadata: Metadata = {
 }
 
 export default async function NewAndPopularPage() {
-  const allShows = await getNewAndPopularShows()
+  const popularMovie = await popularMoviesApi()
+  const tvPopular = await tvPopularMoviesApi()
 
   const allShowsByCategory: CategorizedShows[] = [
     {
-      title: "New TV Shows",
-      shows: allShows.trendingTvs,
-    },
-    {
-      title: "New Movies",
-      shows: allShows.trendingMovies,
-    },
-    {
       title: "Popular TV Shows",
-      shows: allShows.popularTvs,
+      shows: popularMovie.data.data,
     },
     {
       title: "Popular Movies",
-      shows: allShows.popularMovies,
+      shows:  popularMovie.data.data,
     },
   ]
 

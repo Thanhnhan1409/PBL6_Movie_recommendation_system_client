@@ -22,7 +22,7 @@ const ShowsGrid = ({ shows }: SearchedShowsProps) => {
       {modalStore.open ? (
         <ShowModal open={modalStore.open} setOpen={modalStore.setOpen} />
       ) : null}
-      {/* <div className="grid w-fit gap-y-3.5 xxs:grid-cols-2 xxs:gap-x-1.5 xxs:gap-y-5 xs:grid-cols-3 xs:gap-y-7 sm:grid-cols-3 sm:gap-y-10 md:grid-cols-4 md:gap-y-12 lg:gap-y-14 xl:grid-cols-5 xl:gap-y-16">
+      <div className="grid w-fit gap-y-3.5 xxs:grid-cols-2 xxs:gap-x-1.5 xxs:gap-y-5 xs:grid-cols-3 xs:gap-y-7 sm:grid-cols-3 sm:gap-y-10 md:grid-cols-4 md:gap-y-12 lg:gap-y-14 xl:grid-cols-5 xl:gap-y-16">
         {shows?.map((show) => (
           <Image
             key={show.id}
@@ -41,7 +41,7 @@ const ShowsGrid = ({ shows }: SearchedShowsProps) => {
             }}
           />
         ))}
-      </div> */}
+      </div>
     </section>
   )
 }

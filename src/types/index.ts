@@ -247,3 +247,30 @@ export type MovieList = {
   description: string;
   data: MovieItem[];
 }
+
+export type MovieRatingData = {
+  comment: string;
+  movie_id: number;
+  rating: number;
+  timestamp: string;
+  user_id: string;
+}
+
+export type MovieRating = {
+  _id: string;
+  user_id: {
+    id: string;
+    collection: string;
+  };
+  movie_id: number;
+  rating: number;
+  comment: string | null;
+  timestamp: string;
+}
+
+export type MovieRatingResponse = {
+  status_code: number;
+  response_type: string;
+  description: string;
+  data: MovieRating[];
+}

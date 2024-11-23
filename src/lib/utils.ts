@@ -31,3 +31,20 @@ export function formatEnum(input: string): string {
   })
   return capitalizedWords.join(" ")
 }
+
+export function formatRatingDate(string: string): string {
+  const date = new Date(string);
+
+  const formattedTime = date.toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const formattedDate = date.toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  return `${formattedTime} ${formattedDate}`;
+}
