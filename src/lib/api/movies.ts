@@ -20,6 +20,10 @@ export const detailMovieApi = async (id: number) => {
   return await axiosInstance.get(`/tmdb-movies/?movie_id=${id}`)
 }
 
+export const recommendMoviesApi = async (id: number, page: number = 1) => {
+  return await axiosInstance.get(`/tmdb-movies/recommendations?movie_id=${id}&page=${page}`)
+}
+
 export const getMovies = async (page: number = 1) => {
   // const token = localStorage.getItem('authToken');
   try {

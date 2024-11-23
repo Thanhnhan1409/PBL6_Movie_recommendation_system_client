@@ -10,10 +10,11 @@ import ShowCard from "./show-card"
 
 interface ShowsCarouselProps {
   title: string
-  shows: MovieItem[]
+  shows: MovieItem[],
+  recommendMode?: boolean
 }
 
-const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
+const ShowsCarousel = ({ title, shows, recommendMode }: ShowsCarouselProps) => {
   const showsRef = React.useRef<HTMLDivElement>(null)
   const [isScrollable, setIsScrollable] = React.useState(false)
 
@@ -49,7 +50,7 @@ const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
                   aria-label="Scroll to right"
                   variant="ghost"
                   className={cn(
-                    "absolute left-0 top-0 z-30 h-[18.5rem] rounded-none rounded-r bg-slate-950/50 px-2 py-0 opacity-0 hover:bg-slate-950/50 active:scale-100 group-hover:opacity-100 dark:hover:bg-slate-950/50",
+                    "absolute left-0 top-0 z-30 h-[8.5rem] rounded-none rounded-r bg-slate-950/50 px-2 py-0 opacity-0 hover:bg-slate-950/50 active:scale-100 group-hover:opacity-100 dark:hover:bg-slate-950/50",
                     isScrollable ? "block" : "hidden"
                   )}
                   onClick={() => scrollToDirection("left")}
@@ -77,7 +78,7 @@ const ShowsCarousel = ({ title, shows }: ShowsCarouselProps) => {
               className="no-scrollbar flex h-full w-full items-center gap-5 overflow-x-auto overflow-y-hidden"
             >
               {shows?.map((show) => (
-                <ShowCard key={show.id} show={show} />
+                <ShowCard key={show.id} show={show} recommedMode={recommendMode} />
               ))}
             </div>
           </div>

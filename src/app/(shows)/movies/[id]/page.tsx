@@ -1,209 +1,197 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import { env } from "@/env.mjs"
-import { useModalStore } from "@/stores/modal"
-import { useProfileStore } from "@/stores/profile"
-import type { Genre, ShowWithGenreAndVideo } from "@/types"
-import { useIsMutating } from "@tanstack/react-query"
-import { toast } from "react-hot-toast"
-import ReactPlayer from "react-player/lazy"
-import { cn, getYear } from "@/lib/utils"
-import DynamicTooltip from "@/components/dynamic-tooltip"
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import * as React from "react";
+import { useParams } from "next/navigation";
+import { useModalStore } from "@/stores/modal";
+import ReactPlayer from "react-player/lazy";
+import LoadingSpinner from "@/components/show-loading";
+import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingResponse, MovieVideo, ShowWithGenreAndVideo } from "@/types";
+import ShowsCarousel from "@/components/shows-carousel";
+import { detailMovieApi, recommendMoviesApi } from "@/lib/api/movies";
+import { Icons } from "@/components/icons";
+import ShowModal from "@/components/show-modal";
+import { addMovieRatingApi, getMovieRatingApi } from "@/lib/api/rating";
+import RatingItem from "@/components/rating/rating-item";
+import { Input } from "@/components/ui/input";
 
-interface ShowModalProps {
-  open: boolean
-  setOpen: (open: boolean) => void
-}
+const MovieDetail = () => {
+  const params = useParams();
+  const modalStore = useModalStore();
 
-const MovieDetail = ({ open, setOpen }: ShowModalProps) => {
-  const router = useRouter()
-  // stores
-  const modalStore = useModalStore()
-  const profileStore = useProfileStore()
+  const [trailer, setTrailer] = React.useState("");
+  const [genres, setGenres] = React.useState<Genre[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [movie, setMovie] = React.useState<MovieDetail | null>(null);
+  const [recommendMovies, setRecommendMovies] = React.useState<MovieItem[] | undefined>();
+  const [isFavorite, setIsFavorite] = React.useState(false);
+  const [moviesRating, setMoviesRating] = React.useState<MovieRating[]>();
+  const [value, setValue] = React.useState<string>("");
 
-  const [trailer, setTrailer] = React.useState("")
-  const [genres, setGenres] = React.useState<Genre[]>([])
-  const [isMuted, setIsMuted] = React.useState(false)
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [isAdded, setIsAdded] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-
-  // get trailer and genres of show
   React.useEffect(() => {
-    const getShow = async () => {
-      if (!modalStore.show) return
+    if (!params?.id) {
+      console.error("No movie id found in URL");
+      return;
+    }
 
+    const fetchMovieDetails = async () => {
       try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${modalStore.show?.id}?api_key=${
-            env.NEXT_PUBLIC_TMDB_API_KEY
-          }&language=en-US&append_to_response=videos`
-        )
-        const data = (await response.json()) as ShowWithGenreAndVideo
-        if (data?.videos) {
-          const trailerIndex = data.videos.results.findIndex(
-            (item) => item.type === "Trailer"
-          )
-          setTrailer(data.videos?.results[trailerIndex]?.key ?? "")
+        setIsLoading(true);
+        const response = await detailMovieApi(Number(params.id));
+        const data = response?.data?.data;
+        console.log('hahahahahh', data);
+        
+        setMovie(response.data)
+        if (data?.videos?.length) {
+          const trailerIndex = data.videos.findIndex(
+            (video: MovieVideo) => video.type === "Trailer"
+          );
+          setTrailer(data.videos[trailerIndex]?.key ?? "");
         }
         if (data?.genres) {
-          setGenres(data.genres)
+          setGenres(data.genres);
         }
       } catch (error) {
-        toast.error(
-          error instanceof Error ? error.message : "Something went wrong"
-        )
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    void getShow()
-  }, [modalStore.show])
+    };
+
+    fetchMovieDetails();
+  }, [params?.id]);
 
   React.useEffect(() => {
-    if (modalStore.play) {
-      setIsPlaying(true)
-    } else {
-      setIsPlaying(false)
-    }
-  }, [modalStore.play])
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const res = await recommendMoviesApi(Number(params?.id));
+        const ratingRes = await getMovieRatingApi(Number(params?.id));
+        setRecommendMovies(res.data?.data);
+        setMoviesRating(ratingRes.data?.data);
+      } catch (error) {
+        console.error(error);
+      }
+      finally {
+        setIsLoading(false);
+      }
+    };
 
-  React.useEffect(() => {
-    if (isPlaying) {
-      setIsMuted(false)
-    } else {
-      setIsMuted(true)
-    }
-  }, [isPlaying])
-  // user query
-  const mutationCount = useIsMutating()
+    fetchData();
+  }, []);
 
-  const onWatchMovie = () => {
-    setIsLoading(true)
-    router.push(`/movies/${modalStore.show?.id}`)
-    setOpen(false);
+  const sendComment = async () => {
+    console.log('click');
+    
+    try {
+      const res = await addMovieRatingApi({
+        comment: value,
+        movie_id: Number(params?.id),
+        rating: 5,
+        timestamp: new Date().toISOString(),
+        user_id: "1",
+      });
+      if (res.data) {
+        setValue("");
+        const ratingRes = await getMovieRatingApi(Number(params?.id));
+        setMoviesRating(ratingRes.data?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
     <div>
+      {/* Video player */}
       <div className="relative aspect-video">
-          <div
-            className={cn(
-              "bg-black/10 bg-gradient-to-b from-neutral-900/10 to-neutral-900",
-              "absolute inset-0 z-10 h-full w-full"
-            )}
-          />
-          <ReactPlayer
-            style={{ position: "absolute", top: 0, left: 0 }}
-            url={`https://www.youtube.com/watch?v=${trailer}`}
-            width="100%"
-            height="100%"
-            muted={isMuted}
-            playing={isPlaying}
-            controls={false}
-            onStart={() => setIsPlaying(true)}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onEnded={() => setIsPlaying(false)}
-          />
-          <div className="absolute bottom-6 z-20 flex w-full items-center justify-between gap-2 px-10">
-            <div className="flex items-center gap-2.5">
-              <Button
-                aria-label={`${isPlaying ? "Pause" : "Play"} show`}
-                className="group h-auto rounded py-1.5"
-                onClick={() => setIsPlaying(!isPlaying)}
-              >
-                {isPlaying ? (
-                  <>
-                    <Icons.pause
-                      className="mr-1.5 h-6 w-6 fill-current"
-                      aria-hidden="true"
-                    />
-                    Pause
-                  </>
-                ) : (
-                  <>
-                    <Icons.play
-                      className="mr-1.5 h-6 w-6 fill-current"
-                      aria-hidden="true"
-                    />
-                    Play
-                  </>
-                )}
-              </Button>
-              <DynamicTooltip
-                text={isAdded ? "Remove from My List" : "Add to My List"}
-              >
-              </DynamicTooltip>
-            </div>
-            <Button
-              aria-label={`${isMuted ? "Unmute" : "Mute"} video`}
-              variant="ghost"
-              className="h-auto rounded-full bg-neutral-800 p-1.5 opacity-50 ring-1 ring-slate-400 hover:bg-neutral-800 hover:opacity-100 hover:ring-white focus:ring-offset-0 dark:bg-neutral-800 dark:hover:bg-neutral-800"
-              onClick={() => setIsMuted(!isMuted)}
-            >
-              {isMuted ? (
-                <Icons.volumneMute className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Icons.volumne className="h-6 w-6" aria-hidden="true" />
-              )}
-            </Button>
-          </div>
-        </div>
-        <div className="grid gap-2.5 px-10 pb-10">
+        <ReactPlayer
+          style={{ position: "absolute", top: 0, left: 0 }}
+          url={`https://www.youtube.com/watch?v=${trailer}`}
+          width="100%"
+          height="100%"
+          controls
+        />
+      </div>
+
+      {/* Movie details */}
+      <div className="flex items-center justify-between px-10 pt-10 max-w-[1420px] mx-[auto]">
+        <div className="grid gap-2.5 pb-10 w-2/3">
           <div className="flex justify-between items-center">
             <div className="text-lg font-medium leading-6 text-slate-50 sm:text-xl">
-              {modalStore.show?.title ?? 'title show'}
+              {movie?.data.title ?? movie?.data?.original_title}
             </div>
-            <Button onClick={onWatchMovie}>
-              Watch movie now
-            </Button>
           </div>
-          <div className="flex items-center space-x-2 text-sm sm:text-base">
-            <p className="font-semibold text-green-400">
-              {Math.round((Number(modalStore.show?.vote_average) / 10) * 100) ??
-                "-"}
-              % Match
-            </p>
-            {/* {modalStore.show?.release_date ? (
-              <p>{getYear(modalStore.show?.release_date)}</p>
-            ) : modalStore.show?.first_air_date ? (
-              <p>{getYear(modalStore.show?.first_air_date)}</p>
-            ) : null} */}
-            {modalStore.show?.original_language && (
-              <span className="grid h-4 w-7 place-items-center text-xs font-bold text-neutral-400 ring-1 ring-neutral-400">
-                {modalStore.show.original_language.toUpperCase()}
-              </span>
-            )}
+          <div className="flex items-center gap-4">
+            <div>123.456 views</div>
+            <div className="flex items-center gap-2">
+              <span>{ movie?.data?.vote_average }</span>
+              <span className="h-4 w-4 text-yellow-400 block-inline mb-2">⭐</span>
+            </div>
           </div>
-          <div className="line-clamp-3 text-xs text-slate-50 dark:text-slate-50 sm:text-sm">
-            {modalStore.show?.overview ?? "-"}
+          <div className="flex items-center gap-3">
+            <div className="pr-3 border-r leading-4">T16</div>
+            <div className="pr-3 border-r leading-4">Korean</div>
+            <div>1g30ph</div>
+          </div>
+          <div className="flex flex-col gap-3 pt-4">
+            <span className="font-semibold">Description</span>
+            <p className="text-sm">{movie?.data.overview}</p>
+          </div>
+        </div>
+        <div>
+          <div className="flex items-center gap-3">
+            <div className="cursor-pointer">
+              {!isFavorite ? <Icons.heart className="w-6 h-6 text-white" /> :
+              <svg width="24" height="24" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.35248 4.90532C1.35248 2.94498 2.936 1.35248 4.89346 1.35248C6.25769 1.35248 6.86058 1.92336 7.50002 2.93545C8.13946 1.92336 8.74235 1.35248 10.1066 1.35248C12.064 1.35248 13.6476 2.94498 13.6476 4.90532C13.6476 6.74041 12.6013 8.50508 11.4008 9.96927C10.2636 11.3562 8.92194 12.5508 8.00601 13.3664C7.94645 13.4194 7.88869 13.4709 7.83291 13.5206C7.64324 13.6899 7.3568 13.6899 7.16713 13.5206C7.11135 13.4709 7.05359 13.4194 6.99403 13.3664C6.0781 12.5508 4.73641 11.3562 3.59926 9.96927C2.39872 8.50508 1.35248 6.74041 1.35248 4.90532Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>}
+            </div>
+            <Icons.messageSquare className="w-6 h-6 text-white cursor-pointer" />
           </div>
           <div className="flex items-center gap-2 text-xs sm:text-sm">
             <span className="text-slate-400">Genres:</span>
             {genres.map((genre) => genre.name).join(", ")}
           </div>
         </div>
-        {
-          isLoading && 
-          <div className="fixed inset-0 z-[100] bg-white opacity-40">
-            <Icons.spinner
-              color="black"
-              className="mr-2 h-4 w-4 animate-spin absolute top-1/2 right-1/2"
-              aria-hidden="true"
+      </div>
+      {/* List recommend movies */}
+      {recommendMovies && 
+        <ShowsCarousel title="Recommend movies" shows={recommendMovies} recommendMode={true} />
+      }
+      {
+        modalStore.open && <ShowModal open={modalStore.open} setOpen={modalStore.setOpen}  />
+      }
+      {/* Comment */}
+      <div className="max-w-[1400px] mx-[auto] px-8 pt-4">
+        <div className="text-fold-semibold px-1">Comments</div>
+        <div className="flex flex-col gap-3 pt-3">
+          <div className="flex items-center gap-3 pb-4">
+            <div className="flex items-center justify-center px-1 rounded-full border relative w-[40px] h-[40px]">
+              <Icons.user className="w-5 h-5 absolute" />
+            </div>
+            <Input
+              id="comment"
+              type="text"
+              placeholder="Comment..."
+              className="rounded-3xl focus:outline-none"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              // defaultValue={user.email as string}
             />
+            <Icons.send className="rotate-45 w-9 h-9 text-white p-1.5 border rounded-full cursor-pointer" onClick={sendComment}/>
           </div>
-        }
-    </div>
-  )
-}
+          <div className="flex flex-col gap-4">
+            {
+              moviesRating?.map((rating) => ( 
+                <RatingItem rating={rating} key={rating?._id} />
+              ))
+            }
+          </div>
+        </div>
 
-export default MovieDetail
+      </div>
+      {/* Loading spinner */}
+      {isLoading && <LoadingSpinner />}
+    </div>
+  );
+};
+
+export default MovieDetail;

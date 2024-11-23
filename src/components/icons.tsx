@@ -47,11 +47,15 @@ import {
   VolumeX,
   X,
   Youtube,
+  Star,
+  Heart,
+  MessageSquare,
+  Send,
   type Icon as LucideIcon,
   type LucideProps,
 } from "lucide-react"
 
-export type Icon = LucideIcon
+export type Icon = LucideIcon 
 
 export const Icons = {
   close: X,
@@ -102,6 +106,10 @@ export const Icons = {
   instagram: Instagram,
   twitter: Twitter,
   youtube: Youtube,
+  star: Star,
+  heart: Heart,
+  messageSquare: MessageSquare,
+  send: Send,
   logo: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

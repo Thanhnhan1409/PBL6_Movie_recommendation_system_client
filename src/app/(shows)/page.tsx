@@ -52,7 +52,6 @@ export default async function Home() {
       <div className="pb-16 pt-10">
         <Hero shows={allShowsByCategory[0]?.shows ?? []} />
         <ShowsContainer shows={allShowsByCategory} />
-        heheh
       </div>
       {
         loading && <LoadingSpinner />

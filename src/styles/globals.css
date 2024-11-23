@@ -16,3 +16,7 @@
 .main {
   font-family: 'Helvetica Neue', 'Segoe UI', Verdana, sans-serif;
 }
+
+#comment:focus {
+  outline: none;
+}

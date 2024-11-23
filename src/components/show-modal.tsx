@@ -47,6 +47,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
       if (!modalStore.show) return
 
       try {
+        setIsLoading(true);
         const response = await detailMovieApi(modalStore.show?.id) 
         // fetch(
         //   `https://api.themoviedb.org/3/movie/${modalStore.show?.id}?api_key=${
@@ -64,9 +65,9 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
           setGenres(response?.data?.genres)
         }
       } catch (error) {
-        toast.error(
-          error instanceof Error ? error.message : "Something went wrong"
-        )
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
     void getShow()
@@ -91,15 +92,18 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
   const onWatchMovie = () => {
     setIsLoading(true)
     router.push(`/movies/${modalStore.show?.id}`)
+    onOpenChange()
+  }
+
+  const onOpenChange = () => {
+    setOpen(!open)
+    modalStore.setShow(null)
   }
 
   return (
     <Dialog
       aria-label="Modal containing show's details"
-      onOpenChange={() => {
-        setOpen(!open)
-        modalStore.setShow(null)
-      }}
+      onOpenChange={onOpenChange}
       open={open}
     >
       <DialogContent className="w-full overflow-hidden rounded-md bg-zinc-900 p-0 text-left align-middle shadow-xl dark:bg-zinc-900 sm:max-w-3xl">
