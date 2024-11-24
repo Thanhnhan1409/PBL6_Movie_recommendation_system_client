@@ -4,7 +4,6 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { env } from "@/env.mjs"
 import { useModalStore } from "@/stores/modal"
-import { useProfileStore } from "@/stores/profile"
 import type { Genre, MovieVideo, ShowWithGenreAndVideo } from "@/types"
 import { useIsMutating } from "@tanstack/react-query"
 import { toast } from "react-hot-toast"
@@ -31,7 +30,6 @@ interface ShowModalProps {
 
 const ShowModal = ({ open, setOpen }: ShowModalProps) => {
   const router = useRouter()
-  // const apiUtils = api.useContext()
   const modalStore = useModalStore()
 
   const [trailer, setTrailer] = React.useState("")
@@ -48,21 +46,16 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
 
       try {
         setIsLoading(true);
-        const response = await detailMovieApi(modalStore.show?.id) 
-        // fetch(
-        //   `https://api.themoviedb.org/3/movie/${modalStore.show?.id}?api_key=${
-        //     env.NEXT_PUBLIC_TMDB_API_KEY
-        //   }&language=en-US&append_to_response=videos`
-        // )
-        // const data = (await response.json()) as ShowWithGenreAndVideo
-        if (response?.data) {
-          const trailerIndex = response?.data?.videos?.findIndex(
-            (item: MovieVideo) => item.type === "Trailer"
-          )
-          setTrailer(response?.data?.videos?.results[trailerIndex]?.key ?? "")
+        const response = await detailMovieApi(modalStore.show?.id)
+        const data = response?.data?.data;
+        if (data?.videos?.results?.length) {
+          const trailerIndex = data.videos.results.findIndex(
+            (video: MovieVideo) => video.type === "Trailer"
+          );
+          setTrailer(data.videos.results[trailerIndex]?.key ?? "");
         }
-        if (response?.data?.genres) {
-          setGenres(response?.data?.genres)
+        if (data?.genres) {
+          setGenres(data.genres);
         }
       } catch (error) {
         console.error(error);
@@ -89,11 +82,17 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
     }
   }, [isPlaying])
 
-  const onWatchMovie = () => {
-    setIsLoading(true)
-    router.push(`/movies/${modalStore.show?.id}`)
-    onOpenChange()
-  }
+  const onWatchMovie = async () => {
+    setIsLoading(true);
+    try {
+      await router.push(`/movies/${modalStore.show?.id}`);
+      onOpenChange();
+    } catch (error) {
+      console.error('Failed to navigate:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onOpenChange = () => {
     setOpen(!open)

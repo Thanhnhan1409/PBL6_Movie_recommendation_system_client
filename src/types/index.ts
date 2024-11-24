@@ -250,10 +250,8 @@ export type MovieList = {
 
 export type MovieRatingData = {
   comment: string;
-  movie_id: number;
+  movie_id?: number;
   rating: number;
-  timestamp: string;
-  user_id: string;
 }
 
 export type MovieRating = {

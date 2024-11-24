@@ -16,8 +16,11 @@ const RatingItem = ({ rating }: IRatingItemProps) => {
         <div>
           <div className="font-semibold">{String(rating?.user_id?.id)}</div>
           <div className="flex items-center">
-            <span>{ rating?.rating }</span>
-            <span className="h-4 w-4 text-yellow-400 block-inline mb-2">⭐</span>
+            <div>
+              { Array.from({ length: rating?.rating }, (_, index) => (
+                <span key={index} className="h-4 w-4 text-yellow-400 block-inline mb-2">⭐</span>
+              ))}
+            </div>
           </div>
           <div className="text-[#6c6f74] ">
             {rating?.comment}

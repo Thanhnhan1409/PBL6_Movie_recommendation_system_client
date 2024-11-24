@@ -1,4 +1,3 @@
-import { useProfileStore } from "@/stores/profile"
 import type { SiteConfig } from "@/types"
 
 import { Icons } from "@/components/icons"
@@ -50,11 +49,6 @@ export const siteConfig: SiteConfig = {
       title: "Manage Profiles",
       href: "/profiles",
       icon: Icons.edit,
-    },
-    {
-      title: "Exit Profile",
-      icon: Icons.externalLink,
-      onClick: () => useProfileStore.setState({ profile: null }),
     },
     {
       title: "Account",

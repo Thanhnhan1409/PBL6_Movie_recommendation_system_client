@@ -11,12 +11,13 @@ import LoadingSpinner from "@/components/show-loading"
 
 export default async function Home() {
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [allShowsByCategory, setAllShowsByCategory] = useState<CategorizedShows[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
+        setIsLoading(true);
         const allShows = await getMovies();
         const categorizedShows: CategorizedShows[] = [
           {
@@ -40,7 +41,7 @@ export default async function Home() {
       } catch (error) {
         console.error("Failed to fetch movies:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -54,7 +55,7 @@ export default async function Home() {
         <ShowsContainer shows={allShowsByCategory} />
       </div>
       {
-        loading && <LoadingSpinner />
+        isLoading && <LoadingSpinner />
       }
     </section>
   )

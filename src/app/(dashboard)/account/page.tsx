@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 }
 
 export default async function AccountPage() {
-  const user = await getCurrentUser(
-    {
-      username: "anh@gmail.com",
-      password: "123456Aa"
-    }
-  )
+  // const user = await getCurrentUser(
+  //   {
+  //     username: "anh@gmail.com",
+  //     password: "123456Aa"
+  //   }
+  // )
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login")
-  }
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn ?? "/login")
+  // }
 
   return (
     <section className="container w-full max-w-3xl pb-16 pt-10">
@@ -28,7 +28,9 @@ export default async function AccountPage() {
         subStartDate={subStartDate}
         isCanceled={isCanceled}
       /> */}
-      Account Page
+      <div>
+        
+      </div>
     </section>
   )
 }

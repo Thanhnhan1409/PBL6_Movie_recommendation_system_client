@@ -1,13 +1,14 @@
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useSearchStore } from "@/stores/search"
-import type { NavItem } from "@/types"
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useSearchStore } from "@/stores/search";
+import type { NavItem } from "@/types";
 
-import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
+import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,27 +16,37 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import LoadingSpinner from "../show-loading";
 
 interface MainNavProps {
-  items?: NavItem[]
+  items?: NavItem[];
 }
 
 export function MainNav({ items }: MainNavProps) {
-  const path = usePathname()
+  const [isLoading, setIsLoading] = useState(false);
+  const path = usePathname();
+  const router = useRouter();
 
   // search store
-  const searchStore = useSearchStore()
+  const searchStore = useSearchStore();
+
+  // Handle navigation with loading state
+  const handleNavigation = async (href: string) => {
+    setIsLoading(true);
+    searchStore.setQuery("");
+    searchStore.setShows([]);
+    await router.push(href);
+    setIsLoading(false);
+  };
 
   return (
     <div className="flex gap-6 lg:gap-10">
+      {/* Logo */}
       <Link
         href="/"
         className="hidden lg:block"
-        onClick={() => {
-          searchStore.setQuery("")
-          searchStore.setShows([])
-        }}
+        onClick={() => handleNavigation("/")}
       >
         <Image
           src="/netflix-logo.svg"
@@ -46,28 +57,31 @@ export function MainNav({ items }: MainNavProps) {
           priority
         />
       </Link>
+
+      {/* Desktop Navigation */}
       {items?.length ? (
         <nav className="hidden gap-6 lg:flex">
-          {items?.map(
+          {items.map(
             (item, index) =>
               item.href && (
-                <Link
+                <button
                   key={index}
-                  href={item.href}
+                  onClick={() => handleNavigation(item.href!)}
                   className={cn(
                     "flex items-center text-lg font-medium text-slate-300 transition hover:text-slate-300 hover:text-opacity-70 dark:text-slate-300 dark:hover:text-slate-300 dark:hover:text-opacity-70 sm:text-sm",
-                    path === item.href &&
-                      "font-bold text-white dark:text-white",
+                    path === item.href && "font-bold text-white",
                     item.disabled && "cursor-not-allowed opacity-80"
                   )}
-                  onClick={() => searchStore.setQuery("")}
+                  disabled={item.disabled || isLoading}
                 >
                   {item.title}
-                </Link>
+                </button>
               )
           )}
         </nav>
       ) : null}
+
+      {/* Mobile Dropdown Menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -87,10 +101,7 @@ export function MainNav({ items }: MainNavProps) {
             <Link
               href="/"
               className="flex items-center"
-              onClick={() => {
-                searchStore.setQuery("")
-                searchStore.setShows([])
-              }}
+              onClick={() => handleNavigation("/")}
             >
               <Icons.logo
                 className="mr-2 h-4 w-4 text-red-600"
@@ -107,18 +118,16 @@ export function MainNav({ items }: MainNavProps) {
                 asChild
                 className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
               >
-                <Link
-                  href={item.href}
-                  onClick={() => {
-                    searchStore.setQuery("")
-                    searchStore.setShows([])
-                  }}
+                <button
+                  onClick={() => handleNavigation(item.href!)}
+                  disabled={item.disabled || isLoading}
+                  className="flex items-center w-full"
                 >
                   {item.icon && (
                     <item.icon className="mr-2 h-4 w-4" aria-hidden="true" />
                   )}
                   <span className="line-clamp-1">{item.title}</span>
-                </Link>
+                </button>
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem
@@ -137,6 +146,9 @@ export function MainNav({ items }: MainNavProps) {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Loading Spinner */}
+      {isLoading && <LoadingSpinner />}
     </div>
-  )
+  );
 }

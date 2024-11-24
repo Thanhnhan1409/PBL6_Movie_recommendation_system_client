@@ -2,7 +2,7 @@ import axiosInstance from '../axiosInstance';
 import { MovieRatingData } from '@/types';
 
 export const getMovieRatingApi = async (id: number) => {
-  return await axiosInstance.get(`/ratings/?movie_id=${id}`);
+  return await axiosInstance.get(`/ratings?movie_id=${id}`);
 };
 
 export const addMovieRatingApi = async (data: MovieRatingData) => {

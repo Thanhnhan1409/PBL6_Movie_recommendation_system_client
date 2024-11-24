@@ -26,6 +26,8 @@
       }
     ]
   },
+  "typeRoots": ["./node_modules/@types"],
+  "types": ["@types/js-cookie", "@types/react", "@types/node"],
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",

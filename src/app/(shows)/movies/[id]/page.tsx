@@ -4,8 +4,7 @@ import * as React from "react";
 import { useParams } from "next/navigation";
 import { useModalStore } from "@/stores/modal";
 import ReactPlayer from "react-player/lazy";
-import LoadingSpinner from "@/components/show-loading";
-import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingResponse, MovieVideo, ShowWithGenreAndVideo } from "@/types";
+import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingData, MovieVideo, ShowWithGenreAndVideo } from "@/types";
 import ShowsCarousel from "@/components/shows-carousel";
 import { detailMovieApi, recommendMoviesApi } from "@/lib/api/movies";
 import { Icons } from "@/components/icons";
@@ -13,8 +12,11 @@ import ShowModal from "@/components/show-modal";
 import { addMovieRatingApi, getMovieRatingApi } from "@/lib/api/rating";
 import RatingItem from "@/components/rating/rating-item";
 import { Input } from "@/components/ui/input";
+import LoadingSpinner from "@/components/show-loading";
+import { Flex, Rate } from 'antd';
+import { set } from "react-hook-form";
 
-const MovieDetail = () => {
+export default function MovieDetail() {
   const params = useParams();
   const modalStore = useModalStore();
 
@@ -25,7 +27,11 @@ const MovieDetail = () => {
   const [recommendMovies, setRecommendMovies] = React.useState<MovieItem[] | undefined>();
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [moviesRating, setMoviesRating] = React.useState<MovieRating[]>();
-  const [value, setValue] = React.useState<string>("");
+  const [ratingData, setRatingData] = React.useState<MovieRatingData>({
+    comment: "" ,
+    rating: 0,
+    movie_id: Number(params?.id)
+  })
 
   React.useEffect(() => {
     if (!params?.id) {
@@ -38,14 +44,12 @@ const MovieDetail = () => {
         setIsLoading(true);
         const response = await detailMovieApi(Number(params.id));
         const data = response?.data?.data;
-        console.log('hahahahahh', data);
-        
         setMovie(response.data)
-        if (data?.videos?.length) {
-          const trailerIndex = data.videos.findIndex(
+        if (data?.videos?.results?.length) {
+          const trailerIndex = data.videos.results.findIndex(
             (video: MovieVideo) => video.type === "Trailer"
           );
-          setTrailer(data.videos[trailerIndex]?.key ?? "");
+          setTrailer(data.videos.results[trailerIndex]?.key ?? "");
         }
         if (data?.genres) {
           setGenres(data.genres);
@@ -80,18 +84,10 @@ const MovieDetail = () => {
   }, []);
 
   const sendComment = async () => {
-    console.log('click');
-    
     try {
-      const res = await addMovieRatingApi({
-        comment: value,
-        movie_id: Number(params?.id),
-        rating: 5,
-        timestamp: new Date().toISOString(),
-        user_id: "1",
-      });
+      const res = await addMovieRatingApi(ratingData);
       if (res.data) {
-        setValue("");
+        setRatingData({...ratingData, comment: "", rating: 0});
         const ratingRes = await getMovieRatingApi(Number(params?.id));
         setMoviesRating(ratingRes.data?.data);
       }
@@ -126,6 +122,7 @@ const MovieDetail = () => {
             <div className="flex items-center gap-2">
               <span>{ movie?.data?.vote_average }</span>
               <span className="h-4 w-4 text-yellow-400 block-inline mb-2">⭐</span>
+              <span className="text-sm text-[#6c6f74]">({movie?.data?.vote_count})</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -160,23 +157,33 @@ const MovieDetail = () => {
         modalStore.open && <ShowModal open={modalStore.open} setOpen={modalStore.setOpen}  />
       }
       {/* Comment */}
-      <div className="max-w-[1400px] mx-[auto] px-8 pt-4">
+      <div className="max-w-[1400px] mx-[auto] px-8 pt-6">
         <div className="text-fold-semibold px-1">Comments</div>
-        <div className="flex flex-col gap-3 pt-3">
-          <div className="flex items-center gap-3 pb-4">
+        <div className="flex flex-col gap-3 pt-4">
+          <div className="flex items-start gap-3 pb-4">
             <div className="flex items-center justify-center px-1 rounded-full border relative w-[40px] h-[40px]">
               <Icons.user className="w-5 h-5 absolute" />
             </div>
-            <Input
-              id="comment"
-              type="text"
-              placeholder="Comment..."
-              className="rounded-3xl focus:outline-none"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              // defaultValue={user.email as string}
-            />
-            <Icons.send className="rotate-45 w-9 h-9 text-white p-1.5 border rounded-full cursor-pointer" onClick={sendComment}/>
+            <div className="flex items-end gap-3 w-[99%]">
+              <div className="w-11/12">
+                <Rate 
+                  defaultValue={3}
+                  allowClear={false}
+                  value={ratingData.rating}
+                  className="pl-1 pb-2"
+                  onChange={(value: number) => setRatingData({ ...ratingData, rating: value })}
+                />
+                <Input
+                  id="comment"
+                  type="text"
+                  placeholder="Comment..."
+                  className="rounded-2xl focus:outline-none"
+                  value={ratingData.comment}
+                  onChange={(e) => setRatingData({ ...ratingData, comment: e.target.value })}
+                />
+              </div>
+              <Icons.send className="rotate-45 w-9 h-9 text-white p-1.5 border rounded-full cursor-pointer" onClick={sendComment}/>
+            </div>
           </div>
           <div className="flex flex-col gap-4">
             {
@@ -194,4 +201,3 @@ const MovieDetail = () => {
   );
 };
 
-export default MovieDetail;
