@@ -1,7 +1,6 @@
 "use client"
 
 import { useMounted } from "@/hooks/use-mounted"
-import { useProfileStore } from "@/stores/profile"
 import { useSearchStore } from "@/stores/search"
 import type { SessionUser } from "@/types"
 
@@ -18,10 +17,7 @@ const MyShows = ({ user }: MyShowsProps) => {
 
   // stores
   const searchStore = useSearchStore()
-  const profileStore = useProfileStore()
 
-  // my shows query
-  const myShowsQuery = null
 
   if (!mounted) {
     return <ShowSkeleton variant="without-title" />

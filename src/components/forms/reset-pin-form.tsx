@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useProfileStore } from "@/stores/profile"
+// import { useProfileStore } from "@/stores/profile"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import CheckboxInput from "@/components/checkbox-input"

@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
 import { useModalStore } from "@/stores/modal"
-import { useProfileStore } from "@/stores/profile"
 import { useSearchStore } from "@/stores/search"
 import type { CategorizedShows, SessionUser } from "@/types"
 

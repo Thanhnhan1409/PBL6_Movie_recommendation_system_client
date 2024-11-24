@@ -1,11 +1,9 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
-import { useProfileStore } from "@/stores/profile"
 import { useSearchStore } from "@/stores/search"
 import { signOut } from "next-auth/react"
 import { toast } from "react-hot-toast"
@@ -25,11 +23,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
-import { router } from "@trpc/server"
-
-// interface SiteHeaderProps {
-//   session: boolean | null | undefined;
-// }
 
 const SiteHeader = () => {
   const router = useRouter()
@@ -57,12 +50,11 @@ const SiteHeader = () => {
   async function searchShowsByQuery(value: string) {
     searchStore.setQuery(value)
     const shows = await searchShows(value)
-    void searchStore.setShows(shows.results)
+    // void searchStore.setShows(shows.results)
   }
 
   // stores
   const searchStore = useSearchStore()
-  const profileStore = useProfileStore()
 
   // other profiles query
   // const otherProfilesQuery = profileStore.profile
@@ -130,18 +122,9 @@ const SiteHeader = () => {
                     variant="ghost"
                     className="h-auto shrink-0 px-2 py-1.5 text-base hover:bg-transparent focus:ring-0 hover:dark:bg-neutral-800 [&[data-state=open]>svg]:rotate-180"
                   >
-                    {profileStore.profile?.icon ? (
-                      <Image
-                        src={profileStore.profile.icon.href}
-                        alt={profileStore.profile.icon.title}
-                        width={28}
-                        height={28}
-                        className="rounded-sm object-cover transition-opacity hover:opacity-80"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <Skeleton className="aspect-square h-7 rounded-sm bg-neutral-600" />
-                    )}
+                    <div>
+                      <Icons.user className="h-5 w-5 text-white" />
+                    </div>
                     <Icons.chevronDown className="ml-2 hidden h-4 w-4 transition-transform duration-200 lg:inline-block" />
                   </Button>
                 </DropdownMenuTrigger>

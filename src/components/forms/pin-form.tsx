@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { useProfileStore } from "@/stores/profile"
+// import { useProfileStore } from "@/stores/profile"
 import PinInput from "react-pin-input"
 
 import { cn } from "@/lib/utils"
@@ -9,34 +9,34 @@ import { Button } from "@/components/ui/button"
 
 const PinForm = () => {
   const router = useRouter()
-  const profileStore = useProfileStore()
+  // const profileStore = useProfileStore()
 
-  const [error, setError] = React.useState<string | null>(null)
+  // const [error, setError] = React.useState<string | null>(null)
 
-  function handleSubmit(value: string) {
-    if (!profileStore.profile) return
+  // function handleSubmit(value: string) {
+  //   if (!profileStore.profile) return
 
-    if (profileStore.profile.pin === Number(value)) {
-      setError(null)
-      profileStore.setPinForm(false)
-      router.push("/")
-    } else {
-      setError("Incorrect PIN")
-    }
-  }
+  //   if (profileStore.profile.pin === Number(value)) {
+  //     setError(null)
+  //     profileStore.setPinForm(false)
+  //     router.push("/")
+  //   } else {
+  //     setError("Incorrect PIN")
+  //   }
+  // }
 
-  console.log(profileStore.profile)
+  // console.log(profileStore.profile)
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center gap-8">
-      <Button
+      {/* <Button
         aria-label="Close menu"
         variant="ghost"
         size="sm"
         className="absolute right-0 top-8 rounded-none"
-        onClick={() => {
-          useProfileStore.setState({ pinForm: false, profile: null })
-        }}
+        // onClick={() => {
+        //   useProfileStore.setState({ pinForm: false, profile: null })
+        // }}
       >
         <Icons.close className="h-6 w-6" aria-hidden="true" />
       </Button>
@@ -98,7 +98,7 @@ const PinForm = () => {
         disabled={!profileStore.profile}
       >
         Forgot PIN?
-      </Button>
+      </Button> */}
     </div>
   )
 }
