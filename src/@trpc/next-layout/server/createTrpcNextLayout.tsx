@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { QueryClient, dehydrate } from "@tanstack/query-core";
 import type { DehydratedState } from "@tanstack/react-query";
 import type {

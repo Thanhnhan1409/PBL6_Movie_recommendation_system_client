@@ -4,7 +4,7 @@ interface ShowsLayotutProps {
   children: React.ReactNode
 }
 
-export default async function ShowsLayout({ children }: ShowsLayotutProps) {
+export default function ShowsLayout({ children }: ShowsLayotutProps) {
 
   // zustand state is not redable here
   // useProfileStore().getState().profile should return the profile

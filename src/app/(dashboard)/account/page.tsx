@@ -1,14 +1,14 @@
 import type { Metadata } from "next"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/server/auth"
-import { getCurrentUser } from "@/lib/session"
+// import { redirect } from "next/navigation"
+// import { authOptions } from "@/server/auth"
+// import { getCurrentUser } from "@/lib/session"
 
 export const metadata: Metadata = {
   title: "Account",
   description: "Manage billing and your subscription plan.",
 }
 
-export default async function AccountPage() {
+export default function AccountPage() {
   // const user = await getCurrentUser(
   //   {
   //     username: "anh@gmail.com",

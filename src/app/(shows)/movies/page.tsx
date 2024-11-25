@@ -2,8 +2,8 @@
 import type { Metadata } from "next"
 import type { CategorizedShows } from "@/types"
 
-import { getShows } from "@/lib/fetchers"
-import { getCurrentUser } from "@/lib/session"
+// import { getShows } from "@/lib/fetchers"
+// import { getCurrentUser } from "@/lib/session"
 import ShowsContainer from "@/components/shows-container"
 import { useEffect, useState } from "react"
 import { getMovies } from "@/lib/api/movies"
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: "All movies grouped by genre",
 }
 
-export default async function MoviesPage() {
+export default function MoviesPage() {
   const [loading, setLoading] = useState(true);
   const [allShowsByCategory, setAllShowsByCategory] = useState<CategorizedShows[]>([]);
 

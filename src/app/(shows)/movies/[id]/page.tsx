@@ -4,7 +4,7 @@ import * as React from "react";
 import { useParams } from "next/navigation";
 import { useModalStore } from "@/stores/modal";
 import ReactPlayer from "react-player/lazy";
-import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingData, MovieVideo, ShowWithGenreAndVideo } from "@/types";
+import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingData, MovieVideo } from "@/types";
 import ShowsCarousel from "@/components/shows-carousel";
 import { detailMovieApi, recommendMoviesApi } from "@/lib/api/movies";
 import { Icons } from "@/components/icons";
@@ -13,8 +13,7 @@ import { addMovieRatingApi, getMovieRatingApi } from "@/lib/api/rating";
 import RatingItem from "@/components/rating/rating-item";
 import { Input } from "@/components/ui/input";
 import LoadingSpinner from "@/components/show-loading";
-import { Flex, Rate } from 'antd';
-import { set } from "react-hook-form";
+import { Rate } from "antd";
 
 export default function MovieDetail() {
   const params = useParams();
@@ -25,7 +24,7 @@ export default function MovieDetail() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [movie, setMovie] = React.useState<MovieDetail | null>(null);
   const [recommendMovies, setRecommendMovies] = React.useState<MovieItem[] | undefined>();
-  const [isFavorite, setIsFavorite] = React.useState(false);
+  const [isFavorite] = React.useState(false);
   const [moviesRating, setMoviesRating] = React.useState<MovieRating[]>();
   const [ratingData, setRatingData] = React.useState<MovieRatingData>({
     comment: "" ,
@@ -81,7 +80,7 @@ export default function MovieDetail() {
     };
 
     fetchData();
-  }, []);
+  }, [params?.id]);
 
   const sendComment = async () => {
     try {
@@ -158,7 +157,7 @@ export default function MovieDetail() {
       }
       {/* Comment */}
       <div className="max-w-[1400px] mx-[auto] px-8 pt-6">
-        <div className="text-fold-semibold px-1">Comments</div>
+        <div className="fold-semibold px-1">Comments</div>
         <div className="flex flex-col gap-3 pt-4">
           <div className="flex items-start gap-3 pb-4">
             <div className="flex items-center justify-center px-1 rounded-full border relative w-[40px] h-[40px]">

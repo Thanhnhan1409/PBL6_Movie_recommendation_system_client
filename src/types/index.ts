@@ -272,3 +272,10 @@ export type MovieRatingResponse = {
   description: string;
   data: MovieRating[];
 }
+
+export type AllMoviesData = {
+  popularMovies: MovieItem[];
+  trendingMovies: MovieItem[];
+  tvPopularMovies: MovieItem[];
+  tvTrendingMovies: MovieItem[];
+}

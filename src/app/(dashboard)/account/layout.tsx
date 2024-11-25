@@ -5,7 +5,7 @@ interface AccountLayoutProps {
   children: React.ReactNode
 }
 
-export default async function AccountLayout({ children }: AccountLayoutProps) {
+export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />

@@ -89,7 +89,7 @@ const LoginButton = () => {
         Login with Google
       </Button>
       <div className="flex justify-center items-center gap-2 py-2 text-sm tracking-normal">
-        <span>Don't have an account?</span>
+        <span>Don&apos;t have an account?</span>
         <span onClick={goToSignup} className="hover:underline hover:text-[red] cursor-pointer">Create an account</span>
       </div>
       { isLoading ?? 
