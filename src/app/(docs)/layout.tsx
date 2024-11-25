@@ -5,7 +5,7 @@ interface DocsLayoutProps {
   children: React.ReactNode
 }
 
-export default async function DocsLayout({ children }: DocsLayoutProps) {
+export default function DocsLayout({ children }: DocsLayoutProps) {
 
   return (
     <div className="flex min-h-screen flex-col">

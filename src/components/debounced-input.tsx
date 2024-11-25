@@ -41,13 +41,17 @@ export function DebouncedInput<TData extends object>({
     setValue(initialValue)
   }, [initialValue])
 
+  const onChangeMemo = React.useCallback((value: any) => {
+    onChange(value);
+  }, [onChange]);
+
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      onChange(value)
-    }, debounce)
+      onChangeMemo(value);
+    }, debounce);
 
-    return () => clearTimeout(timeout)
-  }, [value, debounce])
+    return () => clearTimeout(timeout);
+  }, [value, debounce, onChangeMemo]); 
 
   // configure keyboard shortcuts
   React.useEffect(() => {

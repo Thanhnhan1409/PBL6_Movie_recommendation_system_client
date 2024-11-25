@@ -1,7 +1,7 @@
 // lib/axiosInstance.js
 import axios from 'axios';
-import Cookies from 'js-cookie';
-import { cookies } from 'next/headers'
+// import Cookies from 'js-cookie';
+// import { cookies } from 'next/headers'
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use(
     // }
     // console.log('Request:', token);
     
-    config.headers['Authorization'] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjc0MzRjZWY1NjBlMzY2N2VmMjNhMjQwIiwiZXhwaXJlcyI6MTczMjQ2NjI3NS45NTk2MDF9.StOS8VtePnecKvuc5M9Efmurns3alKMcaryKdi4ZzbU"
+    config.headers['Authorization'] = `Bearer ${process.env.TOKEN_API}`
     return config
   },
   function (error) {

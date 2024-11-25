@@ -1,4 +1,4 @@
-import type { MovieItem, Show } from "@/types"
+import type { MovieItem } from "@/types"
 import { create } from "zustand"
 
 interface SearchState {

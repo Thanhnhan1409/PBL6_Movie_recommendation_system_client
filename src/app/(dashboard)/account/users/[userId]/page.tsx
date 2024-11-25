@@ -1,10 +1,10 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
-import { notFound, redirect } from "next/navigation"
-import { authOptions } from "@/server/auth"
+// import { redirect } from "next/navigation"
+// import { authOptions } from "@/server/auth"
 
-import { getCurrentUser } from "@/lib/session"
-import EditUserForm from "@/components/forms/edit-user-form"
+// import { getCurrentUser } from "@/lib/session"
+// import EditUserForm from "@/components/forms/edit-user-form"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
@@ -18,20 +18,21 @@ interface EditAccountPageProps {
   }
 }
 
-export default async function EditAccountPage({
+export default function EditAccountPage({
   params,
 }: EditAccountPageProps) {
-  const { userId } = params
+  // const { userId } = params
 
-  const user = await getCurrentUser({
-    username: "anh@gmail.com",
-    password: "123456Aa"
-  })
+  // const user = await getCurrentUser({
+  //   username: "anh@gmail.com",
+  //   password: "123456Aa"
+  // })
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login")
-  }
-
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn ?? "/login")
+  // }
+  console.log(params);
+  
   return (
     <section className="container w-full max-w-3xl pb-16 pt-10">
       <Suspense

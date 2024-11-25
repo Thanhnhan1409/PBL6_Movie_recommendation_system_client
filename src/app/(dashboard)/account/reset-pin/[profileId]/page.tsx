@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import { notFound, redirect } from "next/navigation"
-import { authOptions } from "@/server/auth"
+// import { redirect } from "next/navigation"
+// import { authOptions } from "@/server/auth"
 
 import { getCurrentUser } from "@/lib/session"
-import ResetPinForm from "@/components/forms/reset-pin-form"
+// import ResetPinForm from "@/components/forms/reset-pin-form"
 
 export const metadata: Metadata = {
   title: "Reset Profile Pin",
@@ -17,17 +17,17 @@ interface ResetPinPageProps {
   }
 }
 
-export default async function ResetPinPage({ params }: ResetPinPageProps) {
-  const { profileId } = params
+export default function ResetPinPage() {
+  // const { profileId } = params
 
-  const user = await getCurrentUser({
-    username: "anh@gmail.com",
-    password: "123456Aa"
-  })
+  // const user = await getCurrentUser({
+  //   username: "anh@gmail.com",
+  //   password: "123456Aa"
+  // })
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login")
-  }
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn ?? "/login")
+  // }
 
   return (
     <section className="container min-h-screen w-full max-w-6xl space-y-8 pb-16 pt-10">

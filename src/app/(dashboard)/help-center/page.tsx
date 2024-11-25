@@ -1,9 +1,9 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/server/auth"
+// import { redirect } from "next/navigation"
+// import { authOptions } from "@/server/auth"
 
-import { getCurrentUser } from "@/lib/session"
+// import { getCurrentUser } from "@/lib/session"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
@@ -11,15 +11,15 @@ export const metadata: Metadata = {
   description: "Help Center for Netflx",
 }
 
-export default async function HelpCenterPage() {
-  const user = await getCurrentUser({
-    username: "anh@gmail.com",
-    password: "123456Aa"
-  })
+export default function HelpCenterPage() {
+  // const user = await getCurrentUser({
+  //   username: "anh@gmail.com",
+  //   password: "123456Aa"
+  // })
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login")
-  }
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn ?? "/login")
+  // }
 
   return (
     <section className="container min-h-screen w-full max-w-3xl items-center justify-center pb-16 pt-10">
