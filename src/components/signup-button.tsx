@@ -101,7 +101,6 @@ const SignUpButton = () => {
         placeholder="Confirm your password"
         className="w-full p-4 mb-4 rounded-md bg-[#000] placeholder:text-[#8696A5]"
       />
-      <span className="text-sm text-[red]">Password must be more than 6 characters.</span>
       <Button onClick={onSignup} className="w-full p-2 mb-4 rounded-md bg-[red] text-white">Sign up</Button>
       <div className="relative h-[25px]">
         <span className="absolute top-[-13px] left-[48%] bg-[#1B1B1C]">or</span>
