@@ -1,6 +1,5 @@
 import { AllMoviesData } from '@/types';
-import axiosInstance from '../axiosInstance';
-
+import axiosInstance from '../hooks/axiosInstance';
 
 export const popularMoviesApi = async (page: number = 1)=> {
   return await axiosInstance.get(`/tmdb-movies/polular?page=${page}`)
@@ -27,7 +26,6 @@ export const recommendMoviesApi = async (id: number, page: number = 1) => {
 }
 
 export const getMovies = async (page: number = 1) : Promise<AllMoviesData> => {
-  // const token = localStorage.getItem('authToken');
   try {
     console.log(11111111);
     

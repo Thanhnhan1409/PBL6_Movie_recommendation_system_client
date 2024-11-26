@@ -1,5 +1,7 @@
 // lib/axiosInstance.js
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { cookies } from 'next/headers';
 // import Cookies from 'js-cookie';
 // import { cookies } from 'next/headers'
 
@@ -16,13 +18,17 @@ axiosInstance.interceptors.request.use(
     //   const cookieStore = await cookies()
     //   const token = cookieStore.get('authToken')
     //   config.headers['Authorization'] = `Bearer ${token?.value}`
+    //   console.log('Request:', token);
     // } else {
     //   const token = Cookies.get('authToken');
-    //   config.headers['Authorization'] = `Bearer ${token}`;
+      const token = localStorage.getItem('authToken');
+      if(token) {
+          console.log('Request: ', token);
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     // }
-    // console.log('Request:', token);
-    console.log('Request:', process.env.NEXT_PUBLIC_TOKEN_API);
-    config.headers['Authorization'] = `Bearer ${process.env.NEXT_PUBLIC_TOKEN_API}`
+    // console.log('Request:', process.env.NEXT_PUBLIC_TOKEN_API);
+    // config.headers['Authorization'] = `Bearer ${process.env.NEXT_PUBLIC_TOKEN_API}`
     return config
   },
   function (error) {

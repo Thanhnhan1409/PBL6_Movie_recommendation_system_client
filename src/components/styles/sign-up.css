@@ -1,0 +1,3 @@
+.sign-up #data_password::placeholder, #data_confirmPassword::placeholder, #data_age::placeholder {
+  color: #8696A5;
+}

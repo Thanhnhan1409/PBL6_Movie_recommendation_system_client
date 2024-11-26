@@ -187,7 +187,7 @@ export default function MovieDetail() {
           <div className="flex flex-col gap-4">
             {
               moviesRating?.map((rating) => ( 
-                <RatingItem rating={rating} key={rating?._id} />
+                <RatingItem rating={rating} key={rating?.movie_id} />
               ))
             }
           </div>
