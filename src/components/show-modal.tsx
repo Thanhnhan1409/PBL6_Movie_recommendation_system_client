@@ -2,15 +2,11 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { env } from "@/env.mjs"
 import { useModalStore } from "@/stores/modal"
-import type { Genre, MovieVideo, ShowWithGenreAndVideo } from "@/types"
-import { useIsMutating } from "@tanstack/react-query"
-import { toast } from "react-hot-toast"
+import type { Genre, MovieVideo } from "@/types"
 import ReactPlayer from "react-player/lazy"
 
-// import { api } from "@/lib/api/api"
-import { cn, getYear } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import DynamicTooltip from "@/components/dynamic-tooltip"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -82,17 +78,24 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
     }
   }, [isPlaying])
 
-  const onWatchMovie = async () => {
+  // const onWatchMovie = () => {
+  //   setIsLoading(true);
+  //   try {
+  //     router.push(`/movies/${modalStore.show?.id}`);
+  //     onOpenChange();
+  //   } catch (error) {
+  //     console.error('Failed to navigate:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const onWatchMovie = () => {
     setIsLoading(true);
-    try {
-      await router.push(`/movies/${modalStore.show?.id}`);
-      onOpenChange();
-    } catch (error) {
-      console.error('Failed to navigate:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    router.push(`/movies/${modalStore.show?.id}`);
+    onOpenChange();
   };
+
 
   const onOpenChange = () => {
     setOpen(!open)

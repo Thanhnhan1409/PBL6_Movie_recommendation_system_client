@@ -1,5 +1,5 @@
 "use client";
-import type { Metadata } from "next"
+// import type { Metadata } from "next"
 import type { CategorizedShows } from "@/types"
 
 import { getShows } from "@/lib/fetchers"
@@ -8,10 +8,10 @@ import LoadingSpinner from "@/components/show-loading"
 import { useEffect, useState } from "react"
 import { getMovies } from "@/lib/api/movies"
 
-export const metadata: Metadata = {
-  title: "TV Shows",
-  description: "All TV shows grouped by genre",
-}
+// export const metadata: Metadata = {
+//   title: "TV Shows",
+//   description: "All TV shows grouped by genre",
+// }
 
 export default async function TVShowsPage() {
   const [loading, setLoading] = useState(true);

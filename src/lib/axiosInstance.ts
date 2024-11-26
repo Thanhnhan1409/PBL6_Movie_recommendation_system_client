@@ -21,8 +21,8 @@ axiosInstance.interceptors.request.use(
     //   config.headers['Authorization'] = `Bearer ${token}`;
     // }
     // console.log('Request:', token);
-    
-    config.headers['Authorization'] = `Bearer ${process.env.TOKEN_API}`
+    console.log('Request:', process.env.NEXT_PUBLIC_TOKEN_API);
+    config.headers['Authorization'] = `Bearer ${process.env.NEXT_PUBLIC_TOKEN_API}`
     return config
   },
   function (error) {
