@@ -153,7 +153,7 @@ export type UserSignup = {
   fullname: string
   email: string
   password: string
-  user_id?: number
+  age?: number
   confirmPassword?: string
 }
   
@@ -256,9 +256,11 @@ export type MovieRatingData = {
 
 export type MovieRating = {
   _id: string;
-  user_id: {
-    id: string;
-    collection: string;
+  user: {
+    fullname: string;
+    email: string;
+    age: number;
+    parent_id: null | string;
   };
   movie_id: number;
   rating: number;

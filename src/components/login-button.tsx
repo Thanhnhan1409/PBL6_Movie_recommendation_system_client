@@ -40,12 +40,13 @@ const LoginButton = () => {
   
   const router = useRouter()
   const onLogin = async () => {
-    const res = await login(data);
-    if(res) {
+    try {
       setIsLoading(true);
+      await login(data);
       router.push("/")
-    } else {
-      toast.error("Login failed")
+    } catch (error) {
+      console.error(error);
+      
     }
   }
 

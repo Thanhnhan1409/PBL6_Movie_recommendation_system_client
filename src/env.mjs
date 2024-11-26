@@ -4,8 +4,8 @@
 const serverEnv = {
   TOKEN: process.env.NEXT_PUBLIC_TOKEN_API,
   NODE_ENV: process.env.NODE_ENV,
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  // GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  // GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 }
 
 /**

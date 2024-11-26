@@ -44,10 +44,10 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: env.GOOGLE_CLIENT_SECRET ?? '',
-    }),
+    // GoogleProvider({
+    //   clientId: env.GOOGLE_CLIENT_ID ?? '',
+    //   clientSecret: env.GOOGLE_CLIENT_SECRET ?? '',
+    // }),
     /**
      * ...add more providers here.
      *

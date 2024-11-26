@@ -1,4 +1,4 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from '../hooks/axiosInstance';
 import { MovieRatingData } from '@/types';
 
 export const getMovieRatingApi = async (id: number) => {
