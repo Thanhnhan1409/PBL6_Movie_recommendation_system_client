@@ -11,23 +11,24 @@ export const metadata: Metadata = {
 }
 
 export default async function NewAndPopularPage() {
-  const popularMovie = await popularMoviesApi()
-  const tvPopular = await tvPopularMoviesApi()
+  // const popularMovie = await popularMoviesApi()
+  // const tvPopular = await tvPopularMoviesApi()
 
-  const allShowsByCategory: CategorizedShows[] = [
-    {
-      title: "Popular TV Shows",
-      shows: popularMovie.data.data,
-    },
-    {
-      title: "Popular Movies",
-      shows:  popularMovie.data.data,
-    },
-  ]
+  // const allShowsByCategory: CategorizedShows[] = [
+  //   {
+  //     title: "Popular TV Shows",
+  //     shows: popularMovie.data.data,
+  //   },
+  //   {
+  //     title: "Popular Movies",
+  //     shows:  popularMovie.data.data,
+  //   },
+  // ]
 
   return (
     <section className="pb-16 pt-10">
-      <ShowsContainer shows={allShowsByCategory} />
+      list
+      {/* <ShowsContainer shows={allShowsByCategory} /> */}
     </section>
   )
 }

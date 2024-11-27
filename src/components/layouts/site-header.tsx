@@ -37,7 +37,6 @@ const SiteHeader = () => {
       setSession(session)
     }
   }, [session])
-  // change background color on scroll
   React.useEffect(() => {
     const changeBgColor = () => {
       window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false)
@@ -48,8 +47,8 @@ const SiteHeader = () => {
 
   // search shows by query
   async function searchShowsByQuery(value: string) {
-    searchStore.setQuery(value)
-    const shows = await searchShows(value)
+    // searchStore.setQuery(value)
+    // const shows = await searchShows(value)
     // void searchStore.setShows(shows.results)
   }
 
