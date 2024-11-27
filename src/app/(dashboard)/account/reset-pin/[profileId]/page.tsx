@@ -3,7 +3,7 @@ import Image from "next/image"
 // import { redirect } from "next/navigation"
 // import { authOptions } from "@/server/auth"
 
-import { getCurrentUser } from "@/lib/session"
+// import { getCurrentUser } from "@/lib/session"
 // import ResetPinForm from "@/components/forms/reset-pin-form"
 
 export const metadata: Metadata = {

@@ -14,6 +14,7 @@ import RatingItem from "@/components/rating/rating-item";
 import { Input } from "@/components/ui/input";
 import LoadingSpinner from "@/components/show-loading";
 import { Rate } from "antd";
+import { useLoadingStore } from "@/stores/loading";
 
 export default function MovieDetail() {
   const params = useParams();
@@ -21,7 +22,8 @@ export default function MovieDetail() {
 
   const [trailer, setTrailer] = React.useState("");
   const [genres, setGenres] = React.useState<Genre[]>([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  // const [isLoading, setIsLoading] = React.useState(false);
+  const loadingStore = useLoadingStore();
   const [movie, setMovie] = React.useState<MovieDetail | null>(null);
   const [recommendMovies, setRecommendMovies] = React.useState<MovieItem[] | undefined>();
   const [isFavorite] = React.useState(false);
@@ -40,7 +42,7 @@ export default function MovieDetail() {
 
     const fetchMovieDetails = async () => {
       try {
-        setIsLoading(true);
+        loadingStore.setIsLoading(true);
         const response = await detailMovieApi(Number(params.id));
         const data = response?.data?.data;
         setMovie(response.data)
@@ -56,7 +58,7 @@ export default function MovieDetail() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        loadingStore.setIsLoading(false);
       }
     };
 
@@ -66,7 +68,7 @@ export default function MovieDetail() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
+        loadingStore.setIsLoading(true);
         const res = await recommendMoviesApi(Number(params?.id));
         const ratingRes = await getMovieRatingApi(Number(params?.id));
         setRecommendMovies(res.data?.data);
@@ -75,7 +77,7 @@ export default function MovieDetail() {
         console.error(error);
       }
       finally {
-        setIsLoading(false);
+        loadingStore.setIsLoading(false);
       }
     };
 
@@ -195,7 +197,7 @@ export default function MovieDetail() {
 
       </div>
       {/* Loading spinner */}
-      {isLoading && <LoadingSpinner />}
+      {loadingStore.isLoading && <LoadingSpinner />}
     </div>
   );
 };

@@ -1,3 +1,12 @@
-.sign-up #data_password::placeholder, #data_confirmPassword::placeholder, #data_age::placeholder {
+#data_password::placeholder, #data_confirmPassword::placeholder, #data_age::placeholder {
   color: #8696A5;
+}
+
+.ant-picker-suffix {
+  color: #8696A5;
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover {
+  background-color: #fff;
+  color: rgb(4, 4, 4);
 }

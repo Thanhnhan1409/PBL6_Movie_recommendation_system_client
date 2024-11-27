@@ -1,23 +1,23 @@
 "use client"
 import type { CategorizedShows } from "@/types"
-
-import { getShows } from "@/lib/fetchers"
-import { getCurrentUser } from "@/lib/session"
 import Hero from "@/components/hero"
 import ShowsContainer from "@/components/shows-container"
 import { getMovies } from "@/lib/api/movies"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "@/components/show-loading"
+import { useLoadingStore } from "@/stores/loading"
 
-export default async function Home() {
+export default function Home() {
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
+  const loadingStore = useLoadingStore()
   const [allShowsByCategory, setAllShowsByCategory] = useState<CategorizedShows[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
+        loadingStore.setIsLoading(true);
         const allShows = await getMovies();
         const categorizedShows: CategorizedShows[] = [
           {
@@ -41,7 +41,7 @@ export default async function Home() {
       } catch (error) {
         console.error("Failed to fetch movies:", error);
       } finally {
-        setIsLoading(false);
+        loadingStore.setIsLoading(false);
       }
     };
 
@@ -55,7 +55,7 @@ export default async function Home() {
         <ShowsContainer shows={allShowsByCategory} />
       </div>
       {
-        isLoading && <LoadingSpinner />
+        loadingStore.isLoading && <LoadingSpinner />
       }
     </section>
   )

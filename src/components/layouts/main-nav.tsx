@@ -18,26 +18,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import LoadingSpinner from "../show-loading";
+import { useLoadingStore } from "@/stores/loading";
 
 interface MainNavProps {
   items?: NavItem[];
 }
 
 export function MainNav({ items }: MainNavProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const loadingStore = useLoadingStore()
   const path = usePathname();
   const router = useRouter();
 
   // search store
   const searchStore = useSearchStore();
-
-  // Handle navigation with loading state
   const handleNavigation = async (href: string) => {
-    setIsLoading(true);
+    loadingStore.setIsLoading(true);
     searchStore.setQuery("");
     searchStore.setShows([]);
     await router.push(href);
-    setIsLoading(false);
+    loadingStore.setIsLoading(false);
   };
 
   return (
@@ -72,7 +72,7 @@ export function MainNav({ items }: MainNavProps) {
                     path === item.href && "font-bold text-white",
                     item.disabled && "cursor-not-allowed opacity-80"
                   )}
-                  disabled={item.disabled || isLoading}
+                  disabled={item.disabled || loadingStore.isLoading}
                 >
                   {item.title}
                 </button>
@@ -120,7 +120,7 @@ export function MainNav({ items }: MainNavProps) {
               >
                 <button
                   onClick={() => handleNavigation(item.href!)}
-                  disabled={item.disabled || isLoading}
+                  disabled={item.disabled ||loadingStore. isLoading}
                   className="flex items-center w-full"
                 >
                   {item.icon && (
@@ -148,7 +148,7 @@ export function MainNav({ items }: MainNavProps) {
       </DropdownMenu>
 
       {/* Loading Spinner */}
-      {isLoading && <LoadingSpinner />}
+      {loadingStore.isLoading && <LoadingSpinner />}
     </div>
   );
 }
