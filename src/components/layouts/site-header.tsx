@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProfileStore } from "@/stores/profile"
+import Image from "next/image"
+import { getMoviesSearchApi } from "@/lib/api/movies"
 
 const SiteHeader = () => {
   const router = useRouter()
@@ -31,13 +33,15 @@ const SiteHeader = () => {
   const mounted = useMounted()
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [session, setSession] = React.useState<string>()
+  const [page, setPage] = React.useState<number>(2)
+
   React.useEffect(() => {
     const session = localStorage.getItem("authToken")
     
     if (session) {
       setSession(session)
     }
-  }, [localStorage.getItem("authToken")])
+  }, [setSession])
   React.useEffect(() => {
     const changeBgColor = () => {
       window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false)
@@ -46,11 +50,16 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", changeBgColor)
   }, [isScrolled])
 
-  // search shows by query
   async function searchShowsByQuery(value: string) {
-    // searchStore.setQuery(value)
-    // const shows = await searchShows(value)
-    // void searchStore.setShows(shows.results)
+    if (value !== searchStore.query) {
+      try {
+        searchStore.setQuery(value)
+        const shows = await getMoviesSearchApi(page, value)
+        searchStore.setShows(shows.data?.data)
+      } catch (error) {
+        console.error("Failed to search shows:", error)
+      }
+    }
   }
 
   // stores
@@ -64,11 +73,11 @@ const SiteHeader = () => {
   //     })
   //   : null
 
-  const logOut = () => {
+  const logOut = async () => {
     profileStore.setChooseProfile(false);
     localStorage.removeItem("authToken");
     setSession('')
-    router.push("/login")
+    await router.push("/login")
     signOut()
   }
 
@@ -112,6 +121,22 @@ const SiteHeader = () => {
                 aria-hidden="true"
               />
             </Button>
+            
+          ) : (
+            <Skeleton className="aspect-square h-7 bg-neutral-700" />
+          )}
+          {mounted ? (
+            <Button
+              aria-label="Notifications"
+              variant="ghost"
+              className="hidden h-auto rounded-full p-1 hover:bg-transparent dark:hover:bg-transparent lg:flex"
+                onClick={() =>
+                  profileStore.setChooseProfile(false)
+                }
+            >
+              <Icons.refresh className="h-5 w-5 text-white" />
+            </Button>
+            
           ) : (
             <Skeleton className="aspect-square h-7 bg-neutral-700" />
           )}
@@ -124,8 +149,14 @@ const SiteHeader = () => {
                     variant="ghost"
                     className="h-auto shrink-0 px-2 py-1.5 text-base hover:bg-transparent focus:ring-0 hover:dark:bg-neutral-800 [&[data-state=open]>svg]:rotate-180"
                   >
-                    <div>
-                      <Icons.user className="h-5 w-5 text-white" />
+                    <div className="flex gap-4 items-center">
+                      <Image
+                        src={profileStore.activeProfile?.avatar ?? "/images/Netfli5.png"}
+                        alt="Profile"
+                        width={22}
+                        height={22}
+                        className="rounded"
+                      />
                     </div>
                     <Icons.chevronDown className="ml-2 hidden h-4 w-4 transition-transform duration-200 lg:inline-block" />
                   </Button>

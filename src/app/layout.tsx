@@ -4,7 +4,6 @@ import TRPCProvider from "@/context/trpc-provider"
 import { siteConfig } from "@/config/site"
 import { absoluteUrl, cn } from "@/lib/utils"
 import TailwindIndicator from "@/components/tailwind-indicator"
-import ToastWrapper from "@/components/ui/toast-wrapper"
 import "@/assets/styles/globals.css"
 import { Analytics } from "@vercel/analytics/react"
 
@@ -83,7 +82,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head />
         <body className="min-h-screen main">
           {children}
-          <ToastWrapper />
           <TailwindIndicator />
           <Analytics />
         </body>

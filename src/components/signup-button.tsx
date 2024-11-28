@@ -37,7 +37,7 @@ const SignUpButton = () => {
         ...record,
         age: new Date().getFullYear() - new Date(record.age?? '').getFullYear()
       });
-      router.push("/login");
+      await router.push("/login");
       notification.success({
         message: 'Sign up successfully!',
         description: res?.data?.data?.detail ?? 'Sign up successfully!',
@@ -52,13 +52,13 @@ const SignUpButton = () => {
     }
   };
 
-  const goToLogin = () : void => {
+  const goToLogin = async () : Promise<void> => {
     loadingStore.setIsLoading(true);
-    router.push("/login")
+    await router.push("/login")
   }
 
   useEffect(() => {
-    localStorage.setItem("authToken", "")
+    localStorage.setItem("authToken", "");
     loadingStore.setIsLoading(false);
   }, [])
 

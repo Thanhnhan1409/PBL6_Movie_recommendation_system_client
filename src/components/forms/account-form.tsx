@@ -7,7 +7,6 @@ import type {
   SubscriptionPlan
 } from "@/types"
 import { useForm, type SubmitHandler } from "react-hook-form"
-import { toast } from "react-hot-toast"
 import { formatDate } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import SelectInput from "@/components/select-input"

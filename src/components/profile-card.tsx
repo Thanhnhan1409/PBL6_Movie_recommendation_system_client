@@ -11,7 +11,7 @@ const ProfileCard = ({ image, name, handleClick }: IProfileCardProps) => {
   return (
     <div className="relative rounded-xl flex-none" onClick={handleClick}>
       <Image
-        src={image ? '/images/Netfli5.png' : `/images/Netfli${ image?? + 1}.png`}
+        src={!image ? '/images/Netfli5.png' : `/images/Netfli${image}.png`}
         width={156}
         height={156}
         alt={name ?? 'user'}

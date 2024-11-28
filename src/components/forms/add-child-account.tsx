@@ -1,35 +1,43 @@
 import { signupChild } from "@/lib/api/auth";
 import { useLoadingStore } from "@/stores/loading";
-import { UserSignup } from "@/types";
+import { ChildUserSignup } from "@/types";
 import { Button, DatePicker, Form, Input, Modal, notification } from "antd";
 import { useState } from "react";
 import "../styles/sign-up.css"
+import { useProfileStore } from "@/stores/profile";
 
 const AddChildAccount = () => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const loadingStore = useLoadingStore();
+  const profileStore = useProfileStore();
 
   const showModal = () => {
     setOpen(true);
   }
 
-  const addChildAcc = async (record: UserSignup) => {
+  const addChildAcc = async (record: ChildUserSignup) => {
     try {
       loadingStore.setIsLoading(true);
-      const res = await signupChild({
+      const data = {
         ...record,
         age: new Date().getFullYear() - new Date(record.age?? '').getFullYear()
+      }
+      const res = await signupChild(data);
+      profileStore.setActiveProfile({
+        ...data,
+        avatar: `/images/Netfli${++profileStore.childrenProfiles.length}.png`
       });
+      profileStore.setChooseProfile(true);
       notification.success({
-        message: 'Log in successfully!',
-        description: res?.data?.detail ?? 'Log in successfully!',
+        message: 'Added account!',
+        description: res?.data?.detail ?? 'Added account successfully!',
       });
     } catch (error) {
       console.error(error);
       notification.error({
-        message: 'Log in failed!',
-        description: error?.response?.data?.detail ?? 'Log in failed!',
+        message: 'Add account failed!',
+        description: error?.response?.data?.detail ?? 'Add account failed!',
       });
     } finally {
       loadingStore.setIsLoading(false);
@@ -81,7 +89,7 @@ const AddChildAccount = () => {
           </Form.Item>
           <Form.Item
             name="age"
-            rules={[{ required: true, message: 'Please input your birthday!' }]}
+            rules={[{required: true, message: 'Please input your birthday!' }]}
           >
             <DatePicker
               disabledDate={(current) => current && current.valueOf() > Date.now()}
