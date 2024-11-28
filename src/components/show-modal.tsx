@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import LoadingSpinner from "./show-loading"
 import { detailMovieApi } from "@/lib/api/movies"
+import { useLoadingStore } from "@/stores/loading"
 
 interface ShowModalProps {
   open: boolean
@@ -33,15 +34,14 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
   const [isMuted, setIsMuted] = React.useState<boolean>(false)
   const [isPlaying, setIsPlaying] = React.useState<boolean>(false)
   const [isAdded, setIsAdded] = React.useState<boolean>(false)
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const loadingStore = useLoadingStore()
 
-  // get trailer and genres of show
   React.useEffect(() => {
     const getShow = async () => {
       if (!modalStore.show) return
 
       try {
-        setIsLoading(true);
+        loadingStore.setIsLoading(true);
         const response = await detailMovieApi(modalStore.show?.id)
         const data = response?.data?.data;
         if (data?.videos?.results?.length) {
@@ -56,7 +56,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        loadingStore.setIsLoading(false);
       }
     }
     void getShow()
@@ -78,20 +78,8 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
     }
   }, [isPlaying])
 
-  // const onWatchMovie = () => {
-  //   setIsLoading(true);
-  //   try {
-  //     router.push(`/movies/${modalStore.show?.id}`);
-  //     onOpenChange();
-  //   } catch (error) {
-  //     console.error('Failed to navigate:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const onWatchMovie = () => {
-    setIsLoading(true);
+    loadingStore.setIsLoading(true);
     router.push(`/movies/${modalStore.show?.id}`);
     onOpenChange();
   };
@@ -231,7 +219,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
           </div>
         </div>
         {
-          isLoading && <LoadingSpinner />
+          loadingStore.isLoading && <LoadingSpinner />
         }
       </DialogContent>
     </Dialog>

@@ -4,7 +4,6 @@ import Image from "next/image"
 // import { authOptions } from "@/server/auth"
 
 // import { getCurrentUser } from "@/lib/session"
-// import ResetPinForm from "@/components/forms/reset-pin-form"
 
 export const metadata: Metadata = {
   title: "Reset Profile Pin",
@@ -47,7 +46,6 @@ export default function ResetPinPage() {
         <h2 className="text-xl font-medium sm:text-2xl">
           Lock this profile by creating a 4-digit pin.
         </h2>
-        {/* <ResetPinForm profile={profile} /> */}
       </div>
     </section>
   )

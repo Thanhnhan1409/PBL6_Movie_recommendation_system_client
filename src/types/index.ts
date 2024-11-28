@@ -156,7 +156,6 @@ export type UserSignup = {
   age?: number
   confirmPassword?: string
 }
-  
 
 export type MovieItem = {
   id: number;
@@ -241,6 +240,7 @@ export type MovieDetail = {
     videos: MovieVideo[];
   };
 }
+
 export type MovieList = {
   status_code: number;
   response_type: string;
@@ -280,4 +280,11 @@ export type AllMoviesData = {
   trendingMovies: MovieItem[];
   tvPopularMovies: MovieItem[];
   tvTrendingMovies: MovieItem[];
+}
+
+export type ProfileDataState = {
+  fullname: string
+  email?: string
+  age: number
+  parent_id?: string
 }

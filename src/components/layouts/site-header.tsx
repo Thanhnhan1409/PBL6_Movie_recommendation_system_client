@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useProfileStore } from "@/stores/profile"
 
 const SiteHeader = () => {
   const router = useRouter()
@@ -36,7 +37,7 @@ const SiteHeader = () => {
     if (session) {
       setSession(session)
     }
-  }, [session])
+  }, [localStorage.getItem("authToken")])
   React.useEffect(() => {
     const changeBgColor = () => {
       window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false)
@@ -54,6 +55,7 @@ const SiteHeader = () => {
 
   // stores
   const searchStore = useSearchStore()
+  const profileStore = useProfileStore()
 
   // other profiles query
   // const otherProfilesQuery = profileStore.profile
@@ -63,6 +65,7 @@ const SiteHeader = () => {
   //   : null
 
   const logOut = () => {
+    profileStore.setChooseProfile(false);
     localStorage.removeItem("authToken");
     setSession('')
     router.push("/login")

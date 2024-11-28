@@ -8,8 +8,8 @@
   }
 
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
@@ -20,10 +20,6 @@
 #comment:focus {
   outline: none;
 }
-
-/* .anticon {
-  color: #cbc8c8;
-} */
 
 :where(.css-dev-only-do-not-override-1x0dypw).ant-rate .ant-rate-star-first, :where(.css-dev-only-do-not-override-1x0dypw).ant-rate .ant-rate-star-second {
   color: #cbc8c8;

@@ -25,7 +25,6 @@ interface MainNavProps {
 }
 
 export function MainNav({ items }: MainNavProps) {
-  // const [isLoading, setIsLoading] = useState(false);
   const loadingStore = useLoadingStore()
   const path = usePathname();
   const router = useRouter();

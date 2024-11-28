@@ -5,13 +5,9 @@ import { siteConfig } from "@/config/site"
 import { absoluteUrl, cn } from "@/lib/utils"
 import TailwindIndicator from "@/components/tailwind-indicator"
 import ToastWrapper from "@/components/ui/toast-wrapper"
-import "@/styles/globals.css"
+import "@/assets/styles/globals.css"
 import { Analytics } from "@vercel/analytics/react"
 
-// const fontSans = FontSans({
-//   subsets: ["latin"],
-//   variable: "--font-inter",
-// })
 
 interface RootLayoutProps {
   children: React.ReactNode
