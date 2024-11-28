@@ -2,8 +2,8 @@
   color: #8696A5;
 }
 
-.ant-picker-suffix {
-  color: #8696A5;
+:where(.css-dev-only-do-not-override-1x0dypw).ant-picker .ant-picker-suffix {
+  color: #d0d4d8;
 }
 
 :where(.css-dev-only-do-not-override-1x0dypw).ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover {

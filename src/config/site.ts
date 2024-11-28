@@ -61,6 +61,8 @@ export const siteConfig: SiteConfig = {
       icon: Icons.help,
     },
     {
+      href: "/login",
+      onClick: () => localStorage.removeItem("tokenAuth"),
       title: "Sign Out of Netflix",
     },
   ],

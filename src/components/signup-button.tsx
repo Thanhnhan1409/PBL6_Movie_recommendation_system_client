@@ -12,7 +12,6 @@ import { notification, DatePicker, Input, Form, Button } from 'antd';
 import { useLoadingStore } from "@/stores/loading"
 
 const SignUpButton = () => {
-  // const [isLoading, setIsLoading] = useState(false)
   const loadingStore = useLoadingStore()
   const router = useRouter()
   const [form] = Form.useForm();
@@ -44,7 +43,6 @@ const SignUpButton = () => {
         description: res?.data?.data?.detail ?? 'Sign up successfully!',
       });
     } catch (error) {
-      // setErrorMessage(error?.response?.data?.detail ?? 'Sign up failed!');
       notification.error({
         message: 'Sign up failed!',
         description: error?.response?.data?.detail ?? 'Sign up failed!',
@@ -60,6 +58,7 @@ const SignUpButton = () => {
   }
 
   useEffect(() => {
+    localStorage.setItem("authToken", "")
     loadingStore.setIsLoading(false);
   }, [])
 
@@ -93,16 +92,29 @@ const SignUpButton = () => {
         </Form.Item>
         <Form.Item
           name="age"
-          rules={[{ required: true, message: 'Please input your birthday!' }]}
+          rules={[
+            { required: true, message: 'Please input your birthday!' },
+            { validator: (_, value) => {
+              const age = new Date().getFullYear() - new Date(value ?? '').getFullYear();
+              if (age < 8) {
+                return Promise.reject('Age must be at least 8 years old!');
+              }
+              return Promise.resolve();
+            }}
+          ]}
         >
           <DatePicker
+            disabledDate={(current) => current && current.valueOf() > Date.now()}
             placeholder="Your birthday"
             className="w-full p-4 bg-[black] text-[#8696A5] placeholder:text-[#8696A5] hover:bg-[black] hover:outline-none focus:bg-[black] border-0"
           />
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[
+            { required: true, message: 'Please input your password!' },
+            { min: 6, message: 'Password must be at least 6 characters!' }
+          ]}
         >
           <Input.Password
             placeholder="Password"
@@ -111,7 +123,15 @@ const SignUpButton = () => {
         </Form.Item>
         <Form.Item
           name="confirmPassword"
-          rules={[{ required: true, message: 'Please input your confirm password!' }]}
+          rules={[
+            { required: true, message: 'Please input your confirm password!' },
+            { validator: (_, value) => {
+              if (!value || form.getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject('Confirm password does not match!');
+            }}
+          ]}
         >
           <Input.Password
             placeholder="Confirm Password"

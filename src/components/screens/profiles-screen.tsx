@@ -1,27 +1,16 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
-// import { useProfileStore } from "@/stores/profile"
-import { AnimatePresence, motion, useScroll } from "framer-motion"
-import type { Session } from "next-auth"
-
-import PinForm from "@/components/forms/pin-form"
-import { Icons } from "@/components/icons"
 import SiteFooter from "@/components/layouts/site-footer"
 import SiteHeader from "@/components/layouts/site-header"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 
 interface ProfilesScreenProps {
   children: React.ReactNode
 }
 
 const ProfilesScreen = ({ children }: ProfilesScreenProps) => {
-  const router = useRouter()
-  const mounted = useMounted()
   const [session, setSession] = React.useState<string>()
   React.useEffect(() => {
     const session = localStorage.getItem("session")

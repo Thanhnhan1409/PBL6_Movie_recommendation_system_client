@@ -14,7 +14,7 @@ const RatingItem = ({ rating }: IRatingItemProps) => {
           <Icons.user className="w-5 h-5 absolute" />
         </div>
         <div>
-          <div className="font-semibold">{String(rating?.user?.fullname)}</div>
+          <div className="font-semibold mt-1 text-sm">{String(rating?.user?.fullname)}</div>
           <div className="flex items-center">
             <div>
               { Array.from({ length: rating?.rating }, (_, index) => (
