@@ -1,6 +1,5 @@
-import { UserLogin, UserSignup } from '@/types';
+import { UserLogin, UserSignup, ChildUserSignup } from '@/types';
 import axiosInstance from '../hooks/axiosInstance';
-import exp from 'constants';
 export const login = async (data: UserLogin) => {
   try {
     const res = await axiosInstance.post('/users/login', data);
@@ -21,7 +20,7 @@ export const getMe = async () => {
   return await axiosInstance.get('/users/get-me');
 }
 
-export const signupChild = async (data: UserSignup) => {
+export const signupChild = async (data: ChildUserSignup) => {
   return await axiosInstance.post('/users/childs', data);
 }
 

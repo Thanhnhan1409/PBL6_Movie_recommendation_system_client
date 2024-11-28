@@ -27,8 +27,6 @@ export const recommendMoviesApi = async (id: number, page: number = 1) => {
 
 export const getMovies = async (page: number = 1) : Promise<AllMoviesData> => {
   try {
-    console.log(11111111);
-    
     const popularMovies = await popularMoviesApi(page)
     const trendingMovies = await trendingMoviesApi(page)
     const tvPopularMovies = await tvPopularMoviesApi(page)
@@ -48,4 +46,8 @@ export const getMovies = async (page: number = 1) : Promise<AllMoviesData> => {
       tvTrendingMovies: []
     };
   }
+}
+
+export const getMoviesSearchApi = async ( page: number = 1, query: string = '') => {
+  return await axiosInstance.get(`/tmdb-movies/search?key_word=${query}&page=${page}`)
 }

@@ -157,6 +157,11 @@ export type UserSignup = {
   confirmPassword?: string
 }
 
+export type ChildUserSignup = {
+  fullname: string
+  age: number
+}
+
 export type MovieItem = {
   id: number;
   title: string;
@@ -283,8 +288,9 @@ export type AllMoviesData = {
 }
 
 export type ProfileDataState = {
-  fullname: string
+  avatar?: string
+  fullname?: string
   email?: string
-  age: number
+  age?: number
   parent_id?: string
 }

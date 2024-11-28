@@ -51,6 +51,7 @@ import {
   Heart,
   MessageSquare,
   Send,
+  RefreshCw,
   type Icon as LucideIcon,
   type LucideProps,
 } from "lucide-react"
@@ -110,6 +111,7 @@ export const Icons = {
   heart: Heart,
   messageSquare: MessageSquare,
   send: Send,
+  refreshCw: RefreshCw,
   logo: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

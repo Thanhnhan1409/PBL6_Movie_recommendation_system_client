@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { signIn } from "next-auth/react"
-import { toast } from "react-hot-toast"
 import { Icons } from "@/components/icons"
 import { useRouter } from "next/navigation"
 import { getMe, login } from "@/lib/api/auth"
@@ -27,9 +26,7 @@ const LoginButton = () => {
     try {
       await signIn("google")
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
-      )
+      console.error(error);
     } finally {
       setTimeout(() => loadingStore.setIsLoading(false), 1000)
     }
@@ -41,13 +38,19 @@ const LoginButton = () => {
       loadingStore.setIsLoading(true);
       const res = await login(record);
       const profileRes = await getMe();
-      profileStore.setActiveProfile(profileRes?.data);
-      profileStore.setParentProfile(profileRes?.data);
-      router.push("/");
+      profileStore.setActiveProfile({
+        ...profileRes?.data,
+        avatar: '/images/Netfli5.png'
+      });
+      profileStore.setParentProfile({
+        ...profileRes?.data,
+        avatar: '/images/Netfli5.png'
+      });
       notification.success({
-        message: 'Log in successfully!',
+        message: 'Log in',
         description: res?.data?.detail ?? 'Log in successfully!',
       });
+      await router.push("/");
     } catch (error) {
       console.error(error);
       notification.error({

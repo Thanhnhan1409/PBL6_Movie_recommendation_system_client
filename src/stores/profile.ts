@@ -5,9 +5,9 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware"
 type ProfileState = {
   chooseProfile: boolean
   setChooseProfile: (chooseProfile: boolean) => void
-  activeProfile: ProfileDataState | null
+  activeProfile: ProfileDataState | undefined
   setActiveProfile: (profile: ProfileDataState) => void
-  parentProfile: ProfileDataState | null
+  parentProfile: ProfileDataState | undefined
   setParentProfile: (profile: ProfileDataState) => void
   childrenProfiles: ProfileDataState[]
   setChildrenProfiles: (profiles: ProfileDataState[]) => void
@@ -21,9 +21,9 @@ export const useProfileStore = create<ProfileState>()(
       (set) => ({
         chooseProfile: false,
         setChooseProfile: (chooseProfile: boolean) => set({ chooseProfile }),
-        activeProfile: null,
+        activeProfile: undefined,
         setActiveProfile: (activeProfile: ProfileDataState) => set({ activeProfile }),
-        parentProfile: null,
+        parentProfile: undefined,
         setParentProfile: (parentProfile: ProfileDataState) => set({ parentProfile }),
         childrenProfiles: [],
         setChildrenProfiles: (childrenProfiles: ProfileDataState[]) => set({ childrenProfiles }),
