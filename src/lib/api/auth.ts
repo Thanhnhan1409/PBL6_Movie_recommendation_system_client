@@ -1,4 +1,4 @@
-import { UserLogin, UserSignup, ChildUserSignup } from '@/types';
+import { UserLogin, UserSignup, ChildUserSignup, ProfileDataState, ChildProfile } from '@/types';
 import axiosInstance from '../hooks/axiosInstance';
 export const login = async (data: UserLogin) => {
   try {
@@ -26,4 +26,8 @@ export const signupChild = async (data: ChildUserSignup) => {
 
 export const getChildrenApi = async () => {
   return await axiosInstance.get('/users/childs');
+}
+
+export const chooseProfileApi = async (data: ChildProfile) => {
+  return await axiosInstance.post('/users/choose-profile', data);
 }

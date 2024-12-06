@@ -47,7 +47,6 @@ const SignUpButton = () => {
         message: 'Sign up failed!',
         description: error?.response?.data?.detail ?? 'Sign up failed!',
       });
-    } finally {
       loadingStore.setIsLoading(false);
     }
   };

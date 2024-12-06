@@ -293,4 +293,10 @@ export type ProfileDataState = {
   email?: string
   age?: number
   parent_id?: string
+  id?: string
+}
+
+export type ChildProfile = {
+  parent_id?: string
+  user_id?: string
 }

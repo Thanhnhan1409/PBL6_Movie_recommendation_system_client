@@ -11,6 +11,7 @@ import ShowModal from "@/components/show-modal"
 import ShowsCarousel from "@/components/shows-carousel"
 import ShowsGrid from "@/components/shows-grid"
 import ShowsSkeleton from "@/components/shows-skeleton"
+import { getMoviesSearchApi } from "@/lib/api/movies"
 
 interface ShowsContainerProps {
   shows: CategorizedShows[]
@@ -28,6 +29,7 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
 
   if (searchStore.query.length > 0) {
     return <ShowsGrid shows={searchStore.shows} />
+    
   }
 
   return (

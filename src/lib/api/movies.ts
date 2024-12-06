@@ -51,3 +51,15 @@ export const getMovies = async (page: number = 1) : Promise<AllMoviesData> => {
 export const getMoviesSearchApi = async ( page: number = 1, query: string = '') => {
   return await axiosInstance.get(`/tmdb-movies/search?key_word=${query}&page=${page}`)
 }
+
+export const getRecentlyViewApi = async () => {
+  return await axiosInstance.get(`/tmdb-movies/recently-viewed`)
+}
+
+export const getGenresApi = async () => {
+  return await axiosInstance.get(`/tmdb-movies/genres`)
+}
+
+export const getMoviesByGenreApi = async (genreId: string, page: number = 1) => {
+  return await axiosInstance.get(`/tmdb-movies/discover?page=${page}&genre=${genreId}`)
+}
