@@ -2,7 +2,9 @@
   color: #8696A5;
 }
 
-:where(.css-dev-only-do-not-override-1x0dypw).ant-picker .ant-picker-suffix {
+:where(.css-dev-only-do-not-override-1x0dypw).ant-picker .ant-picker-suffix,
+:where(.css-dev-only-do-not-override-1x0dypw).ant-input-affix-wrapper .anticon.ant-input-password-icon:hover,
+:where(.css-dev-only-do-not-override-1x0dypw).ant-input-affix-wrapper .anticon.ant-input-password-icon {
   color: #d0d4d8;
 }
 

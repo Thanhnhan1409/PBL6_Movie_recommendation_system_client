@@ -110,7 +110,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
             width="100%"
             height="100%"
             muted={isMuted}
-            playing={isPlaying}
+            playing={true}
             controls={false}
             onStart={() => setIsPlaying(true)}
             onPlay={() => setIsPlaying(true)}
@@ -119,29 +119,6 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
           />
           <div className="absolute bottom-6 z-20 flex w-full items-center justify-between gap-2 px-10">
             <div className="flex items-center gap-2.5">
-              <Button
-                aria-label={`${isPlaying ? "Pause" : "Play"} show`}
-                className="group h-auto rounded py-1.5"
-                onClick={() => setIsPlaying(!isPlaying)}
-              >
-                {isPlaying ? (
-                  <>
-                    <Icons.pause
-                      className="mr-1.5 h-6 w-6 fill-current"
-                      aria-hidden="true"
-                    />
-                    Pause
-                  </>
-                ) : (
-                  <>
-                    <Icons.play
-                      className="mr-1.5 h-6 w-6 fill-current"
-                      aria-hidden="true"
-                    />
-                    Play
-                  </>
-                )}
-              </Button>
               <DynamicTooltip
                 text={isAdded ? "Remove from My List" : "Add to My List"}
               >

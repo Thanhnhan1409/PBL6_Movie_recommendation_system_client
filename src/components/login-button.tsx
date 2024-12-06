@@ -53,12 +53,11 @@ const LoginButton = () => {
       await router.push("/");
     } catch (error) {
       console.error(error);
+      loadingStore.setIsLoading(false);
       notification.error({
         message: 'Log in failed!',
         description: error?.response?.data?.detail ?? 'Log in failed!',
       });
-    } finally {
-      setTimeout(() => loadingStore.setIsLoading(false), 1000)
     }
   }
 
@@ -148,7 +147,7 @@ const LoginButton = () => {
   
   return (
     <div className="w-full rounded-md bg-[#000000b3] p-14 backdrop-blur-lg">
-      <h1 className="mb-4 text-center text-3xl font-bold">Sign in</h1>
+      <div className="mb-4 text-center text-3xl font-bold">Sign in</div>
       <Form
         name="data"
         initialValues={{ remember: true }}

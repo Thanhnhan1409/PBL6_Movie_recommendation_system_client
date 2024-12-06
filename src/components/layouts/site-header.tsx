@@ -33,7 +33,9 @@ const SiteHeader = () => {
   const mounted = useMounted()
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [session, setSession] = React.useState<string>()
-  const [page, setPage] = React.useState<number>(2)
+  const [page, setPage] = React.useState<number>(1)
+  const searchStore = useSearchStore()
+  const profileStore = useProfileStore()
 
   React.useEffect(() => {
     const session = localStorage.getItem("authToken")
@@ -50,21 +52,29 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", changeBgColor)
   }, [isScrolled])
 
-  async function searchShowsByQuery(value: string) {
-    if (value !== searchStore.query) {
-      try {
-        searchStore.setQuery(value)
-        const shows = await getMoviesSearchApi(page, value)
-        searchStore.setShows(shows.data?.data)
-      } catch (error) {
-        console.error("Failed to search shows:", error)
-      }
+  React.useEffect(() => {
+
+  }, [searchStore.query])
+
+
+  const fetchSearchShows = async (value: string) => {
+    try {
+      const shows = await getMoviesSearchApi(page, value)
+      searchStore.setShows(shows.data?.data)
+    } catch (error) {
+      console.error("Failed to search shows:", error)
     }
   }
 
+  async function searchShowsByQuery(value: string) {
+    if (value !== searchStore.query) {
+      setPage(1);
+      searchStore.setQuery(value)
+      fetchSearchShows(value);
+    }
+  }
   // stores
-  const searchStore = useSearchStore()
-  const profileStore = useProfileStore()
+
 
   // other profiles query
   // const otherProfilesQuery = profileStore.profile
@@ -125,7 +135,7 @@ const SiteHeader = () => {
           ) : (
             <Skeleton className="aspect-square h-7 bg-neutral-700" />
           )}
-          {mounted ? (
+          {mounted && session && (
             <Button
               aria-label="Notifications"
               variant="ghost"
@@ -137,8 +147,6 @@ const SiteHeader = () => {
               <Icons.refresh className="h-5 w-5 text-white" />
             </Button>
             
-          ) : (
-            <Skeleton className="aspect-square h-7 bg-neutral-700" />
           )}
           {mounted ? (
             session ? (

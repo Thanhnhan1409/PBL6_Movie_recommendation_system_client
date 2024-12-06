@@ -6,7 +6,8 @@ import { getShows } from "@/lib/fetchers"
 import ShowsContainer from "@/components/shows-container"
 import LoadingSpinner from "@/components/show-loading"
 import { useEffect, useState } from "react"
-import { getMovies } from "@/lib/api/movies"
+import { tvPopularMoviesApi, tvTrendingMoviesApi } from "@/lib/api/movies"
+import { useLoadingStore } from "@/stores/loading";
 
 // export const metadata: Metadata = {
 //   title: "TV Shows",
@@ -14,36 +15,31 @@ import { getMovies } from "@/lib/api/movies"
 // }
 
 export default async function TVShowsPage() {
-  const [loading, setLoading] = useState(true);
   const [allShowsByCategory, setAllShowsByCategory] = useState<CategorizedShows[]>([]);
+  const loadingStore = useLoadingStore()
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const allShows = await getMovies();
+        loadingStore.setIsLoading(true);
+        const popularRes = await tvPopularMoviesApi();
+        const trendingRes = await tvTrendingMoviesApi();
+
         const categorizedShows: CategorizedShows[] = [
           {
-            title: "Trending Now",
-            shows: allShows?.trendingMovies,
-          },
-          {
-            title: "Popular on Netflix",
-            shows: allShows?.popularMovies,
-          },
-          {
-            title: "Popular TV Shows",
-            shows: allShows?.tvPopularMovies,
+            title: "Popular TV shows",
+            shows: popularRes.data?.data,
           },
           {
             title: "Trending TV Shows",
-            shows: allShows?.tvTrendingMovies,
+            shows: trendingRes.data?.data,
           },
         ];
         setAllShowsByCategory(categorizedShows);
       } catch (error) {
         console.error("Failed to fetch movies:", error);
       } finally {
-        setLoading(false);
+        loadingStore.setIsLoading(false);
       }
     };
 
@@ -52,7 +48,11 @@ export default async function TVShowsPage() {
   return (
     <section className="pb-16 pt-10">
       <ShowsContainer shows={allShowsByCategory} />
-      { loading && <LoadingSpinner /> }
+      { loadingStore.isLoading && <LoadingSpinner /> }
     </section>
   )
 }
+function awaittvTrendingMoviesApi() {
+  throw new Error("Function not implemented.");
+}
+

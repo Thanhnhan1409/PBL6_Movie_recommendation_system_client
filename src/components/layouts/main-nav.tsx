@@ -36,7 +36,6 @@ export function MainNav({ items }: MainNavProps) {
     searchStore.setQuery("");
     searchStore.setShows([]);
     await router.push(href);
-    loadingStore.setIsLoading(false);
   };
 
   return (

@@ -22,22 +22,24 @@ const ShowsGrid = ({ shows }: SearchedShowsProps) => {
       {modalStore.open ? (
         <ShowModal open={modalStore.open} setOpen={modalStore.setOpen} />
       ) : null}
-      <div className="flex flex justify-center flex-wrap gap-y-6 gap-x-7">
+      <div className="relative flex flex justify-center flex-wrap gap-y-8 gap-x-2">
         {shows?.map((show) => (
-          <Image
-            key={show.id}
-            src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
-            alt={show.title ?? "poster"}
-            width={300}
-            height={400}
-            priority
-            className="rounded-xl cursor-pointer object-cover transition-all hover:z-20 hover:scale-105"
-            onClick={() => {
-              modalStore.setShow(show)
-              modalStore.setOpen(true)
-              modalStore.setPlay(false)
-            }}
-          />
+          <div key={show.id} className="relative">
+            <Image
+              src={`https://image.tmdb.org/t/p/w500/${show.backdrop_path ?? show.poster_path}`}
+              alt={show.title ?? "poster"}
+              width={250}
+              height={130}
+              priority
+              className="rounded cursor-pointer object-cover transition-all hover:z-20 hover:scale-105 max-w-[250px] max-h-[130px]"
+              onClick={() => {
+                modalStore.setShow(show)
+                modalStore.setOpen(true)
+                modalStore.setPlay(false)
+              }}
+            />
+            <span className="absolute bottom-3.5 left-4 font-title">{show.title ?? show.original_title}</span>
+          </div>
         ))}
       </div>
     </section>

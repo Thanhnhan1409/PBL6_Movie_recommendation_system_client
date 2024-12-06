@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
@@ -23,4 +24,11 @@
 
 :where(.css-dev-only-do-not-override-1x0dypw).ant-rate .ant-rate-star-first, :where(.css-dev-only-do-not-override-1x0dypw).ant-rate .ant-rate-star-second {
   color: #cbc8c8;
+}
+
+.font-title {
+  font-family: 'Dancing Script', cursive;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
