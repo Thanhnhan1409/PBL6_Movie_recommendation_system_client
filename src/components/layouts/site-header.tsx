@@ -2,14 +2,12 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
 import { useSearchStore } from "@/stores/search"
 import { signOut } from "next-auth/react"
-import { toast } from "react-hot-toast"
 
 import { siteConfig } from "@/config/site"
-import { searchShows } from "@/lib/fetchers"
 import { cn } from "@/lib/utils"
 import { DebouncedInput } from "@/components/debounced-input"
 import { Icons } from "@/components/icons"
@@ -26,22 +24,26 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useProfileStore } from "@/stores/profile"
 import Image from "next/image"
 import { getMoviesSearchApi } from "@/lib/api/movies"
+import { useLoadingStore } from "@/stores/loading"
 
 const SiteHeader = () => {
   const router = useRouter()
   const path = usePathname()
+  const searchParams = useSearchParams()
   const mounted = useMounted()
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [session, setSession] = React.useState<string>()
   const [page, setPage] = React.useState<number>(1)
   const searchStore = useSearchStore()
   const profileStore = useProfileStore()
+  const loadingStore = useLoadingStore()
 
   React.useEffect(() => {
     const session = localStorage.getItem("authToken")
-    
     if (session) {
       setSession(session)
+      const search = searchParams.get("search");
+      searchShowsByQuery(search ?? "");
     }
   }, [setSession])
   React.useEffect(() => {
@@ -52,17 +54,15 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", changeBgColor)
   }, [isScrolled])
 
-  React.useEffect(() => {
-
-  }, [searchStore.query])
-
-
   const fetchSearchShows = async (value: string) => {
     try {
+      loadingStore.setIsLoading(true)
       const shows = await getMoviesSearchApi(page, value)
       searchStore.setShows(shows.data?.data)
     } catch (error) {
       console.error("Failed to search shows:", error)
+    } finally {
+      loadingStore.setIsLoading(false)
     }
   }
 
@@ -71,6 +71,7 @@ const SiteHeader = () => {
       setPage(1);
       searchStore.setQuery(value)
       fetchSearchShows(value);
+      router.push(`?search=${value}`);
     }
   }
   // stores
@@ -87,6 +88,7 @@ const SiteHeader = () => {
     profileStore.setChooseProfile(false);
     localStorage.removeItem("authToken");
     setSession('')
+    loadingStore.setIsLoading(false);
     await router.push("/login")
     signOut()
   }
@@ -120,11 +122,6 @@ const SiteHeader = () => {
               aria-label="Notifications"
               variant="ghost"
               className="hidden h-auto rounded-full p-1 hover:bg-transparent dark:hover:bg-transparent lg:flex"
-              onClick={() =>
-                toast.success("Do a kickflip", {
-                  icon: "🛹",
-                })
-              }
             >
               <Icons.bell
                 className="h-5 w-5 cursor-pointer text-white transition-opacity hover:opacity-75 active:scale-95"

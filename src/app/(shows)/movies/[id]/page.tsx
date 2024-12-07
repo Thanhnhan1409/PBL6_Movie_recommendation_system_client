@@ -6,7 +6,7 @@ import { useModalStore } from "@/stores/modal";
 import ReactPlayer from "react-player/lazy";
 import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingData, MovieVideo } from "@/types";
 import ShowsCarousel from "@/components/shows-carousel";
-import { detailMovieApi, recommendMoviesApi } from "@/lib/api/movies";
+import { detailMovieApi, recommendMoviesApi, viewMoviewByIdApi } from "@/lib/api/movies";
 import { Icons } from "@/components/icons";
 import ShowModal from "@/components/show-modal";
 import { addMovieRatingApi, getMovieRatingApi } from "@/lib/api/rating";
@@ -22,7 +22,6 @@ export default function MovieDetail() {
 
   const [trailer, setTrailer] = React.useState("");
   const [genres, setGenres] = React.useState<Genre[]>([]);
-  // const [isLoading, setIsLoading] = React.useState(false);
   const loadingStore = useLoadingStore();
   const [movie, setMovie] = React.useState<MovieDetail | null>(null);
   const [recommendMovies, setRecommendMovies] = React.useState<MovieItem[] | undefined>();
@@ -44,6 +43,7 @@ export default function MovieDetail() {
       try {
         loadingStore.setIsLoading(true);
         const response = await detailMovieApi(Number(params.id));
+        await viewMoviewByIdApi(Number(params.id));
         const data = response?.data?.data;
         setMovie(response.data)
         if (data?.videos?.results?.length) {

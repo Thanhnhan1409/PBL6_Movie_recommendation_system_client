@@ -63,3 +63,7 @@ export const getGenresApi = async () => {
 export const getMoviesByGenreApi = async (genreId: string, page: number = 1) => {
   return await axiosInstance.get(`/tmdb-movies/discover?page=${page}&genre=${genreId}`)
 }
+
+export const viewMoviewByIdApi = async (movie_id: number) => {
+  return await axiosInstance.post(`/tmdb-movies/view?movie_id=${movie_id}`)
+}

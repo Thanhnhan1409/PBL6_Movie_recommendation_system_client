@@ -22,7 +22,7 @@ const ShowsGrid = ({ shows }: SearchedShowsProps) => {
       {modalStore.open ? (
         <ShowModal open={modalStore.open} setOpen={modalStore.setOpen} />
       ) : null}
-      <div className="relative flex flex justify-center flex-wrap gap-y-8 gap-x-2">
+      <div className="relative flex flex flex-wrap gap-y-8 gap-x-3">
         {shows?.map((show) => (
           <div key={show.id} className="relative">
             <Image
@@ -38,7 +38,16 @@ const ShowsGrid = ({ shows }: SearchedShowsProps) => {
                 modalStore.setPlay(false)
               }}
             />
-            <span className="absolute bottom-3.5 left-4 font-title">{show.title ?? show.original_title}</span>
+            <div className="w-full pt-3">
+              <div className="text-white font-semibold w-full">{show?.title ?? show?.original_title}</div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="pr-3 border-r leading-4">T16</div>
+                  <div className="pr-3 border-r leading-4">Korean</div>
+                  <div>1g30ph</div>
+                </div>
+                <div className="text-xs text-[#6c6f74] w-[240px] line-clamp-2">{show?.overview}</div>
+            </div>
+            {/* <span className="absolute bottom-3.5 left-4 font-title">{show.title ?? show.original_title}</span> */}
           </div>
         ))}
       </div>

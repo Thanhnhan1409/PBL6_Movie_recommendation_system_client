@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { useMounted } from "@/hooks/use-mounted"
 import { useModalStore } from "@/stores/modal"
 import { useSearchStore } from "@/stores/search"
@@ -11,7 +11,6 @@ import ShowModal from "@/components/show-modal"
 import ShowsCarousel from "@/components/shows-carousel"
 import ShowsGrid from "@/components/shows-grid"
 import ShowsSkeleton from "@/components/shows-skeleton"
-import { getMoviesSearchApi } from "@/lib/api/movies"
 
 interface ShowsContainerProps {
   shows: CategorizedShows[]
@@ -20,22 +19,22 @@ interface ShowsContainerProps {
 const ShowsContainer = ({ shows }: ShowsContainerProps) => {
   const path = usePathname()
   const mounted = useMounted()
-
+  const searchParams = useSearchParams()
   // stores
   const modalStore = useModalStore()
   const searchStore = useSearchStore()
 
   if (!mounted) return <ShowsSkeleton />
+  
+  console.log("searchStore.query", searchParams.get('search'));
+  
 
   if (searchStore.query.length > 0) {
     return <ShowsGrid shows={searchStore.shows} />
     
   }
-  console.log("shows", shows);
-  
-
   return (
-    <div
+    <section
       className={cn("w-full space-y-5 sm:space-y-10", path === "/" && "pt-24")}
     >
       {modalStore.open ? (
@@ -48,7 +47,7 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
           shows={item.shows ?? []}
         />
       ))}
-    </div>
+    </section>
   )
 }
 

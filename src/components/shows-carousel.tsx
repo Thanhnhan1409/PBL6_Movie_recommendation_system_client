@@ -43,7 +43,7 @@ const ShowsCarousel = ({ title, shows, recommendMode }: ShowsCarouselProps) => {
           <h2 className="text-lg font-semibold text-white/90 transition-colors hover:text-white sm:text-xl">
             {title ?? "-"}
           </h2>
-          <div className="group relative">
+          <article className="group relative">
             {shows.length > 5 ? (
               <>
                 <Button
@@ -73,15 +73,15 @@ const ShowsCarousel = ({ title, shows, recommendMode }: ShowsCarouselProps) => {
                 </Button>
               </>
             ) : null}
-            <div
+            <section
               ref={showsRef}
               className="no-scrollbar flex h-full w-full items-center gap-5 overflow-x-auto overflow-y-hidden"
             >
               {shows?.map((show) => (
                 <ShowCard key={show.id} show={show} recommedMode={recommendMode} />
               ))}
-            </div>
-          </div>
+            </section>
+          </article>
         </div>
       )}
     </section>

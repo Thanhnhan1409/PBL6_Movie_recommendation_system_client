@@ -10,16 +10,16 @@ interface IShowCardProps {
 
 const ShowCard = ({ show, recommedMode }: IShowCardProps) => {
   return (
-    <div className={`relative rounded-xl ${recommedMode? 'h-[250px]' : 'h-[420px] w-[240px]'} flex-none`}>
+    <div className={`relative rounded-xl ${recommedMode? 'h-[250px]' : 'h-[330px] w-[200px]'} flex-none`}>
       <Image
         src={`https://image.tmdb.org/t/p/w500/${
           !recommedMode? show.poster_path : show.backdrop_path ?? ""
         }`}
-        width={300}
-        height={recommedMode? 150: 420}
+        width={recommedMode? 300: 200}
+        height={recommedMode? 150: 330}
         alt={show.title ?? "poster"}
         loading="lazy"
-        className={`aspect-video cursor-pointer object-cover transition-all hover:z-20 hover:scale-110 rounded-lg hover:rounded-xl ${recommedMode? 'h-[150px]' : 'h-[420px] w-[240px]'} duration-300`}
+        className={`aspect-video cursor-pointer object-cover transition-all hover:z-20 hover:scale-110 rounded-lg hover:rounded-xl ${recommedMode? 'h-[150px]' : 'h-[330px] w-[200px]'} duration-300`}
         onClick={() => {
           console.log('click');
           useModalStore.setState({

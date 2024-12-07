@@ -97,7 +97,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
       open={open}
     >
       <DialogContent className="w-full overflow-hidden rounded-md bg-zinc-900 p-0 text-left align-middle shadow-xl dark:bg-zinc-900 sm:max-w-3xl">
-        <div className="relative aspect-video">
+        <section className="relative aspect-video">
           <div
             className={cn(
               "bg-black/10 bg-gradient-to-b from-neutral-900/10 to-neutral-900",
@@ -118,7 +118,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
             onEnded={() => setIsPlaying(false)}
           />
           <div className="absolute bottom-6 z-20 flex w-full items-center justify-between gap-2 px-10">
-            <div className="flex items-center gap-2.5">
+            <figure className="flex items-center gap-2.5">
               <DynamicTooltip
                 text={isAdded ? "Remove from My List" : "Add to My List"}
               >
@@ -146,7 +146,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
                   )}
                 </Button> */}
               </DynamicTooltip>
-            </div>
+            </figure>
             <Button
               aria-label={`${isMuted ? "Unmute" : "Mute"} video`}
               variant="ghost"
@@ -160,8 +160,8 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
               )}
             </Button>
           </div>
-        </div>
-        <div className="grid gap-2.5 px-10 pb-10">
+        </section>
+        <section className="grid gap-2.5 px-10 pb-10">
           <div className="flex justify-between items-center">
             <DialogTitle className="text-lg font-medium leading-6 text-slate-50 sm:text-xl">
               {modalStore.show?.title ?? modalStore.show?.original_title}
@@ -194,7 +194,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
             <span className="text-slate-400">Genres:</span>
             {genres.map((genre) => genre.name).join(", ")}
           </div>
-        </div>
+        </section>
         {
           loadingStore.isLoading && <LoadingSpinner />
         }
