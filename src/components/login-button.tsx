@@ -18,6 +18,7 @@ const LoginButton = () => {
 
   useEffect(() => {
     localStorage.setItem("authToken", "");
+    localStorage.setItem("parentAuthToken", "");
     loadingStore.setIsLoading(false);
   }, [])
 

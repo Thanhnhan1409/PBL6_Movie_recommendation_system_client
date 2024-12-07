@@ -115,7 +115,7 @@ const SiteHeader = () => {
           ) : (
             <Skeleton className="aspect-square h-7 bg-neutral-700" />
           )}
-          {mounted ? (
+          {mounted && session && (
             <Button
               aria-label="Notifications"
               variant="ghost"
@@ -132,8 +132,6 @@ const SiteHeader = () => {
               />
             </Button>
             
-          ) : (
-            <Skeleton className="aspect-square h-7 bg-neutral-700" />
           )}
           {mounted && session && (
             <Button

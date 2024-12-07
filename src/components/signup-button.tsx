@@ -63,7 +63,7 @@ const SignUpButton = () => {
 
   return (
     <div className="w-full rounded-md bg-[#000000b3] p-10 backdrop-blur-lg sign-up">
-      <h1 className="mb-4 text-center text-3xl font-bold">Sign up</h1>
+      <div className="mb-4 text-center text-3xl font-bold">Sign up</div>
       <Form
         name="data"
         initialValues={{ remember: true }}

@@ -1,10 +1,12 @@
 import { UserLogin, UserSignup, ChildUserSignup, ProfileDataState, ChildProfile } from '@/types';
 import axiosInstance from '../hooks/axiosInstance';
+import axios from 'axios';
 export const login = async (data: UserLogin) => {
   try {
     const res = await axiosInstance.post('/users/login', data);
     if(res.status === 200) {
       localStorage.setItem('authToken', res.data.access_token);
+      localStorage.setItem('parentAuthToken', res.data.access_token);
     }
     return res.data;
   } catch (error) {
@@ -25,9 +27,10 @@ export const signupChild = async (data: ChildUserSignup) => {
 }
 
 export const getChildrenApi = async () => {
-  return await axiosInstance.get('/users/childs');
+  const token = localStorage.getItem("parentAuthToken")
+  return axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/childs`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 export const chooseProfileApi = async (data: ChildProfile) => {
-  return await axiosInstance.post('/users/choose-profile', data);
+  return axiosInstance.post('/users/choose-profile', data);
 }

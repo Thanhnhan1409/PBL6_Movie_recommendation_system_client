@@ -37,9 +37,9 @@ export default function HelpCenterPage() {
         }
       >
         <div className="flex flex-col items-center justify-center gap-5">
-          <h1 className="text-center text-3xl font-medium sm:text-4xl">
+          <div className="text-center text-3xl font-medium sm:text-4xl">
             Help Center
-          </h1>
+          </div>
           <p className="text-center text-xl font-medium sm:text-2xl">
             How to do a heelflip
           </p>

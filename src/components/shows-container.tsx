@@ -31,6 +31,8 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
     return <ShowsGrid shows={searchStore.shows} />
     
   }
+  console.log("shows", shows);
+  
 
   return (
     <div
