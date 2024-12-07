@@ -48,6 +48,8 @@ export default function Home() {
     if(!session) {
       redirect('/login')
     }
+    const checkChild = Boolean(profileStore.activeProfile?.age ?? 0 < 13)
+    setIsChild(checkChild);
     loadingStore.setIsLoading(true);
     const getListChildren = async () => {
       try {
@@ -56,8 +58,6 @@ export default function Home() {
         profileStore.setChildrenProfiles(res?.data);
       } catch (error) {
         console.error("Failed to fetch children:", error);
-      } finally {
-        // setTimeout(() => loadingStore.setIsLoading(false), 500);
       }
     }
 
@@ -101,11 +101,16 @@ export default function Home() {
           const firstCartoonRes = await getMoviesByGenreApi('16', 1);
           const secondCartoonRes = await getMoviesByGenreApi('16', 2);
           const firstFamilyRes = await getMoviesByGenreApi('10751');
+          const recentlyViewRes = await getRecentlyViewApi();
           const secondFamilyRes = await getMoviesByGenreApi('10751', 2);
           const categorizedShows: CategorizedShows[] = [
             {
               title: "Netflix’s Top Animated Treasures",
               shows: firstCartoonRes.data?.data,
+            },
+            {
+              title: "Continue Watching List",
+              shows: recentlyViewRes.data?.data,
             },
             {
               title: "Must-See Animation on Netflix",
