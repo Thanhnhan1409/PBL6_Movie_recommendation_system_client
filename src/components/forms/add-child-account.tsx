@@ -70,7 +70,7 @@ const AddChildAccount = () => {
           }
         }}
       >
-        <h1 className="mb-4 text-center text-2xl font-bold text-white">Add child Account</h1>
+        <div className="mb-4 text-center text-2xl font-bold text-white">Add child Account</div>
         <Form
           name="data"
           initialValues={{ remember: true }}

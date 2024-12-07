@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import LoadingSpinner from "../show-loading";
 import { useLoadingStore } from "@/stores/loading";
+import React from "react";
 
 interface MainNavProps {
   items?: NavItem[];
@@ -28,6 +30,7 @@ export function MainNav({ items }: MainNavProps) {
   const loadingStore = useLoadingStore()
   const path = usePathname();
   const router = useRouter();
+  const [session, setSession] = useState<string>('');
 
   // search store
   const searchStore = useSearchStore();
@@ -37,6 +40,15 @@ export function MainNav({ items }: MainNavProps) {
     searchStore.setShows([]);
     await router.push(href);
   };
+
+  
+  React.useEffect(() => {
+    const session = localStorage.getItem("authToken")
+    
+    if (session) {
+      setSession(session)
+    }
+  }, [setSession])
 
   return (
     <div className="flex gap-6 lg:gap-10">
@@ -57,7 +69,7 @@ export function MainNav({ items }: MainNavProps) {
       </Link>
 
       {/* Desktop Navigation */}
-      {items?.length ? (
+      {session && items?.length ? (
         <nav className="hidden gap-6 lg:flex">
           {items.map(
             (item, index) =>

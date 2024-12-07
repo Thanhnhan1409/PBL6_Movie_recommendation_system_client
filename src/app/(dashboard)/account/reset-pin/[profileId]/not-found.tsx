@@ -13,9 +13,9 @@ export default function NotFound() {
             aria-hidden="true"
           />
         </div>
-        <h1 className="mt-2 text-2xl font-medium text-slate-50 sm:text-3xl">
+        <div className="mt-2 text-2xl font-medium text-slate-50 sm:text-3xl">
           Not Found
-        </h1>
+        </div>
         <p className="text-sm text-slate-400 sm:text-base">
           Profile not found. Please try again.
         </p>
