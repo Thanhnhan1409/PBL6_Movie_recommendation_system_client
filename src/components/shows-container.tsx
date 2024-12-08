@@ -28,15 +28,13 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
   const searchStore = useSearchStore();
   const { ref, inView } = useInView();
   const [page, setPage] = useState<number>(1);
-
-  // Fetch shows data based on search
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(
     async (currentPage: number) => {
-      if (isLoading) return; // Không làm gì nếu đang load dữ liệu
+      if (isLoading) return;
   
-      setIsLoading(true); // Đánh dấu đang gọi API
+      setIsLoading(true);
       try {
         const response = await getMoviesSearchApi(currentPage, searchStore.query);
         const data: MovieItem[] = response.data?.data;
@@ -44,7 +42,7 @@ const ShowsContainer = ({ shows }: ShowsContainerProps) => {
       } catch (error) {
         console.error("Failed to search shows:", error);
       } finally {
-        setIsLoading(false); // Đặt lại trạng thái sau khi gọi API xong
+        setIsLoading(false);
       }
     },
     [isLoading, searchStore]

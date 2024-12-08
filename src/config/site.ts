@@ -1,6 +1,7 @@
 import type { SiteConfig } from "@/types"
 
 import { Icons } from "@/components/icons"
+import { redirect } from "next/navigation"
 
 export const siteConfig: SiteConfig = {
   name: "Netflix Web",
@@ -62,7 +63,10 @@ export const siteConfig: SiteConfig = {
     },
     {
       href: "/login",
-      onClick: () => localStorage.removeItem("tokenAuth"),
+      onClick: () => {
+        localStorage.removeItem("authToken")
+        redirect("/login")
+      },
       title: "Sign Out of Netflix",
     },
   ],
