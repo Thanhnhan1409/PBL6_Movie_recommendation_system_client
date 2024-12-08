@@ -1,8 +1,20 @@
 #data_password::placeholder, #data_confirmPassword::placeholder, #data_age::placeholder {
   color: #8696A5;
 }
+.anticon.anticon-eye-invisible.ant-input-password-icon,
+.anticon.anticon-eye.ant-input-password-icon,
+.anticon.anticon-eye.ant-input-password-icon:hover,
+.anticon.anticon-eye-invisible.ant-input-password-icon:hover,
+.anticon.anticon-calendar,
+.anticon.anticon-calendar:hover {
+  color: #d0d4d8;
+}
 
-:where(.css-dev-only-do-not-override-1x0dypw).ant-picker .ant-picker-suffix,
+.ant-btn-primary:hover {
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity)) !important;
+}
+
+/* :where(.css-dev-only-do-not-override-1x0dypw).ant-picker .ant-picker-suffix,
 :where(.css-dev-only-do-not-override-1x0dypw).ant-input-affix-wrapper .anticon.ant-input-password-icon:hover,
 :where(.css-dev-only-do-not-override-1x0dypw).ant-input-affix-wrapper .anticon.ant-input-password-icon {
   color: #d0d4d8;
@@ -11,4 +23,4 @@
 :where(.css-dev-only-do-not-override-1x0dypw).ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover {
   background-color: #fff;
   color: rgb(4, 4, 4);
-}
+} */

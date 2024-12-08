@@ -175,7 +175,7 @@ const LoginButton = () => {
           />
         </Form.Item>
         <Form.Item label={null}>
-          <Button type="primary" htmlType="submit" size="large" className="inline-block w-full text-white bg-[red] hover:outline-none focus:bg-[black] border-0 hover:bg-[#000] hover:text-[#8696A5]">
+          <Button type="primary" htmlType="submit" size="large" className="inline-block w-full text-white bg-[red] hover:outline-none focus:bg-[black] border-0">
             Sign in
           </Button>
         </Form.Item>

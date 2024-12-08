@@ -13,6 +13,8 @@ import { DebouncedInput } from "@/components/debounced-input"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/layouts/main-nav"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { CrownOutlined } from "@ant-design/icons"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -144,7 +146,7 @@ const SiteHeader = () => {
                     variant="ghost"
                     className="h-auto shrink-0 px-2 py-1.5 text-base hover:bg-transparent focus:ring-0 hover:dark:bg-neutral-800 [&[data-state=open]>svg]:rotate-180"
                   >
-                    <div className="flex gap-4 items-center">
+                    <div className="relative flex gap-4 items-center">
                       <Image
                         src={profileStore.activeProfile?.avatar ?? "/images/Netfli5.png"}
                         alt="Profile"
@@ -152,6 +154,7 @@ const SiteHeader = () => {
                         height={22}
                         className="rounded"
                       />
+                      <CrownOutlined className="absolute right-[-7px] top-[-10px] rotate-[40deg] text-[#c8a623]" />
                     </div>
                     <Icons.chevronDown className="ml-2 hidden h-4 w-4 transition-transform duration-200 lg:inline-block" />
                   </Button>

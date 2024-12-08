@@ -19,7 +19,7 @@ const ProfileCard = ({ image, profile, handleClick }: IProfileCardProps) => {
         loading="lazy"
         className="cursor-pointer object-cover rounded transition-all rounded-lg hover:border hover:scale-1.1 duration-200"
       />
-      {profile?.age && profile?.age < 13 && <p className="text-sm rounded-l-lg px-2 py-1 absolute right-0 bottom-7 backdrop-blur-lg bg-[#000000b3]">Kids</p>}
+      {(profile?.age ?? 0) < 13 && <p className="text-sm rounded-l-lg px-2 py-1 absolute right-0 bottom-7 backdrop-blur-lg bg-[#000000b3]">Kids</p>}
       <div className="text-[grey] text-[1.3vw] leading-normal overflow-hidden text-center text-ellipsis min-h-[1.8rem]">{profile?.fullname}</div>
     </div>
   )
