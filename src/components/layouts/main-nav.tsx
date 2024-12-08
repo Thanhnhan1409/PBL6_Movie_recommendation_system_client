@@ -35,10 +35,16 @@ export function MainNav({ items }: MainNavProps) {
   // search store
   const searchStore = useSearchStore();
   const handleNavigation = async (href: string) => {
-    loadingStore.setIsLoading(true);
-    searchStore.setQuery("");
-    searchStore.setShows([]);
-    await router.push(href);
+    try {
+      loadingStore.setIsLoading(true);
+      searchStore.setQuery("");
+      searchStore.setShows([]);
+      await router.push(href);
+    } catch (error) {
+      console.error("Failed to navigate:", error);
+    } finally {
+      loadingStore.setIsLoading(false);
+    }
   };
 
   
