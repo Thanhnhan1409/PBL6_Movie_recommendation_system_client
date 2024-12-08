@@ -21,6 +21,7 @@ export default function Home() {
     const fetchMovies = async () => {
       try {
         loadingStore.setIsLoading(true);
+        debugger;
         if(profileStore.activeProfile?.age && profileStore.activeProfile?.age >= 14){
           const trendingRes = await trendingMoviesApi();
           const actionRes = await getMoviesByGenreApi('12,28');
@@ -83,6 +84,8 @@ export default function Home() {
       } catch (error) {
         console.error("Failed to fetch movies:", error);
       } finally {
+        console.log(11111111);
+        
         setTimeout(() => loadingStore.setIsLoading(false), 500);
       }
     };

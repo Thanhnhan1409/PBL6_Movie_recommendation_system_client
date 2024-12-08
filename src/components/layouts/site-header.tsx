@@ -122,7 +122,6 @@ const SiteHeader = () => {
                 aria-hidden="true"
               />
             </Button>
-            
           )}
           {mounted && session && (
             <Button
@@ -133,7 +132,9 @@ const SiteHeader = () => {
                   profileStore.setChooseProfile(false)
                 }
             >
-              <Icons.refresh className="h-5 w-5 text-white" />
+              {
+                (profileStore.activeProfile?.age ?? 0)< 14 && <Icons.refresh className="h-5 w-5 text-white" />
+              }
             </Button>
             
           )}
