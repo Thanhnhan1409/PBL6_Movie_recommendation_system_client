@@ -25,6 +25,7 @@ import { useProfileStore } from "@/stores/profile"
 import Image from "next/image"
 import { getMoviesSearchApi } from "@/lib/api/movies"
 import { useLoadingStore } from "@/stores/loading"
+import ProfilePicker from "../ui/profile-picker"
 
 const SiteHeader = () => {
   const router = useRouter()
@@ -45,7 +46,7 @@ const SiteHeader = () => {
       const search = searchParams.get("search");
       searchShowsByQuery(search ?? "");
     }
-  }, [setSession])
+  }, [])
   React.useEffect(() => {
     const changeBgColor = () => {
       window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false)
@@ -74,22 +75,13 @@ const SiteHeader = () => {
       router.push(`?search=${value}`);
     }
   }
-  // stores
-
-
-  // other profiles query
-  // const otherProfilesQuery = profileStore.profile
-  //   ? api.profile.getOthers.useQuery(profileStore.profile.id, {
-  //       enabled: !!session?.user && !!profileStore.profile,
-  //     })
-  //   : null
 
   const logOut = async () => {
     profileStore.setChooseProfile(false);
     localStorage.removeItem("authToken");
     setSession('')
     loadingStore.setIsLoading(false);
-    await router.push("/login")
+    router.push("/login")
     signOut()
   }
 
@@ -244,6 +236,12 @@ const SiteHeader = () => {
           ) : (
             <Skeleton className="h-7 w-10 bg-neutral-700" />
           )}
+
+          {
+            mounted && session && !profileStore.chooseProfile && (
+              <ProfilePicker />
+            )
+          }
         </div>
       </nav>
     </header>

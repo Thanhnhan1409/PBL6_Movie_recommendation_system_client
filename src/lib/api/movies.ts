@@ -67,3 +67,7 @@ export const getMoviesByGenreApi = async (genreId: string, page: number = 1) => 
 export const viewMoviewByIdApi = async (movie_id: number) => {
   return await axiosInstance.post(`/tmdb-movies/view?movie_id=${movie_id}`)
 }
+
+export const getViewsCountApi = async (movie_id: number) => {
+  return await axiosInstance.get(`/movies?movie_id=${movie_id}`)
+}

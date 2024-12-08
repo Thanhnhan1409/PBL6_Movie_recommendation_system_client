@@ -176,6 +176,8 @@ export type MovieItem = {
   release_date: string;
   vote_average: number;
   vote_count: number;
+  runtime?: number;
+  origin_country?: string[];
 }
 
 export type MovieVideo = {
@@ -244,6 +246,7 @@ export type MovieDetail = {
     vote_count: number;
     videos: MovieVideo[];
   };
+  viewCount?: number;
 }
 
 export type MovieList = {

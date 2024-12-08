@@ -6,14 +6,14 @@ import { useModalStore } from "@/stores/modal";
 import ReactPlayer from "react-player/lazy";
 import type { Genre, MovieDetail, MovieItem, MovieRating, MovieRatingData, MovieVideo } from "@/types";
 import ShowsCarousel from "@/components/shows-carousel";
-import { detailMovieApi, recommendMoviesApi, viewMoviewByIdApi } from "@/lib/api/movies";
+import { detailMovieApi, getViewsCountApi, recommendMoviesApi, viewMoviewByIdApi } from "@/lib/api/movies";
 import { Icons } from "@/components/icons";
 import ShowModal from "@/components/show-modal";
 import { addMovieRatingApi, getMovieRatingApi } from "@/lib/api/rating";
 import RatingItem from "@/components/rating/rating-item";
 import { Input } from "@/components/ui/input";
 import LoadingSpinner from "@/components/show-loading";
-import { Rate } from "antd";
+import { Rate, notification } from "antd";
 import { useLoadingStore } from "@/stores/loading";
 
 export default function MovieDetail() {
@@ -44,8 +44,12 @@ export default function MovieDetail() {
         loadingStore.setIsLoading(true);
         const response = await detailMovieApi(Number(params.id));
         await viewMoviewByIdApi(Number(params.id));
+        const viewsRes = await getViewsCountApi(Number(params.id));
         const data = response?.data?.data;
-        setMovie(response.data)
+        setMovie({
+          ...response.data,
+          viewCount: viewsRes.data?.data?.viewcount,
+        })
         if (data?.videos?.results?.length) {
           const trailerIndex = data.videos.results.findIndex(
             (video: MovieVideo) => video.type === "Trailer"
@@ -94,6 +98,13 @@ export default function MovieDetail() {
       }
     } catch (error) {
       console.error(error);
+      if(error?.status === 409) {
+        notification.error({
+          message: "Double rating",
+          description: "You have already rated this movie!",
+        });
+        setRatingData({...ratingData, comment: "", rating: 0});
+      }
     }
   }
 
@@ -118,25 +129,25 @@ export default function MovieDetail() {
               {movie?.data.title ?? movie?.data?.original_title}
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div>123.456 views</div>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <div>{`${movie?.viewCount || 0} ${movie?.viewCount && movie?.viewCount > 1 ? 'views' : 'view'}`}</div>
+            <div className="flex items-center gap-1">
               <span>{ movie?.data?.vote_average }</span>
-              <span className="h-4 w-4 text-yellow-400 block-inline mb-2">⭐</span>
+              <span className="h-4 w-4 text-yellow-400 block-inline mb-1.5">⭐</span>
               <span className="text-sm text-[#6c6f74]">({movie?.data?.vote_count})</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="pr-3 border-r leading-4">T16</div>
-            <div className="pr-3 border-r leading-4">Korean</div>
-            <div>1g30ph</div>
+            <div className="pr-3 border-r leading-4">{movie?.data.origin_country[0]}</div>
+            <div>{movie?.data.runtime} minutes</div>
           </div>
           <div className="flex flex-col gap-3 pt-4">
             <span className="font-semibold">Description</span>
             <p className="text-sm">{movie?.data.overview}</p>
           </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-2 justify-center">
+          <div><span className="text-[#6c6f74]">Release date: </span>{movie?.data.release_date}</div>
           <div className="flex items-center gap-3">
             <div className="cursor-pointer">
               {!isFavorite ? <Icons.heart className="w-6 h-6 text-white" /> :
@@ -145,7 +156,7 @@ export default function MovieDetail() {
             <Icons.messageSquare className="w-6 h-6 text-white cursor-pointer" />
           </div>
           <div className="flex items-center gap-2 text-xs sm:text-sm">
-            <span className="text-slate-400">Genres:</span>
+            <span className="text-[#6c6f74]">Genres:</span>
             {genres.map((genre) => genre.name).join(", ")}
           </div>
         </div>
@@ -166,7 +177,7 @@ export default function MovieDetail() {
               <Icons.user className="w-5 h-5 absolute" />
             </div>
             <div className="flex items-end gap-3 w-[99%]">
-              <div className="w-11/12">
+              <div className="w-[98%]">
                 <Rate 
                   defaultValue={3}
                   allowClear={false}
@@ -183,7 +194,7 @@ export default function MovieDetail() {
                   onChange={(e) => setRatingData({ ...ratingData, comment: e.target.value })}
                 />
               </div>
-              <Icons.send className="rotate-45 w-9 h-9 text-white p-1.5 border rounded-full cursor-pointer" onClick={sendComment}/>
+              <Icons.send className="rotate-45 w-9 h-9 text-white p-1.5 border rounded-full cursor-pointer hover:bg-[#fff] hover:text-[#000]" onClick={sendComment}/>
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -194,7 +205,6 @@ export default function MovieDetail() {
             }
           </div>
         </div>
-
       </div>
       {/* Loading spinner */}
       {loadingStore.isLoading && <LoadingSpinner />}
