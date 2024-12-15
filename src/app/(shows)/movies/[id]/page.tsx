@@ -14,6 +14,7 @@ import RatingItem from "@/components/rating/rating-item";
 import { Input } from "@/components/ui/input";
 import LoadingSpinner from "@/components/show-loading";
 import { Rate, notification } from "antd";
+import "./styles.css"
 import { useLoadingStore } from "@/stores/loading";
 
 export default function MovieDetail() {
@@ -171,7 +172,7 @@ export default function MovieDetail() {
       {/* Comment */}
       <div className="max-w-[1400px] mx-[auto] px-8 pt-6">
         <div className="fold-semibold px-1">Comments</div>
-        <div className="flex flex-col gap-3 pt-4">
+        <div className="flex flex-col gap-3 pt-4 comment-container">
           <div className="flex items-start gap-3 pb-4">
             <div className="flex items-center justify-center px-1 rounded-full border relative w-[40px] h-[40px]">
               <Icons.user className="w-5 h-5 absolute" />

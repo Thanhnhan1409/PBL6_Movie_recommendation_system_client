@@ -8,6 +8,7 @@ import { useProfileStore } from "@/stores/profile"
 import { useLoadingStore } from "@/stores/loading"
 import { redirect, useRouter } from "next/navigation"
 import { ProfileDataState } from "@/types"
+import { EditIcon } from "lucide-react"
 
 const ProfilePicker = () => {
   const loadingStore = useLoadingStore()
@@ -74,6 +75,10 @@ const ProfilePicker = () => {
           })}/>
         ))}
         {profileStore.childrenProfiles?.length < 4 && <AddChildAccount />}
+      </div>
+      <div className="cursor-pointer flex items-center gap-3 py-2 px-8 border rounded border-white opacity-20 hover:opacity-90 transition">
+        <EditIcon />
+        <span>Edit profile</span>
       </div>
     </motion.div>
   )
