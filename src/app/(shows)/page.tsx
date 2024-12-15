@@ -18,10 +18,13 @@ export default function Home() {
   const searchStore  = useSearchStore()
 
   useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if(!token){
+      window.location.href = '/login';
+    }
     const fetchMovies = async () => {
       try {
         loadingStore.setIsLoading(true);
-        debugger;
         if(profileStore.activeProfile?.age && profileStore.activeProfile?.age >= 14){
           const trendingRes = await trendingMoviesApi();
           const actionRes = await getMoviesByGenreApi('12,28');

@@ -210,10 +210,10 @@ const SiteHeader = () => {
                           key={index}
                           asChild
                           className="hover:bg-neutral-700 focus:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 cursor-pointer"
+                          onClick={logOut}
                         >
                           <span
                             className="line-clamp-1 grid place-items-center"
-                            onClick={logOut}
                           >
                             {item.title}
                           </span>

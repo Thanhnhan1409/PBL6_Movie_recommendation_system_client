@@ -1,17 +1,14 @@
 "use client"
 import type { CategorizedShows } from "@/types"
 
-// import { getShows } from "@/lib/fetchers"
-// import { getCurrentUser } from "@/lib/session"
 import ShowsContainer from "@/components/shows-container"
 import { useEffect, useState } from "react"
-import { getMovies, popularMoviesApi, trendingMoviesApi } from "@/lib/api/movies"
+import { popularMoviesApi, trendingMoviesApi } from "@/lib/api/movies"
 import LoadingSpinner from "@/components/show-loading"
 import { useLoadingStore } from "@/stores/loading"
 
 
 export default function MoviesPage() {
-  // const [loading, setLoading] = useState(true);
   const loadingStore = useLoadingStore();
   const [allShowsByCategory, setAllShowsByCategory] = useState<CategorizedShows[]>([]);
 
