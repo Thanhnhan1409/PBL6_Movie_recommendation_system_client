@@ -36,14 +36,7 @@ Create a `.env` file in the root directory and add the environment variables as 
 ### 4. Run the application
 
 ```bash
-yarn run dev
-```
-
-### 5. Listen for stripe events
-
-```bash
-yarn run stripe:listen
-```
+yarn dev
 
 ## How do I deploy this?
 
