@@ -21,17 +21,6 @@ const LoginButton = () => {
     localStorage.setItem("parentAuthToken", "");
     loadingStore.setIsLoading(false);
   }, [])
-
-  const loginWithGoogle = async () => {
-    loadingStore.setIsLoading(true)
-    try {
-      await signIn("google")
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setTimeout(() => loadingStore.setIsLoading(false), 1000)
-    }
-  }
   
   const router = useRouter()
   const onLogin = async (record: UserLogin) => {
@@ -184,16 +173,6 @@ const LoginButton = () => {
         <span className="absolute top-[-13px] left-[48%] bg-[#1B1B1C]">or</span>
         <div className="w-full h-[1px] bg-white"></div>
       </div>
-      <Button
-        aria-label="Login with Google"
-        size="large"
-        className="w-full bg-white text-[black] hover:bg-[red] hover:text-white flex items-center gap-2"
-        onClick={loadingStore.isLoading ? undefined : loginWithGoogle}
-        disabled={loadingStore.isLoading}
-      >
-        <Icons.google className="mr-2 h-4 w-4" aria-hidden="true" />
-        Login with Google
-      </Button>
       <div className="flex justify-center items-center gap-2 py-2 text-sm tracking-normal">
         <span>Don&apos;t have an account?</span>
         <span onClick={goToSignup} className="hover:underline hover:text-[red] cursor-pointer">Create an account</span>

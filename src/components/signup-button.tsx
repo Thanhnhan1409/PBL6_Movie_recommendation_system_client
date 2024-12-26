@@ -16,20 +16,6 @@ const SignUpButton = () => {
   const router = useRouter()
   const [form] = Form.useForm();
 
-  const loginWithGoogle = async () => {
-    loadingStore.setIsLoading(true)
-    try {
-      await signIn("google")
-    } catch (error) {
-      notification.error({
-        message: 'Sign in failed!',
-        description:error instanceof Error ? error.message ?? 'Sign in failed!' : ''
-      });
-    } finally {
-      setTimeout(() => loadingStore.setIsLoading(false), 2500)
-    }
-  }
-
   const onSignup = async (record: UserSignup) => {
     try {
       loadingStore.setIsLoading(true);
@@ -147,16 +133,6 @@ const SignUpButton = () => {
         <span className="absolute top-[-13px] left-[48%] bg-[#1B1B1C]">or</span>
         <div className="w-full h-[1px] bg-white"></div>
       </div>
-      <Button
-        aria-label="Login with Google"
-        className="w-full bg-white text-[black] hover:bg-[red] hover:text-white flex items-center gap-2"
-        onClick={loadingStore.isLoading ? undefined : loginWithGoogle}
-        disabled={loadingStore.isLoading}
-        size="large"
-      >
-        <Icons.google className="mr-2 h-4 w-4" aria-hidden="true" />
-        Login with Google
-      </Button>
       <div className="flex justify-center items-center gap-2 py-2 text-sm tracking-normal">
         <span>Already have an account?</span>
         <span onClick={goToLogin} className="hover:underline hover:text-[red] cursor-pointer">Log in</span>
