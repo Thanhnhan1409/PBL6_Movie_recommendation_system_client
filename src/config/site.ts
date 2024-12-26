@@ -47,16 +47,6 @@ export const siteConfig: SiteConfig = {
   ],
   profileDropdownItems: [
     {
-      title: "Manage Profiles",
-      href: "/profiles",
-      icon: Icons.edit,
-    },
-    {
-      title: "Account",
-      href: "/account",
-      icon: Icons.user,
-    },
-    {
       title: "Help Center",
       href: "/help-center",
       icon: Icons.help,
