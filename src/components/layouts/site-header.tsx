@@ -113,19 +113,7 @@ const SiteHeader = () => {
           )}
           {mounted && session && (
             <Button
-              aria-label="Notifications"
-              variant="ghost"
-              className="hidden h-auto rounded-full p-1 hover:bg-transparent dark:hover:bg-transparent lg:flex"
-            >
-              <Icons.bell
-                className="h-5 w-5 cursor-pointer text-white transition-opacity hover:opacity-75 active:scale-95"
-                aria-hidden="true"
-              />
-            </Button>
-          )}
-          {mounted && session && (
-            <Button
-              aria-label="Notifications"
+              aria-label="Switch profile"
               variant="ghost"
               className="hidden h-auto rounded-full p-1 hover:bg-transparent dark:hover:bg-transparent lg:flex"
                 onClick={() =>
